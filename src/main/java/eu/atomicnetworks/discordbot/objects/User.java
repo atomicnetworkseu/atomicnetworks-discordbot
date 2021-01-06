@@ -14,6 +14,7 @@ public class User {
     private int level;
     private int xp;
     private int warnPoints;
+    private int cookies;
     private Voting voting;
     
     public static class Voting {
@@ -77,6 +78,14 @@ public class User {
 
     public void setWarnPoints(int warnPoints) {
         this.warnPoints = warnPoints;
+    }
+
+    public int getCookies() {
+        return cookies;
+    }
+
+    public void setCookies(int cookies) {
+        this.cookies = cookies;
     }
 
     public Voting getVoting() {

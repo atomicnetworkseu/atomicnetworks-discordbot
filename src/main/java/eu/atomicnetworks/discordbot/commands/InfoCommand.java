@@ -24,11 +24,17 @@ public class InfoCommand {
     public void execute(GuildMessageReceivedEvent event) {
         Message message = event.getMessage();
         String[] args = message.getContentRaw().split(" ");
-
+        
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
-        embed.setDescription("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam");
-        
+        embed.setAuthor("Helpdesk » Information", null, "https://images.discordapp.net/avatars/697517106287345737/07be164c270546a8c976063bc71939fc.png?size=512");
+        embed.setDescription("** **\nFirst of all, thank you for being on our Discord and being part of our community! :heart:\n\n** **");
+        embed.addField("Support", "**Mail** I support@atomicnetworks.eu\n**TeamSpeak** I atomicnetworks.eu\n**Phone** I +49 40 228518870", true);
+        embed.addField("Websites", "[atomicnetworks](https://go.atomicnetworks.eu/)\n[atomicradio](https://go.atomicnetworks.eu/radio)\n[atomicgaming](https://go.atomicnetworks.eu/gaming)", true);
+        embed.addField("Twitter", "[atomicnetworks](https://go.atomicnetworks.eu/twitter)\n[atomicradio](https://go.atomicnetworks.eu/radio/twitter)\n[atomicgaming](https://go.atomicnetworks.eu/gaming/twitter)", true);
+        embed.addField("Instagram", "[atomicnetworks](https://go.atomicnetworks.eu/instagram)", true);
+        embed.addField("YouTube", "[atomicgaming](https://go.atomicnetworks.eu/youtube)", true);
+        embed.addField("Invitelink", "https://go.atomicnetworks.eu/discord", true);
         event.getChannel().sendMessage(embed.build()).queue();
     }
     

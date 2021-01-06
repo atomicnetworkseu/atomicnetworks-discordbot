@@ -4,10 +4,13 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import eu.atomicnetworks.discordbot.DiscordBot;
+import eu.atomicnetworks.discordbot.objects.Ticket;
 import eu.atomicnetworks.discordbot.objects.User;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
+import net.dv8tion.jda.api.entities.Message;
 
 /**
  *
@@ -20,6 +23,7 @@ public class BackendManager {
     
     private DiscordBot discordBot;
     private LoadingCache<String, User> userCache;
+    private LoadingCache<String, Ticket> ticketCache;
 
     public BackendManager(DiscordBot discordBot) {
         this.discordBot = discordBot;
@@ -33,6 +37,20 @@ public class BackendManager {
                 CompletableFuture<User> completableFuture = new CompletableFuture<>();
                 discordBot.getUserManager().getUser(id, result -> {
                     completableFuture.complete(result);
+                });
+                return completableFuture.get();
+            }
+        });
+        this.ticketCache = CacheBuilder.newBuilder().maximumSize(100L).expireAfterWrite(10L, TimeUnit.MINUTES).build((CacheLoader) new CacheLoader<String, Ticket>() {
+            @Override
+            public Ticket load(String id) throws Exception {
+                CompletableFuture<Ticket> completableFuture = new CompletableFuture<>();
+                discordBot.getTicketManager().getTicket(id, result -> {
+                    if(result.getId().equals("NOT FOUND!")) {
+                        completableFuture.complete(null);
+                    } else {
+                        completableFuture.complete(result);
+                    }
                 });
                 return completableFuture.get();
             }
@@ -109,6 +127,46 @@ public class BackendManager {
     
     public void addWarnPoints(String id, int points) {
         this.setWarnPoints(id, this.getWarnPoints(id)+points);
+    }
+    
+    public int getCookies(String id) {
+        return this.getUser(id).getCookies();
+    }
+    
+    public void setCookies(String id, int cookies) {
+        this.getUser(id).setCookies(cookies);
+        this.discordBot.getUserManager().saveUser(this.getUser(id));
+    }
+    
+    public void addCookies(String id, int cookies) {
+        this.setCookies(id, this.getCookies(id)+cookies);
+    }
+
+    public LoadingCache<String, Ticket> getTicketCache() {
+        return ticketCache;
+    }
+    
+    public Ticket getTicket(String id) {
+        try {
+            return this.ticketCache.get(id);
+        } catch (ExecutionException ex) {
+            return null;
+        }
+    }
+    
+    public void createTicket(Ticket ticket) {
+        this.discordBot.getTicketManager().createTicket(ticket, (Ticket t) -> {
+        });
+    }
+    
+    public void addTicketMessage(String id, Message message) {
+        Ticket.TicketMessage ticketMessage = new Ticket.TicketMessage();
+        ticketMessage.setUserId(message.getAuthor().getId());
+        ticketMessage.setUserName(message.getAuthor().getName());
+        ticketMessage.setUserAvatar(message.getAuthor().getAvatarUrl());
+        ticketMessage.setMessage(message.getContentRaw());
+        this.getTicket(id).getMessages().add(ticketMessage);
+        this.discordBot.getTicketManager().saveTicket(this.getTicket(id));
     }
     
 }

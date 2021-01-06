@@ -25,8 +25,12 @@ public class NewsCommand {
     public void execute(GuildMessageReceivedEvent event) {
         Message message = event.getMessage();
         String[] args = message.getContentRaw().split(" ");
+        EmbedBuilder embed = new EmbedBuilder();
+        embed.setColor(new Color(149, 79, 180));
         
         if(args.length < 3) {
+            embed.setDescription("You need to specify a title, channel and the message.");
+            event.getChannel().sendMessage(embed.build()).queue();
             return;
         }
         
@@ -40,8 +44,6 @@ public class NewsCommand {
             news += args[i] + " ";
         }
         
-        EmbedBuilder embed = new EmbedBuilder();
-        embed.setColor(new Color(149, 79, 180));
         embed.setTitle(args[1]);
         embed.setDescription(news);
         if(!message.getAttachments().isEmpty()) {

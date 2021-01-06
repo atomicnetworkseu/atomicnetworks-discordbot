@@ -32,6 +32,7 @@ public class UserManager {
                 user.setLevel(1);
                 user.setXp(0);
                 user.setWarnPoints(0);
+                user.setCookies(0);
                 
                 User.Voting voting = new User.Voting();
                 voting.setVoted_at(0);

@@ -29,6 +29,14 @@ public class MagicMusselCommand {
     public void execute(GuildMessageReceivedEvent event) {
         Message message = event.getMessage();
         String[] args = message.getContentRaw().split(" ");
+        EmbedBuilder embed = new EmbedBuilder();
+        embed.setColor(new Color(149, 79, 180));
+        
+        if(args.length == 1) {
+            embed.setDescription("I need a question to be able to answer you.");
+            event.getChannel().sendMessage(embed.build()).queue();
+            return;
+        }
         
         String question = "";
         List<String> answers = Arrays.asList("Yes", "Maybe", "No");
@@ -36,8 +44,6 @@ public class MagicMusselCommand {
             question += args[i] + " ";
         }
         
-        EmbedBuilder embed = new EmbedBuilder();
-        embed.setColor(new Color(149, 79, 180));
         embed.setAuthor(event.getMember().getUser().getName(), null, event.getMember().getUser().getAvatarUrl());
         embed.setDescription("**Question:** " + question + "\n**Answer:** " + answers.get(this.random.nextInt(3)));
         

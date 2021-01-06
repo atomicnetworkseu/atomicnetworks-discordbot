@@ -24,11 +24,20 @@ public class HelpCommand {
     public void execute(GuildMessageReceivedEvent event) {
         Message message = event.getMessage();
         String[] args = message.getContentRaw().split(" ");
+        
+        if(!event.getChannel().getId().equals(this.discord.getCommandChannelId())) {
+            return;
+        }
 
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
-        embed.setDescription("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam");
-        
+        embed.setAuthor("Helpsystem", null, "https://images.discordapp.net/avatars/697517106287345737/07be164c270546a8c976063bc71939fc.png?size=512");
+        embed.setDescription("**!help •** Shows you all the commands you can use.\n"
+                + "**!info •** All information and contact options summarized for you.\n"
+                + "**!level •** You want to know which level you have just reached? Here you can find out!\n"
+                + "**!ranking •** A small list of the most active users on our discord server.\n"
+                + "**!cookie •** Give your friends a little cookie as a thank you!\n"
+                + "**!magicmussel •** Ask the magic mussel for an answer to your question.\n");
         event.getChannel().sendMessage(embed.build()).queue();
     }
     

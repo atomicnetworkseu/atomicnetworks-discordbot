@@ -25,6 +25,10 @@ public class LevelCommand {
     public void execute(GuildMessageReceivedEvent event) {
         Message message = event.getMessage();
         String[] args = message.getContentRaw().split(" ");
+        
+        if(!event.getChannel().getId().equals(this.discord.getCommandChannelId())) {
+            return;
+        }
 
         User user = this.discord.getBackendManager().getUser(event.getMember().getUser().getId());
         

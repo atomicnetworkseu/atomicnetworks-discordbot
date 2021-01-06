@@ -26,6 +26,10 @@ public class RankingCommand {
     public void execute(GuildMessageReceivedEvent event) {
         Message message = event.getMessage();
         String[] args = message.getContentRaw().split(" ");
+        
+        if(!event.getChannel().getId().equals(this.discord.getCommandChannelId())) {
+            return;
+        }
 
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
