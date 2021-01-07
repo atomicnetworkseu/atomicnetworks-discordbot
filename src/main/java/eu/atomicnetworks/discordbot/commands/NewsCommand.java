@@ -51,7 +51,6 @@ public class NewsCommand {
         embed.setTitle(args[1]);
         embed.setDescription(news);
         if(!message.getAttachments().isEmpty()) {
-            System.out.println(message.getAttachments().stream().findFirst().orElse(null).getUrl());
             embed.setImage(message.getAttachments().stream().findFirst().orElse(null).getUrl());
         }
         

@@ -38,7 +38,7 @@ public class DBLListener {
                     return;
                 }
                 
-                Role role = discord.getJda().getGuildById(discord.getGuildId()).getRolesByName("💀 | MUTE", true).stream().findFirst().orElse(null);
+                Role role = discord.getJda().getGuildById(discord.getGuildId()).getRolesByName("😵 Voted", true).stream().findFirst().orElse(null);
                 TextChannel textChannel = (TextChannel) discord.getJda().getGuildById(discord.getGuildId()).getChannels().stream().filter(t -> t.getId().equals(discord.getAchievementChannelId())).findFirst().orElse(null);
                 
                 if(user.getVoting().getVoted_end() > System.currentTimeMillis()) {

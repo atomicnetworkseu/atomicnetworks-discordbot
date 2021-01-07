@@ -182,15 +182,15 @@ public class BackendManager {
     }
     
     public boolean hasPermissionPower3(Member member) {
-        return hasRole(member, "✨ | Meister") || hasRole(member, "✨ | Meister") || hasRole(member, "✨ | Meister") || hasRole(member, "✨ | Meister");
+        return hasRole(member, "Manager") || hasRole(member, "Administrator") || hasRole(member, "Developer") || hasRole(member, "Moderator") || hasRole(member, "Supporter");
     }
     
     public boolean hasPermissionPower2(Member member) {
-        return hasRole(member, "✨ | Meister") || hasRole(member, "✨ | Meister") || hasRole(member, "✨ | Meister");
+        return hasRole(member, "Manager") || hasRole(member, "Administrator") || hasRole(member, "Developer") || hasRole(member, "» Competence I Teamleading");
     }
     
     public boolean hasPermissionPower1(Member member) {
-        return hasRole(member, "✨ | Meister") || hasRole(member, "✨ | Meister");
+        return hasRole(member, "Manager") || hasRole(member, "Administrator") || hasRole(member, "Developer");
     }
     
 }

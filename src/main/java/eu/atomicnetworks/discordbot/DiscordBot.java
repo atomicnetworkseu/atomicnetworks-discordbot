@@ -25,10 +25,8 @@ import eu.atomicnetworks.discordbot.objects.User;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Consumer;
 import javax.swing.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,10 +34,9 @@ import javax.security.auth.login.LoginException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -47,10 +44,8 @@ import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
-import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import net.dv8tion.jda.api.utils.AttachmentOption;
 
 /**
  *
@@ -125,23 +120,23 @@ public class DiscordBot {
         this.ticketCommand = new TicketCommand(this);
         this.warnCommand = new WarnCommand(this);
         
-        this.guildId = "667439121949523998";
-        this.roleChannelId = "796130699991580752";
-        this.achievementChannelId = "796130699991580752";
-        this.welcomeChannelId = "796130699991580752";
-        this.commandChannelId = "796130699991580752";
-        this.teamlogChannelId = "796130699991580752";
-        this.ticketChannelId = "796445916630482944";
-        this.ticketLogChannelId = "796445916630482944";
+        this.guildId = "734477710319026217";
+        this.roleChannelId = "734477712139223133";
+        this.achievementChannelId = "734477712844128373";
+        this.welcomeChannelId = "734477712139223132";
+        this.commandChannelId = "734477712844128374";
+        this.teamlogChannelId = "734477713028415566";
+        this.ticketChannelId = "734477712592338981";
+        this.ticketLogChannelId = "734477713028415565";
         
-        JDABuilder builder = JDABuilder.createDefault("Nzc3OTU0NTg0MDEzOTYzMjY1.X7K8qg.f7kbG0-yhaYy6WBfJiPrEf1DaO4");
+        JDABuilder builder = JDABuilder.createDefault("Nzk2ODQ5MDE5MzA4NDc0NDE5.X_d5eg.jf4MILv8PkXTZUYOxrfRMJ2Pb4E");
         builder.enableIntents(GatewayIntent.GUILD_MEMBERS);
         builder.setActivity(Activity.watching("atnw.eu/discord"));
         builder.addEventListeners(new ListenerAdapter() {
 
             @Override
             public void onGuildMemberJoin(GuildMemberJoinEvent event) {
-                Role role = event.getGuild().getRolesByName("💀 | Unwichtig", true).stream().findFirst().orElse(null);
+                Role role = event.getGuild().getRolesByName("🪐 Community", true).stream().findFirst().orElse(null);
                 event.getGuild().addRoleToMember(event.getMember(), role).queue();
                 User user = backendManager.getUser(event.getMember().getId());
                 backendManager.setUsername(user.getId(), event.getMember().getUser().getName());
@@ -154,7 +149,7 @@ public class DiscordBot {
 
             @Override
             public void onGuildReady(GuildReadyEvent event) {
-                System.out.println("READY!");
+                
             }
 
             @Override
@@ -228,10 +223,10 @@ public class DiscordBot {
                 }
                 if(event.getChannel().getId().equals(roleChannelId)) {
                     if(event.getReactionEmote().getId().equals("734613241581404271")) { // ATOMICRADIO ROLE
-                        Role role = event.getGuild().getRolesByName("🔥 | Freund", true).stream().findFirst().orElse(null);
+                        Role role = event.getGuild().getRolesByName("#radio", true).stream().findFirst().orElse(null);
                         event.getGuild().addRoleToMember(event.getMember(), role).queue();
                     } else if(event.getReactionEmote().getId().equals("734611793187700736")) { // ATOMICGAMING ROLE
-                        Role role = event.getGuild().getRolesByName("🔨 | Test", true).stream().findFirst().orElse(null);
+                        Role role = event.getGuild().getRolesByName("#gaming", true).stream().findFirst().orElse(null);
                         event.getGuild().addRoleToMember(event.getMember(), role).queue();
                     }
                 } else if(event.getChannel().getId().equals(ticketChannelId)) {
@@ -286,6 +281,11 @@ public class DiscordBot {
                     supportChannel.addReactionById(messageId, ":playatomic:734613241581404271").queue();
                     supportChannel.addReactionById(messageId, ":gamingatomic:734611793187700736").queue();
                 });
+                
+                for(Member member : jda.getGuildById(guildId).getMembers()) {
+                    backendManager.getUser(member.getUser().getId());
+                    backendManager.setUsername(member.getUser().getId(), member.getUser().getName());
+                }
             });
             sendTimer.setInitialDelay(10000);
             sendTimer.setRepeats(false);
@@ -296,7 +296,7 @@ public class DiscordBot {
                     for(User user : t) {
                         if(System.currentTimeMillis() >= user.getWarn().getActiveWarnEnd()) {
                             this.backendManager.setMuted(user.getId(), false);
-                            Role role = this.jda.getGuildById(this.getGuildId()).getRolesByName("💀 | MUTE", true).stream().findFirst().orElse(null);
+                            Role role = this.jda.getGuildById(this.getGuildId()).getRolesByName("☠ Muted", true).stream().findFirst().orElse(null);
                             this.jda.getGuildById(this.getGuildId()).removeRoleFromMember(user.getId(), role).queue();
                         }
                     }
@@ -307,10 +307,9 @@ public class DiscordBot {
                             return;
                         }
                         if(System.currentTimeMillis() >= user.getVoting().getVoted_end()) {
-                            System.out.println("REMOVE VOTING");
                             user.getVoting().setVoted_end(0);
                             this.userManager.saveUser(user);
-                            Role role = this.jda.getGuildById(this.getGuildId()).getRolesByName("💀 | MUTE", true).stream().findFirst().orElse(null);
+                            Role role = this.jda.getGuildById(this.getGuildId()).getRolesByName("😵 Voted", true).stream().findFirst().orElse(null);
                             this.jda.getGuildById(this.getGuildId()).removeRoleFromMember(user.getId(), role).queue();
                         }
                     }

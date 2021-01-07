@@ -32,10 +32,6 @@ public class MagicMusselCommand {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
         
-        if(!event.getChannel().getId().equals(this.discord.getCommandChannelId())) {
-            return;
-        }
-        
         if(args.length == 1) {
             embed.setDescription("I need a question to be able to answer you.");
             event.getChannel().sendMessage(embed.build()).queue();

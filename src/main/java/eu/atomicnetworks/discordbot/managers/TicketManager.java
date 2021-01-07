@@ -34,11 +34,9 @@ import org.bson.Document;
 public class TicketManager {
 
     private DiscordBot discord;
-    private final WebhookClient webhookClient;
 
     public TicketManager(DiscordBot discord) {
         this.discord = discord;
-        this.webhookClient = WebhookClient.withUrl("https://discord.com/api/webhooks/796427560540045353/-55cLUrNDfQabMJH3ymJI0c9fbpymOAIOJsCXjmBTQ0SYY3XZ8ei3iHOBQfSTHQRkZMR");
     }
 
     public void getTicket(String id, Consumer<Ticket> consumer) {
@@ -78,9 +76,9 @@ public class TicketManager {
     }
 
     public void createChannel(GuildMessageReactionAddEvent event, TicketType ticketType) {
-        Role everyoneRole = this.discord.getJda().getRolesByName("🔨 | Test", true).stream().findFirst().orElse(null);
-        Role supportRole = this.discord.getJda().getRolesByName("🔥 | Freund", true).stream().findFirst().orElse(null);
-        Role moderatorRole = this.discord.getJda().getRolesByName("💀 | Unwichtig", true).stream().findFirst().orElse(null);
+        Role everyoneRole = this.discord.getJda().getRolesByName("🪐 Community", true).stream().findFirst().orElse(null);
+        Role supportRole = this.discord.getJda().getRolesByName("Supporter", true).stream().findFirst().orElse(null);
+        Role moderatorRole = this.discord.getJda().getRolesByName("Moderator", true).stream().findFirst().orElse(null);
         event.getChannel().retrieveMessageById(event.getMessageId()).queue((message) -> {
             event.getChannel().removeReactionById(message.getId(), ":atomic:736627104992591883", event.getUser()).queue();
             event.getChannel().removeReactionById(message.getId(), ":playatomic:734613241581404271", event.getUser()).queue();

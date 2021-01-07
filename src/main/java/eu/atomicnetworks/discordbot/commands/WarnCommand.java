@@ -24,7 +24,7 @@ public class WarnCommand {
 
     public WarnCommand(DiscordBot discord) {
         this.discord = discord;
-        this.webhookClient = WebhookClient.withUrl("https://discord.com/api/webhooks/796427560540045353/-55cLUrNDfQabMJH3ymJI0c9fbpymOAIOJsCXjmBTQ0SYY3XZ8ei3iHOBQfSTHQRkZMR");
+        this.webhookClient = WebhookClient.withUrl("https://discord.com/api/webhooks/796848169920888852/kQpYbCZOiMedIZqFqDcHxzwBxOYbxxYqOFa000OP7U0nNKHQuDWOs9Zz3bmedzBHksWE");
     }
 
     public void execute(GuildMessageReceivedEvent event) {
@@ -187,7 +187,7 @@ public class WarnCommand {
             channel.sendMessage(userEmbed.build()).queue();
         });
         
-        Role role = this.discord.getJda().getGuildById(this.discord.getGuildId()).getRolesByName("💀 | MUTE", true).stream().findFirst().orElse(null);
+        Role role = this.discord.getJda().getGuildById(this.discord.getGuildId()).getRolesByName("☠ Muted", true).stream().findFirst().orElse(null);
         this.discord.getJda().getGuildById(this.discord.getGuildId()).addRoleToMember(target, role).queue();
         
         WebhookEmbedBuilder webhookEmbedBuilder = new WebhookEmbedBuilder();
