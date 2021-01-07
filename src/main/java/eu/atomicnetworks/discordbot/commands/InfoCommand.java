@@ -25,6 +25,10 @@ public class InfoCommand {
         Message message = event.getMessage();
         String[] args = message.getContentRaw().split(" ");
         
+        if(!event.getChannel().getId().equals(this.discord.getCommandChannelId())) {
+            return;
+        }
+        
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
         embed.setAuthor("Helpdesk » Information", null, "https://images.discordapp.net/avatars/697517106287345737/07be164c270546a8c976063bc71939fc.png?size=512");

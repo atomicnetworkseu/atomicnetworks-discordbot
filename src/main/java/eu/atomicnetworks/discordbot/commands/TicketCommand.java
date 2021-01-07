@@ -27,6 +27,10 @@ public class TicketCommand {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
         
+        if(!this.discord.getBackendManager().hasPermissionPower3(event.getMember())) {
+            return;
+        }
+        
         if(!event.getChannel().getName().startsWith("ticket-")) {
             return;
         }

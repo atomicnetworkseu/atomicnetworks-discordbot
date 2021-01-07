@@ -31,11 +31,20 @@ public class UserManager {
                 user.setUsername("???");
                 user.setLevel(1);
                 user.setXp(0);
-                user.setWarnPoints(0);
                 user.setCookies(0);
+                user.setMuted(false);
+                
+                User.Warn warn = new User.Warn();
+                warn.setWarnPoints(0);
+                warn.setActiveWarnReason("");
+                warn.setActiveWarnEnd(0);
+                warn.setActiveWarnCreator("");
+                warn.setWarnLog(new ArrayList<>());
+                
+                user.setWarn(warn);
                 
                 User.Voting voting = new User.Voting();
-                voting.setVoted_at(0);
+                voting.setVoteCount(0);
                 voting.setVoted_end(0);
                 
                 user.setVoting(voting);
@@ -54,6 +63,26 @@ public class UserManager {
     public void getTopUser(int limit, Consumer<List<User>> consumer) {
         List<User> list = new ArrayList<>();
         discordBot.getMongoManager().getUsers().find().limit(limit).sort(Filters.eq("xp", -1)).forEach(document -> {
+            User user = discordBot.getGson().fromJson(document.toJson(), User.class);
+            list.add(user);
+        }, (Void t, Throwable thrwbl) -> {
+            consumer.accept(list);
+        }); 
+    }
+    
+    public void getActiveMutedUsers(Consumer<List<User>> consumer) {
+        List<User> list = new ArrayList<>();
+        discordBot.getMongoManager().getUsers().find(Filters.eq("muted", true)).forEach(document -> {
+            User user = discordBot.getGson().fromJson(document.toJson(), User.class);
+            list.add(user);
+        }, (Void t, Throwable thrwbl) -> {
+            consumer.accept(list);
+        }); 
+    }
+    
+    public void getAllUsers(Consumer<List<User>> consumer) {
+        List<User> list = new ArrayList<>();
+        discordBot.getMongoManager().getUsers().find().forEach(document -> {
             User user = discordBot.getGson().fromJson(document.toJson(), User.class);
             list.add(user);
         }, (Void t, Throwable thrwbl) -> {

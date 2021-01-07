@@ -6,11 +6,14 @@ import com.google.common.cache.LoadingCache;
 import eu.atomicnetworks.discordbot.DiscordBot;
 import eu.atomicnetworks.discordbot.objects.Ticket;
 import eu.atomicnetworks.discordbot.objects.User;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.Role;
 
 /**
  *
@@ -116,17 +119,17 @@ public class BackendManager {
         return (150*this.getLevel(id));
     }
     
-    public int getWarnPoints(String id) {
-        return this.getUser(id).getWarnPoints();
+    public boolean isMuted(String id) {
+        return this.getUser(id).isMuted();
     }
     
-    public void setWarnPoints(String id, int points) {
-        this.getUser(id).setWarnPoints(points);
+    public void setMuted(String id, boolean muted) {
+        this.getUser(id).setMuted(muted);
         this.discordBot.getUserManager().saveUser(this.getUser(id));
     }
     
-    public void addWarnPoints(String id, int points) {
-        this.setWarnPoints(id, this.getWarnPoints(id)+points);
+    public User.Warn getWarn(String id) {
+        return this.getUser(id).getWarn();
     }
     
     public int getCookies(String id) {
@@ -167,6 +170,27 @@ public class BackendManager {
         ticketMessage.setMessage(message.getContentRaw());
         this.getTicket(id).getMessages().add(ticketMessage);
         this.discordBot.getTicketManager().saveTicket(this.getTicket(id));
+    }
+    
+    public boolean hasRole(Member member, String name) {
+        List<Role> roles = member.getRoles();
+        Role targetRole = roles.stream().filter(role -> role.getName().equals(name)).findFirst().orElse(null);
+        if(targetRole == null) {
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean hasPermissionPower3(Member member) {
+        return hasRole(member, "✨ | Meister") || hasRole(member, "✨ | Meister") || hasRole(member, "✨ | Meister") || hasRole(member, "✨ | Meister");
+    }
+    
+    public boolean hasPermissionPower2(Member member) {
+        return hasRole(member, "✨ | Meister") || hasRole(member, "✨ | Meister") || hasRole(member, "✨ | Meister");
+    }
+    
+    public boolean hasPermissionPower1(Member member) {
+        return hasRole(member, "✨ | Meister") || hasRole(member, "✨ | Meister");
     }
     
 }

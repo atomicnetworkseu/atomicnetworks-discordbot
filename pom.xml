@@ -77,6 +77,11 @@
             <artifactId>discord-webhooks</artifactId>
             <version>0.5.0</version>
         </dependency>
+        <dependency>
+	    <groupId>com.github.Hopefuls</groupId>
+	    <artifactId>topggwebhooks4j</artifactId>
+	    <version>1.0.0</version>
+	</dependency>
     </dependencies>
     
     <build>

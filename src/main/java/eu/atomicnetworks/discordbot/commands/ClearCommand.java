@@ -33,6 +33,10 @@ public class ClearCommand {
         MessageHistory messageHistory = new MessageHistory(event.getChannel());
         List<Message> messages = messageHistory.retrievePast(Integer.valueOf(args[1])).complete();
         event.getChannel().deleteMessages(messages).queue();
+        
+        if(!this.discord.getBackendManager().hasPermissionPower3(event.getMember())) {
+            return;
+        }
 
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
@@ -44,7 +48,7 @@ public class ClearCommand {
         }
 
         try {
-            embed.setDescription("**Successful**, you have deleted a total of **" + Integer.valueOf(args[1]) + "** messages in #chatlounge.");
+            embed.setDescription("**Successful**, you have deleted a total of **" + Integer.valueOf(args[1]) + "** messages in " + event.getChannel().getAsMention() + ".");
 
             WebhookEmbedBuilder webhookEmbedBuilder = new WebhookEmbedBuilder();
             webhookEmbedBuilder.setColor(9785268);

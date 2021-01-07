@@ -10,8 +10,11 @@ import eu.atomicnetworks.discordbot.commands.MagicMusselCommand;
 import eu.atomicnetworks.discordbot.commands.NewsCommand;
 import eu.atomicnetworks.discordbot.commands.RankingCommand;
 import eu.atomicnetworks.discordbot.commands.TicketCommand;
+import eu.atomicnetworks.discordbot.commands.WarnCommand;
 import eu.atomicnetworks.discordbot.commands.WhoisCommand;
 import eu.atomicnetworks.discordbot.enums.TicketType;
+import eu.atomicnetworks.discordbot.listeners.DBLListener;
+import eu.atomicnetworks.discordbot.listeners.TopGGListener;
 import eu.atomicnetworks.discordbot.managers.BackendManager;
 import eu.atomicnetworks.discordbot.managers.LoggerManager;
 import eu.atomicnetworks.discordbot.managers.MongoManager;
@@ -23,6 +26,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.function.Consumer;
 import javax.swing.Timer;
@@ -67,6 +71,9 @@ public class DiscordBot {
     private TicketManager ticketManager;
     private BackendManager backendManager;
     
+    private TopGGListener topGGListener;
+    private DBLListener dblListener;
+    
     private HelpCommand helpCommand;
     private InfoCommand infoCommand;
     private LevelCommand levelCommand;
@@ -77,8 +84,10 @@ public class DiscordBot {
     private ClearCommand clearCommand;
     private WhoisCommand whoisCommand;
     private TicketCommand ticketCommand;
+    private WarnCommand warnCommand;
     
     private String guildId;
+    private String achievementChannelId;
     private String roleChannelId;
     private String welcomeChannelId;
     private String commandChannelId;
@@ -101,6 +110,9 @@ public class DiscordBot {
         this.ticketManager = new TicketManager(this);
         this.backendManager = new BackendManager(this);
         
+        this.topGGListener = new TopGGListener(this);
+        this.dblListener = new DBLListener(this);
+        
         this.helpCommand = new HelpCommand(this);
         this.infoCommand = new InfoCommand(this);
         this.levelCommand = new LevelCommand(this);
@@ -111,9 +123,11 @@ public class DiscordBot {
         this.clearCommand = new ClearCommand(this);
         this.whoisCommand = new WhoisCommand(this);
         this.ticketCommand = new TicketCommand(this);
+        this.warnCommand = new WarnCommand(this);
         
         this.guildId = "667439121949523998";
         this.roleChannelId = "796130699991580752";
+        this.achievementChannelId = "796130699991580752";
         this.welcomeChannelId = "796130699991580752";
         this.commandChannelId = "796130699991580752";
         this.teamlogChannelId = "796130699991580752";
@@ -163,7 +177,8 @@ public class DiscordBot {
                     embed.setColor(new Color(149, 79, 180));
                     embed.setAuthor(event.getMember().getUser().getName(), null, event.getMember().getUser().getAvatarUrl());
                     embed.setDescription("**Congratulations**, you have now reached level **" + backendManager.getLevel(user.getId()) + "**! <a:blobgifrolling:771743022282440815>");
-                    event.getChannel().sendMessage(embed.build()).queue();
+                    TextChannel textChannel = (TextChannel) jda.getGuildById(guildId).getChannels().stream().filter(t -> t.getId().equals(achievementChannelId)).findFirst().orElse(null);
+                    textChannel.sendMessage(embed.build()).queue();
                 }
                 
                 if(event.getChannel().getName().startsWith("ticket-")) {
@@ -200,6 +215,9 @@ public class DiscordBot {
                     whoisCommand.execute(event);
                 } else if (message.getContentRaw().toLowerCase().startsWith("!ticket")) {
                     ticketCommand.execute(event);
+                } else if (message.getContentRaw().toLowerCase().startsWith("!warn")) {
+                    event.getMessage().delete().queue();
+                    warnCommand.execute(event);
                 }
             }
 
@@ -272,6 +290,36 @@ public class DiscordBot {
             sendTimer.setInitialDelay(10000);
             sendTimer.setRepeats(false);
             sendTimer.start();
+            
+            Timer warnEndTimer = new Timer(10000, (ActionEvent e) -> {
+                this.userManager.getActiveMutedUsers((List<User> t) -> {
+                    for(User user : t) {
+                        if(System.currentTimeMillis() >= user.getWarn().getActiveWarnEnd()) {
+                            this.backendManager.setMuted(user.getId(), false);
+                            Role role = this.jda.getGuildById(this.getGuildId()).getRolesByName("💀 | MUTE", true).stream().findFirst().orElse(null);
+                            this.jda.getGuildById(this.getGuildId()).removeRoleFromMember(user.getId(), role).queue();
+                        }
+                    }
+                });
+                this.userManager.getAllUsers((List<User> t) -> {
+                    for(User user : t) {
+                        if(user.getVoting().getVoted_end() == 0) {
+                            return;
+                        }
+                        if(System.currentTimeMillis() >= user.getVoting().getVoted_end()) {
+                            System.out.println("REMOVE VOTING");
+                            user.getVoting().setVoted_end(0);
+                            this.userManager.saveUser(user);
+                            Role role = this.jda.getGuildById(this.getGuildId()).getRolesByName("💀 | MUTE", true).stream().findFirst().orElse(null);
+                            this.jda.getGuildById(this.getGuildId()).removeRoleFromMember(user.getId(), role).queue();
+                        }
+                    }
+                });
+            });
+            warnEndTimer.setInitialDelay(0);
+            warnEndTimer.setRepeats(true);
+            warnEndTimer.start();
+            
         } catch (LoginException ex) {
             Logger.getLogger(DiscordBot.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -345,6 +393,10 @@ public class DiscordBot {
 
     public String getTicketLogChannelId() {
         return ticketLogChannelId;
+    }
+
+    public String getAchievementChannelId() {
+        return achievementChannelId;
     }
     
 }

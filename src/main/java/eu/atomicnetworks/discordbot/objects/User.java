@@ -1,5 +1,8 @@
 package eu.atomicnetworks.discordbot.objects;
 
+import eu.atomicnetworks.discordbot.enums.WarnReason;
+import java.util.List;
+
 /**
  *
  * @author Kacper Mura
@@ -13,21 +16,131 @@ public class User {
     private String username;
     private int level;
     private int xp;
-    private int warnPoints;
+    private Warn warn;
+    private boolean muted;
     private int cookies;
     private Voting voting;
     
-    public static class Voting {
+    public static class Warn {
         
-        private long voted_at;
-        private long voted_end;
+        private int warnPoints;
+        private String activeWarnReason;
+        private long activeWarnEnd;
+        private String activeWarnCreator;
+        private List<WarnLog> warnLog;
+        
+        public static class WarnLog {
+            
+            private int id;
+            private String reason;
+            private String creator;
+            private long start_at;
+            private long end_at;
+            private WarnReason.WarnTypes warnTypes;
 
-        public long getVoted_at() {
-            return voted_at;
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
+
+            public String getReason() {
+                return reason;
+            }
+
+            public void setReason(String reason) {
+                this.reason = reason;
+            }
+
+            public String getCreator() {
+                return creator;
+            }
+
+            public void setCreator(String creator) {
+                this.creator = creator;
+            }
+
+            public long getStart_at() {
+                return start_at;
+            }
+
+            public void setStart_at(long start_at) {
+                this.start_at = start_at;
+            }
+
+            public long getEnd_at() {
+                return end_at;
+            }
+
+            public void setEnd_at(long end_at) {
+                this.end_at = end_at;
+            }
+
+            public WarnReason.WarnTypes getWarnType() {
+                return warnTypes;
+            }
+
+            public void setWarnType(WarnReason.WarnTypes warnTypes) {
+                this.warnTypes = warnTypes;
+            }
+            
         }
 
-        public void setVoted_at(long voted_at) {
-            this.voted_at = voted_at;
+        public String getActiveWarnCreator() {
+            return activeWarnCreator;
+        }
+
+        public void setActiveWarnCreator(String acitveWarnCreator) {
+            this.activeWarnCreator = acitveWarnCreator;
+        }
+
+        public int getWarnPoints() {
+            return warnPoints;
+        }
+
+        public void setWarnPoints(int warnPoints) {
+            this.warnPoints = warnPoints;
+        }
+
+        public String getActiveWarnReason() {
+            return activeWarnReason;
+        }
+
+        public void setActiveWarnReason(String activeWarnReason) {
+            this.activeWarnReason = activeWarnReason;
+        }
+
+        public long getActiveWarnEnd() {
+            return activeWarnEnd;
+        }
+
+        public void setActiveWarnEnd(long activeWarnEnd) {
+            this.activeWarnEnd = activeWarnEnd;
+        }
+
+        public List<WarnLog> getWarnLog() {
+            return warnLog;
+        }
+
+        public void setWarnLog(List<WarnLog> warnLog) {
+            this.warnLog = warnLog;
+        }
+        
+    }
+    
+    public static class Voting {
+        
+        private long voteCount;
+        private long voted_end;
+
+        public long getVoteCount() {
+            return voteCount;
+        }
+
+        public void setVoteCount(long voteCount) {
+            this.voteCount = voteCount;
         }
 
         public long getVoted_end() {
@@ -46,6 +159,14 @@ public class User {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public boolean isMuted() {
+        return muted;
+    }
+
+    public void setMuted(boolean muted) {
+        this.muted = muted;
     }
 
     public String getUsername() {
@@ -72,12 +193,12 @@ public class User {
         this.xp = xp;
     }
 
-    public int getWarnPoints() {
-        return warnPoints;
+    public Warn getWarn() {
+        return warn;
     }
 
-    public void setWarnPoints(int warnPoints) {
-        this.warnPoints = warnPoints;
+    public void setWarn(Warn warn) {
+        this.warn = warn;
     }
 
     public int getCookies() {

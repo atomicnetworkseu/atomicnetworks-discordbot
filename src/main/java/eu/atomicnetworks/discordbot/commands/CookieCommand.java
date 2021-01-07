@@ -30,6 +30,10 @@ public class CookieCommand {
         String[] args = message.getContentRaw().split(" ");
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
+        
+        if(!event.getChannel().getId().equals(this.discord.getCommandChannelId())) {
+            return;
+        }
 
         if(message.getMentionedMembers().isEmpty()) {
             embed.setDescription("You have to decide who you want to give a cookie to! 🍪");

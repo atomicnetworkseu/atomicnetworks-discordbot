@@ -28,6 +28,10 @@ public class NewsCommand {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
         
+        if(!this.discord.getBackendManager().hasPermissionPower1(event.getMember())) {
+            return;
+        }
+        
         if(args.length < 3) {
             embed.setDescription("You need to specify a title, channel and the message.");
             event.getChannel().sendMessage(embed.build()).queue();
