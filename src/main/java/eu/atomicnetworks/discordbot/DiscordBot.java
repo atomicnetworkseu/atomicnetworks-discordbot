@@ -160,6 +160,9 @@ public class DiscordBot {
                 if(event.getMember().getUser().getId().equals(jda.getSelfUser().getId())) {
                     return;
                 }
+                if(event.getMember().getUser().getId().equals("697517106287345737")) {
+                    return;
+                }
                 Message message = event.getMessage();
                 
                 User user = backendManager.getUser(String.valueOf(event.getMember().getIdLong()));

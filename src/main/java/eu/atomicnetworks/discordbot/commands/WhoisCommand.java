@@ -48,7 +48,7 @@ public class WhoisCommand {
         embed.setAuthor("Warnsystem", null, "https://images.discordapp.net/avatars/697517106287345737/07be164c270546a8c976063bc71939fc.png?size=512");
         embed.addField(new MessageEmbed.Field("User", "<@" + user.getId() + ">", true));
         embed.addField(new MessageEmbed.Field("Level", MessageFormat.format("{0}", user.getLevel()), true));
-        embed.addField(new MessageEmbed.Field("Votes", "null", true));
+        embed.addField(new MessageEmbed.Field("Votes", String.valueOf(user.getVoting().getVoteCount()), true));
         embed.addField(new MessageEmbed.Field("Cookies", String.valueOf(user.getCookies()), true));
         embed.addField(new MessageEmbed.Field("Warnpoints", String.valueOf(user.getWarn().getWarnPoints()), true));
         embed.addBlankField(true);
