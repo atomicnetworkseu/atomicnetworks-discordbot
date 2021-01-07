@@ -281,11 +281,6 @@ public class DiscordBot {
                     supportChannel.addReactionById(messageId, ":playatomic:734613241581404271").queue();
                     supportChannel.addReactionById(messageId, ":gamingatomic:734611793187700736").queue();
                 });
-                
-                for(Member member : jda.getGuildById(guildId).getMembers()) {
-                    backendManager.getUser(member.getUser().getId());
-                    backendManager.setUsername(member.getUser().getId(), member.getUser().getName());
-                }
             });
             sendTimer.setInitialDelay(10000);
             sendTimer.setRepeats(false);
