@@ -45,7 +45,7 @@ public class WhoisCommand {
 
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
-        embed.setAuthor("Warnsystem", null, "https://images.discordapp.net/avatars/697517106287345737/07be164c270546a8c976063bc71939fc.png?size=512");
+        embed.setAuthor("Warnsystem", null, "https://cdn.atomicnetworks.eu/discord/icon.png");
         embed.addField(new MessageEmbed.Field("User", "<@" + user.getId() + ">", true));
         embed.addField(new MessageEmbed.Field("Level", MessageFormat.format("{0}", user.getLevel()), true));
         embed.addField(new MessageEmbed.Field("Votes", String.valueOf(user.getVoting().getVoteCount()), true));

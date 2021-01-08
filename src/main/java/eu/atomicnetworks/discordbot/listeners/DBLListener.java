@@ -44,8 +44,8 @@ public class DBLListener {
                 if(user.getVoting().getVoted_end() > System.currentTimeMillis()) {
                     EmbedBuilder embed = new EmbedBuilder();
                     embed.setColor(new Color(149, 79, 180));
-                    embed.setAuthor("Voting", null, "https://discordbotlist.com/icon.png");
-                    embed.setDescription("Thank you very much for your vote, <@" + user.getId() + ">!\nAs a gift, you get the " + role.getAsMention() + " rank for another 24 hours.");
+                    embed.setAuthor("Voting", null, "https://cdn.atomicnetworks.eu/discord/voting/dbl.png");
+                    embed.setDescription("Thank you very much for your vote, <@" + user.getId() + ">!\nAs a gift, you get the `😵 Voted` rank for another 24 hours.");
                     textChannel.sendMessage(embed.build()).queue();
                     user.getVoting().setVoteCount(user.getVoting().getVoteCount()+1);
                     user.getVoting().setVoted_end(System.currentTimeMillis()+86400000);
@@ -55,8 +55,8 @@ public class DBLListener {
                 
                 EmbedBuilder embed = new EmbedBuilder();
                 embed.setColor(new Color(149, 79, 180));
-                embed.setAuthor("Voting", null, "https://discordbotlist.com/icon.png");
-                embed.setDescription("Thank you very much for your vote, <@" + user.getId() + ">!\nAs a gift, you get the " + role.getAsMention() + " rank for 24 hours.");
+                embed.setAuthor("Voting", null, "https://cdn.atomicnetworks.eu/discord/voting/dbl.png");
+                embed.setDescription("Thank you very much for your vote, <@" + user.getId() + ">!\nAs a gift, you get the `😵 Voted` rank for 24 hours.");
                 textChannel.sendMessage(embed.build()).queue();
                 
                 user.getVoting().setVoteCount(user.getVoting().getVoteCount()+1);

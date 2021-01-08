@@ -37,7 +37,7 @@ public class WarnCommand {
         
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
-        embed.setAuthor("Warnsystem", null, "https://images.discordapp.net/avatars/697517106287345737/07be164c270546a8c976063bc71939fc.png?size=512");
+        embed.setAuthor("Warnsystem", null, "https://cdn.atomicnetworks.eu/discord/icon.png");
         
         if(args.length == 1 || message.getMentionedMembers().isEmpty()) {
             embed.setDescription("Hey 👋, you need to enter one of the following numbers so that your warning can be processed.\n" +
@@ -125,13 +125,13 @@ public class WarnCommand {
         
         EmbedBuilder teamEmbed = new EmbedBuilder();
         teamEmbed.setColor(new Color(149, 79, 180));
-        teamEmbed.setAuthor("Warnsystem", null, "https://images.discordapp.net/avatars/697517106287345737/07be164c270546a8c976063bc71939fc.png?size=512");
+        teamEmbed.setAuthor("Warnsystem", null, "https://cdn.atomicnetworks.eu/discord/icon.png");
         teamEmbed.setDescription("**Successful**, you have warned " + target.getAsMention() + " for **" + warnReason.getReason() + "**.");
         
         EmbedBuilder userEmbed = new EmbedBuilder();
         userEmbed.setColor(new Color(149, 79, 180));
-        userEmbed.setAuthor("Warnsystem", null, "https://images.discordapp.net/avatars/697517106287345737/07be164c270546a8c976063bc71939fc.png?size=512");
-        userEmbed.setDescription("You have been **" + warnReason.getWarnTypes().toString().toLowerCase() + "** on our server for **" + warnReason.getReason() + "**.");
+        userEmbed.setAuthor("Warnsystem", null, "https://cdn.atomicnetworks.eu/discord/icon.png");
+        userEmbed.setDescription("You have been **warned** on our server because of **" + warnReason.getReason() + "**.");
         
         member.getUser().openPrivateChannel().queue((channel) -> {
             channel.sendMessage(teamEmbed.build()).queue();
@@ -172,13 +172,13 @@ public class WarnCommand {
         
         EmbedBuilder teamEmbed = new EmbedBuilder();
         teamEmbed.setColor(new Color(149, 79, 180));
-        teamEmbed.setAuthor("Warnsystem", null, "https://images.discordapp.net/avatars/697517106287345737/07be164c270546a8c976063bc71939fc.png?size=512");
+        teamEmbed.setAuthor("Warnsystem", null, "https://cdn.atomicnetworks.eu/discord/icon.png");
         teamEmbed.setDescription("**Successful**, you have muted " + target.getAsMention() + " for **" + warnReason.getReason() + "**.");
         
         EmbedBuilder userEmbed = new EmbedBuilder();
         userEmbed.setColor(new Color(149, 79, 180));
-        userEmbed.setAuthor("Warnsystem", null, "https://images.discordapp.net/avatars/697517106287345737/07be164c270546a8c976063bc71939fc.png?size=512");
-        userEmbed.setDescription("You have been **muted** on our server for **" + warnReason.getReason() + "** for **" + warnReason.getHours() + " hours**.");
+        userEmbed.setAuthor("Warnsystem", null, "https://cdn.atomicnetworks.eu/discord/icon.png");
+        userEmbed.setDescription("You have been **muted** on our server because of **" + warnReason.getReason() + "** for **" + warnReason.getHours() + " hours**.");
         
         member.getUser().openPrivateChannel().queue((channel) -> {
             channel.sendMessage(teamEmbed.build()).queue();
@@ -218,13 +218,13 @@ public class WarnCommand {
         
         EmbedBuilder teamEmbed = new EmbedBuilder();
         teamEmbed.setColor(new Color(149, 79, 180));
-        teamEmbed.setAuthor("Warnsystem", null, "https://images.discordapp.net/avatars/697517106287345737/07be164c270546a8c976063bc71939fc.png?size=512");
+        teamEmbed.setAuthor("Warnsystem", null, "https://cdn.atomicnetworks.eu/discord/icon.png");
         teamEmbed.setDescription("**Successful**, you have banned " + target.getAsMention() + " for **" + warnReason.getReason() + "**.");
         
         EmbedBuilder userEmbed = new EmbedBuilder();
         userEmbed.setColor(new Color(149, 79, 180));
-        userEmbed.setAuthor("Warnsystem", null, "https://images.discordapp.net/avatars/697517106287345737/07be164c270546a8c976063bc71939fc.png?size=512");
-        userEmbed.setDescription("You have been **banned** on our server for **" + warnReason.getReason() + "**.");
+        userEmbed.setAuthor("Warnsystem", null, "https://cdn.atomicnetworks.eu/discord/icon.png");
+        userEmbed.setDescription("You have been **banned** on our server because of **" + warnReason.getReason() + "**.\nIf you think that this was an accident or if you want to change your behavior in the future you can contact us by mail at `support@atomicnetworks.eu`.");
         
         member.getUser().openPrivateChannel().queue((channel) -> {
             channel.sendMessage(teamEmbed.build()).queue();

@@ -33,7 +33,7 @@ public class RankingCommand {
 
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
-        embed.setAuthor("TOP10 - RANKING", null, "https://images.discordapp.net/avatars/697517106287345737/07be164c270546a8c976063bc71939fc.png?size=512");
+        embed.setAuthor("TOP10 - RANKING", null, "https://cdn.atomicnetworks.eu/discord/icon.png");
 
         this.discord.getUserManager().getTopUser(10, (List<User> t) -> {
             String description = "";

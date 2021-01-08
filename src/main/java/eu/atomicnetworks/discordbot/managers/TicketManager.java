@@ -103,8 +103,8 @@ public class TicketManager {
                 ticket.setChannelId(channel.getId());
                 EmbedBuilder embed = new EmbedBuilder();
                 embed.setColor(new Color(149, 79, 180));
-                embed.setAuthor("Supportsystem", null, "https://images.discordapp.net/avatars/697517106287345737/07be164c270546a8c976063bc71939fc.png?size=512");
-                embed.setDescription("Welcome to the support " + event.getMember().getUser().getAsMention() + ",\nplease describe your problem while waiting for an answer from our team members. The next free supporter will help you then. 👾");
+                embed.setAuthor("Supportsystem", null, "https://cdn.atomicnetworks.eu/discord/icon.png");
+                embed.setDescription("Welcome in our support " + event.getMember().getUser().getAsMention() + ",\nplease describe your problem while waiting for an answer from our team members. The next free supporter will help you then. 👾");
                 MessageEmbed messageEmbed = embed.build();
                 channel.sendMessage(messageEmbed).queue((message) -> {
                     channel.pinMessageById(message.getId()).queue();
@@ -126,7 +126,7 @@ public class TicketManager {
             if(!contributorIDs.contains(message.getUserId())) {
                 contributorIDs.add(message.getUserId());
             }
-            messages += MessageFormat.format("   {0} » {2}\n", message.getUserName(), message.getUserId(), message.getMessage());
+            messages += MessageFormat.format("{0} » {2}\n", message.getUserName(), message.getUserId(), message.getMessage());
         }
         for(String id : contributorIDs) {
             contributors += "<@" + id + ">\n";

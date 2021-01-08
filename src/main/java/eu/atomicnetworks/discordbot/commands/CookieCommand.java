@@ -32,19 +32,19 @@ public class CookieCommand {
         embed.setColor(new Color(149, 79, 180));
 
         if(message.getMentionedMembers().isEmpty()) {
-            embed.setDescription("You have to decide who you want to give a cookie to! 🍪");
+            embed.setDescription("You also have to tell me who gets the cookie! 😋");
             event.getChannel().sendMessage(embed.build()).queue();
             return;
         }
         
         Member target = message.getMentionedMembers().stream().findFirst().orElse(null);
         if(target.getId().equals(event.getMember().getUser().getId())) {
-            embed.setDescription("You can't give yourself a cookie. 🍪");
+            embed.setDescription("You can't give yourself a cookie, unfortunately. 🍪");
             event.getChannel().sendMessage(embed.build()).queue();
             return;
         }
         if(target.getId().equals(this.discord.getJda().getSelfUser().getId())) {
-            embed.setDescription("You have to decide who you want to give a cookie to! 🍪");
+            embed.setDescription("I don't need a cookie, thanks anyway! 🍪");
             event.getChannel().sendMessage(embed.build()).queue();
             return;
         }
@@ -62,8 +62,8 @@ public class CookieCommand {
         );
         this.discord.getBackendManager().addCookies(target.getId(), 1);
         
-        embed.setAuthor("Cookies", null, "https://images.discordapp.net/avatars/697517106287345737/07be164c270546a8c976063bc71939fc.png?size=512");
-        embed.setDescription(MessageFormat.format("Congratulations {0}, you've been given a cookie! <:blobnomnom:771739615538184193>", target.getAsMention()));
+        embed.setAuthor("Cookies", null, "https://cdn.atomicnetworks.eu/discord/icon.png");
+        embed.setDescription(MessageFormat.format("Congratulations {0}, you have been given a cookie! <:blobnomnom:771739615538184193>", target.getAsMention()));
         embed.setImage(gifUrls.get(this.random.nextInt(10)));
         
         event.getChannel().sendMessage(embed.build()).queue();

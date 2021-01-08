@@ -143,7 +143,7 @@ public class DiscordBot {
                 TextChannel welcomeChannel = (TextChannel) jda.getGuildById(guildId).getChannels().stream().filter(t -> t.getId().equals(welcomeChannelId)).findFirst().orElse(null);
                 EmbedBuilder embed = new EmbedBuilder();
                 embed.setColor(new Color(149, 79, 180));
-                embed.setDescription("Welcome " + event.getMember().getAsMention() + ", we are pleased to welcome you on our server!");
+                embed.setDescription("Welcome " + event.getMember().getAsMention() + ", we are happy to welcome you on our server and wish you a lot of fun with our community! 💝");
                 welcomeChannel.sendMessage(embed.build()).queue();
             }
 
@@ -257,10 +257,10 @@ public class DiscordBot {
                 if(!(new MessageHistory(rolesChannel).retrievePast(1).complete()).isEmpty()) {
                     (new MessageHistory(rolesChannel).retrievePast(1).complete()).get(0).delete().queue();
                 }
-                rolesChannel.sendMessage("**Welcome to our Discord,**\nplease read #rules and choose one of the following groups:\n\n<:playatomic:734613241581404271> **Radio**\n"
+                rolesChannel.sendMessage("**Welcome on our Discord,**\nplease read <#734477712139223135> and choose one of the following groups:\n\n<:playatomic:734613241581404271> **Radio**\n"
                         + "This group gives you access to the radio channels and allows you to keep up to date about the latest features, contribute to the development and exchange with the community about our radio.\n\n"
-                        + "<:gamingatomic:734611793187700736> **Gaming**\n\n"
-                        + "With this group you get access to the channels of our gamingprojects and can decide together with the community how we develop our offer and find new persons to play with.\n\n"
+                        + "<:gamingatomic:734611793187700736> **Gaming**\n"
+                        + "With this group you get access to the channels of our gamingprojects and can decide together with the community how we develop the project further and find new persons to play with.\n\n"
                         + "» We wish you a nice stay on our Discord.").queue((message) -> {
                             long messageId = message.getIdLong();
                             rolesChannel.addReactionById(messageId, ":playatomic:734613241581404271").queue();
@@ -273,7 +273,7 @@ public class DiscordBot {
                 }
                 EmbedBuilder embed = new EmbedBuilder();
                 embed.setColor(new Color(149, 79, 180));
-                embed.setAuthor("Supportsystem", null, "https://images.discordapp.net/avatars/697517106287345737/07be164c270546a8c976063bc71939fc.png?size=512");
+                embed.setAuthor("Supportsystem", null, "https://cdn.atomicnetworks.eu/discord/icon.png");
                 embed.setDescription("Respond to one of the emojis listed below and create a support ticket with team members from that department.\n\n"
                         + "<:atomic:736627104992591883> atomicnetworks.eu\n"
                         + "<:playatomic:734613241581404271> atomicradio.eu\n"
@@ -323,13 +323,13 @@ public class DiscordBot {
     }
     
     private void loadBanner() {
-        System.out.println("\n       _                  _                    _ _       \n"
-                + "      | |                (_)                  | (_)      \n"
-                + "  __ _| |_ ___  _ __ ___  _  ___ _ __ __ _  __| |_  ___  \n"
-                + " / _` | __/ _ \\| '_ ` _ \\| |/ __| '__/ _` |/ _` | |/ _ \\ \n"
-                + "| (_| | || (_) | | | | | | | (__| | | (_| | (_| | | (_) |\n"
-                + " \\__,_|\\__\\___/|_| |_| |_|_|\\___|_|  \\__,_|\\__,_|_|\\___/ \n\n"
-                + " atomicradio.eu discord\n 2020 Copyright (c) by atomicnetworks.eu to present.\n Author: Kacper Mura\n");
+        System.out.println("\n        _                  _                 _                      _        \n"
+                + "       | |                (_)               | |                    | |       \n"
+                + "   __ _| |_ ___  _ __ ___  _  ___ _ __   ___| |___      _____  _ __| | _____ \n"
+                + "  / _` | __/ _ \| '_ ` _ \| |/ __| '_ \ / _ \ __\ \ /\ / / _ \| '__| |/ / __|\n"
+                + " | (_| | || (_) | | | | | | | (__| | | |  __/ |_ \ V  V / (_) | |  |   <\__ \\n"
+                + "  \__,_|\__\___/|_| |_| |_|_|\___|_| |_|\___|\__| \_/\_/ \___/|_|  |_|\_\___/\n\n"
+                + " atomicnetworks.eu discord\n 2020 Copyright (c) by atomicnetworks.eu to present.\n Author: Kacper Mura\n");
     }
 
     public Gson getGson() {
