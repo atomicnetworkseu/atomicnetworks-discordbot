@@ -63,7 +63,7 @@ public class CookieCommand {
         this.discord.getBackendManager().addCookies(target.getId(), 1);
         
         embed.setAuthor("Cookies", null, "https://cdn.atomicnetworks.eu/discord/icon.png");
-        embed.setDescription(MessageFormat.format("Congratulations {0}, you have been given a cookie! <:blobnomnom:771739615538184193>", target.getAsMention()));
+        embed.setDescription(MessageFormat.format("Congratulations {0},\nyou have been given a cookie! <:blobnomnom:771739615538184193>", target.getAsMention()));
         embed.setImage(gifUrls.get(this.random.nextInt(10)));
         
         event.getChannel().sendMessage(embed.build()).queue();

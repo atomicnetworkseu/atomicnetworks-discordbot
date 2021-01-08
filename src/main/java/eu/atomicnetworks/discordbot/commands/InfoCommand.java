@@ -32,7 +32,7 @@ public class InfoCommand {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
         embed.setAuthor("Helpdesk » Information", null, "https://cdn.atomicnetworks.eu/discord/icon.png");
-        embed.setDescription("First of all, thank you for being part of this great community on our Discord ✨. Here you can find some contact options and more information about our projects.\n\n** **");
+        embed.setDescription("First of all, thank you for being part of this great community on our Discord ✨.\nHere you can find some contact options and more information about our projects.\n\n** **");
         embed.addField("Support", "**Mail**\nsupport@atomicnetworks.eu\n**TeamSpeak**\natomicnetworks.eu", true);
 		embed.addField("Instagram", "[Klick](https://go.atomicnetworks.eu/instagram)", true);
         embed.addField("YouTube", "[Klick](https://go.atomicnetworks.eu/youtube)", true);
