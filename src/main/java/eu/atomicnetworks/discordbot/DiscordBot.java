@@ -313,7 +313,7 @@ public class DiscordBot {
                     });
                 });
             });
-            warnEndTimer.setInitialDelay(0);
+            warnEndTimer.setInitialDelay(10000);
             warnEndTimer.setRepeats(true);
             warnEndTimer.start();
             
