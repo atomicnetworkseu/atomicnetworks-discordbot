@@ -291,16 +291,16 @@ public class DiscordBot {
             
             Timer warnEndTimer = new Timer(10000, (ActionEvent e) -> {
                 this.userManager.getActiveMutedUsers((List<User> t) -> {
-                    for(User user : t) {
+                    t.stream().forEach((user) -> {
                         if(System.currentTimeMillis() >= user.getWarn().getActiveWarnEnd()) {
                             this.backendManager.setMuted(user.getId(), false);
                             Role role = this.jda.getGuildById(this.getGuildId()).getRolesByName("☠ Muted", true).stream().findFirst().orElse(null);
                             this.jda.getGuildById(this.getGuildId()).removeRoleFromMember(user.getId(), role).queue();
                         }
-                    }
+                    });
                 });
                 this.userManager.getAllUsers((List<User> t) -> {
-                    for(User user : t) {
+                    t.stream().forEach((user) -> {
                         if(user.getVoting().getVoted_end() == 0) {
                             return;
                         }
@@ -310,7 +310,7 @@ public class DiscordBot {
                             Role role = this.jda.getGuildById(this.getGuildId()).getRolesByName("😵 Voted", true).stream().findFirst().orElse(null);
                             this.jda.getGuildById(this.getGuildId()).removeRoleFromMember(user.getId(), role).queue();
                         }
-                    }
+                    });
                 });
             });
             warnEndTimer.setInitialDelay(0);
