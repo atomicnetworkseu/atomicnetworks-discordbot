@@ -10,6 +10,7 @@ import eu.atomicnetworks.discordbot.commands.MagicMusselCommand;
 import eu.atomicnetworks.discordbot.commands.NewsCommand;
 import eu.atomicnetworks.discordbot.commands.RankingCommand;
 import eu.atomicnetworks.discordbot.commands.TicketCommand;
+import eu.atomicnetworks.discordbot.commands.VoteCommand;
 import eu.atomicnetworks.discordbot.commands.WarnCommand;
 import eu.atomicnetworks.discordbot.commands.WhoisCommand;
 import eu.atomicnetworks.discordbot.enums.TicketType;
@@ -80,6 +81,7 @@ public class DiscordBot {
     private WhoisCommand whoisCommand;
     private TicketCommand ticketCommand;
     private WarnCommand warnCommand;
+    private VoteCommand voteCommand;
     
     private String guildId;
     private String achievementChannelId;
@@ -119,6 +121,7 @@ public class DiscordBot {
         this.whoisCommand = new WhoisCommand(this);
         this.ticketCommand = new TicketCommand(this);
         this.warnCommand = new WarnCommand(this);
+        this.voteCommand = new VoteCommand(this);
         
         this.guildId = "734477710319026217";
         this.roleChannelId = "734477712139223133";
@@ -216,6 +219,8 @@ public class DiscordBot {
                 } else if (message.getContentRaw().toLowerCase().startsWith("!warn")) {
                     event.getMessage().delete().queue();
                     warnCommand.execute(event);
+                } else if (message.getContentRaw().toLowerCase().startsWith("!vote")) {
+                    voteCommand.execute(event);
                 }
             }
 
