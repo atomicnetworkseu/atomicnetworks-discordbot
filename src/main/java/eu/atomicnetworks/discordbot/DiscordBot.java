@@ -299,7 +299,7 @@ public class DiscordBot {
                     t.stream().forEach((user) -> {
                         if(System.currentTimeMillis() >= user.getWarn().getActiveWarnEnd()) {
                             this.backendManager.setMuted(user.getId(), false);
-                            Role role = this.jda.getGuildById(this.getGuildId()).getRolesByName("☠ Muted", true).stream().findFirst().orElse(null);
+                            Role role = this.jda.getGuildById(this.guildId).getRoleById("769862174024925204");
                             this.jda.getGuildById(this.getGuildId()).removeRoleFromMember(user.getId(), role).queue();
                         }
                     });

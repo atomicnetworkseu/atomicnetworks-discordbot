@@ -187,7 +187,7 @@ public class WarnCommand {
             channel.sendMessage(userEmbed.build()).queue();
         });
         
-        Role role = this.discord.getJda().getGuildById(this.discord.getGuildId()).getRolesByName("☠ Muted", true).stream().findFirst().orElse(null);
+        Role role = this.discord.getJda().getGuildById(this.discord.getGuildId()).getRoleById("769862174024925204");
         this.discord.getJda().getGuildById(this.discord.getGuildId()).addRoleToMember(target, role).queue();
         
         WebhookEmbedBuilder webhookEmbedBuilder = new WebhookEmbedBuilder();
