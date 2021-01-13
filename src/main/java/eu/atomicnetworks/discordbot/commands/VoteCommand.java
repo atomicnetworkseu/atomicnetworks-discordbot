@@ -29,7 +29,7 @@ public class VoteCommand {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
         embed.setAuthor("Voting", null, "https://cdn.atomicnetworks.eu/discord/icon.png");
-        embed.setDescription("We are happy about every new vote for <@796849019308474419> because this way more people get involved in our projects and become part of our community.\n" +
+        embed.setDescription("We are happy about every new vote for <@697517106287345737> because this way more people get involved in our projects and become part of our community.\n" +
             "So if you want to support us you can do so at [top.gg](https://top.gg/bot/697517106287345737/vote) and at [discordbotlist.com](https://discordbotlist.com/bots/atomicradio/upvote).");
         event.getChannel().sendMessage(embed.build()).queue();
     }
