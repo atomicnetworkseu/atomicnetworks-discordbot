@@ -6,11 +6,11 @@ import com.google.common.cache.LoadingCache;
 import eu.atomicnetworks.discordbot.DiscordBot;
 import eu.atomicnetworks.discordbot.objects.Ticket;
 import eu.atomicnetworks.discordbot.objects.User;
+import eu.atomicnetworks.discordbot.objects.Verify;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Role;
@@ -27,6 +27,7 @@ public class BackendManager {
     private DiscordBot discordBot;
     private LoadingCache<String, User> userCache;
     private LoadingCache<String, Ticket> ticketCache;
+    private LoadingCache<String, Verify> verifyCache;
 
     public BackendManager(DiscordBot discordBot) {
         this.discordBot = discordBot;
@@ -39,6 +40,16 @@ public class BackendManager {
             public User load(String id) throws Exception {
                 CompletableFuture<User> completableFuture = new CompletableFuture<>();
                 discordBot.getUserManager().getUser(id, result -> {
+                    completableFuture.complete(result);
+                });
+                return completableFuture.get();
+            }
+        });
+        this.verifyCache = CacheBuilder.newBuilder().maximumSize(100L).expireAfterWrite(10L, TimeUnit.MINUTES).build((CacheLoader) new CacheLoader<String, Verify>() {
+            @Override
+            public Verify load(String id) throws Exception {
+                CompletableFuture<Verify> completableFuture = new CompletableFuture<>();
+                discordBot.getVerifyManager().getVerify(id, result -> {
                     completableFuture.complete(result);
                 });
                 return completableFuture.get();
@@ -170,6 +181,18 @@ public class BackendManager {
         ticketMessage.setMessage(message.getContentRaw());
         this.getTicket(id).getMessages().add(ticketMessage);
         this.discordBot.getTicketManager().saveTicket(this.getTicket(id));
+    }
+
+    public LoadingCache<String, Verify> getVerifyCache() {
+        return verifyCache;
+    }
+    
+    public Verify getVerify(String id) {
+        try {
+            return this.verifyCache.get(id);
+        } catch (ExecutionException ex) {
+            return null;
+        }
     }
     
     public boolean hasRole(Member member, String name) {

@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import eu.atomicnetworks.discordbot.DiscordBot;
 import eu.atomicnetworks.discordbot.objects.User;
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -15,8 +14,9 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 /**
  *
- * @author Kacper Mura 2021 Copyright (c) by atomicnetworks.eu to present. All
- * rights reserved. https://github.com/VocalZero
+ * @author Kacper Mura
+ * 2021 Copyright (c) by atomicnetworks.eu to present.
+ * All rights reserved. https://github.com/VocalZero
  *
  */
 public class RankingCommand {

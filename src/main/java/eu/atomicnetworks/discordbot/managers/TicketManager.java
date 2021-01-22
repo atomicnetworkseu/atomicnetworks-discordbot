@@ -1,9 +1,5 @@
 package eu.atomicnetworks.discordbot.managers;
 
-import club.minnced.discord.webhook.WebhookClient;
-import club.minnced.discord.webhook.send.WebhookEmbed;
-import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
-import com.mongodb.async.SingleResultCallback;
 import com.mongodb.client.model.Filters;
 import eu.atomicnetworks.discordbot.DiscordBot;
 import eu.atomicnetworks.discordbot.enums.TicketType;
@@ -14,7 +10,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,7 +24,10 @@ import org.bson.Document;
 
 /**
  *
- * @author kacpe
+ * @author Kacper Mura
+ * 2021 Copyright (c) by atomicnetworks.eu to present.
+ * All rights reserved. https://github.com/VocalZero
+ *
  */
 public class TicketManager {
 

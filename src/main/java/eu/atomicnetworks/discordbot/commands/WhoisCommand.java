@@ -1,12 +1,10 @@
 package eu.atomicnetworks.discordbot.commands;
 
 import eu.atomicnetworks.discordbot.DiscordBot;
-import eu.atomicnetworks.discordbot.enums.WarnReason;
 import eu.atomicnetworks.discordbot.objects.User;
 import java.awt.Color;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -17,7 +15,10 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 /**
  *
- * @author kacpe
+ * @author Kacper Mura
+ * 2021 Copyright (c) by atomicnetworks.eu to present.
+ * All rights reserved. https://github.com/VocalZero
+ *
  */
 public class WhoisCommand {
 

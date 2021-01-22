@@ -15,7 +15,10 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 /**
  *
- * @author kacpe
+ * @author Kacper Mura
+ * 2021 Copyright (c) by atomicnetworks.eu to present.
+ * All rights reserved. https://github.com/VocalZero
+ *
  */
 public class WarnCommand {
     

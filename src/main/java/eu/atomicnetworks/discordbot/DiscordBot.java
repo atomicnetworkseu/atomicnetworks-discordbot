@@ -10,6 +10,7 @@ import eu.atomicnetworks.discordbot.commands.MagicMusselCommand;
 import eu.atomicnetworks.discordbot.commands.NewsCommand;
 import eu.atomicnetworks.discordbot.commands.RankingCommand;
 import eu.atomicnetworks.discordbot.commands.TicketCommand;
+import eu.atomicnetworks.discordbot.commands.VerifyCommand;
 import eu.atomicnetworks.discordbot.commands.VoteCommand;
 import eu.atomicnetworks.discordbot.commands.WarnCommand;
 import eu.atomicnetworks.discordbot.commands.WhoisCommand;
@@ -18,8 +19,10 @@ import eu.atomicnetworks.discordbot.managers.BackendManager;
 import eu.atomicnetworks.discordbot.managers.HookManager;
 import eu.atomicnetworks.discordbot.managers.LoggerManager;
 import eu.atomicnetworks.discordbot.managers.MongoManager;
+import eu.atomicnetworks.discordbot.managers.QueryManager;
 import eu.atomicnetworks.discordbot.managers.TicketManager;
 import eu.atomicnetworks.discordbot.managers.UserManager;
+import eu.atomicnetworks.discordbot.managers.VerifyManager;
 import eu.atomicnetworks.discordbot.objects.Ticket;
 import eu.atomicnetworks.discordbot.objects.User;
 import java.awt.Color;
@@ -63,9 +66,11 @@ public class DiscordBot {
     private LoggerManager loggerManager;
     private MongoManager mongoManager;
     private UserManager userManager;
+    private VerifyManager verifyManager;
     private TicketManager ticketManager;
     private BackendManager backendManager;
     private HookManager hookManager;
+    private QueryManager queryManager;
     
     private HelpCommand helpCommand;
     private InfoCommand infoCommand;
@@ -79,6 +84,7 @@ public class DiscordBot {
     private TicketCommand ticketCommand;
     private WarnCommand warnCommand;
     private VoteCommand voteCommand;
+    private VerifyCommand verifyCommand;
     
     private String guildId;
     private String achievementChannelId;
@@ -101,9 +107,11 @@ public class DiscordBot {
         this.loggerManager = new LoggerManager();
         this.mongoManager = new MongoManager(this);
         this.userManager = new UserManager(this);
+        this.verifyManager = new VerifyManager(this);
         this.ticketManager = new TicketManager(this);
         this.backendManager = new BackendManager(this);
         this.hookManager = new HookManager(this);
+        this.queryManager = new QueryManager(this);
         
         this.helpCommand = new HelpCommand(this);
         this.infoCommand = new InfoCommand(this);
@@ -117,17 +125,18 @@ public class DiscordBot {
         this.ticketCommand = new TicketCommand(this);
         this.warnCommand = new WarnCommand(this);
         this.voteCommand = new VoteCommand(this);
+        this.verifyCommand = new VerifyCommand(this);
         
         this.guildId = "734477710319026217";
         this.roleChannelId = "734477712139223133";
         this.achievementChannelId = "734477712844128373";
         this.welcomeChannelId = "734477712139223132";
-        this.commandChannelId = "727573664928891041";
+        this.commandChannelId = "734477712844128374";
         this.teamlogChannelId = "734477713028415566";
         this.ticketChannelId = "734477712592338981";
         this.ticketLogChannelId = "734477713028415565";
         
-        JDABuilder builder = JDABuilder.createDefault("Nzc3OTU0NTg0MDEzOTYzMjY1.X7K8qg.f7kbG0-yhaYy6WBfJiPrEf1DaO4");
+        JDABuilder builder = JDABuilder.createDefault("Nzk2ODQ5MDE5MzA4NDc0NDE5.X_d5eg.jf4MILv8PkXTZUYOxrfRMJ2Pb4E");
         builder.enableIntents(GatewayIntent.GUILD_MEMBERS);
         builder.setActivity(Activity.watching("atnw.eu/discord"));
         builder.addEventListeners(new ListenerAdapter() {
@@ -216,6 +225,8 @@ public class DiscordBot {
                     warnCommand.execute(event);
                 } else if (message.getContentRaw().toLowerCase().startsWith("!vote")) {
                     voteCommand.execute(event);
+                } else if (message.getContentRaw().toLowerCase().startsWith("!teamspeak")) {
+                    verifyCommand.execute(event);
                 }
             }
 
@@ -359,12 +370,20 @@ public class DiscordBot {
         return userManager;
     }
 
+    public VerifyManager getVerifyManager() {
+        return verifyManager;
+    }
+    
     public TicketManager getTicketManager() {
         return ticketManager;
     }
 
     public BackendManager getBackendManager() {
         return backendManager;
+    }
+
+    public QueryManager getQueryManager() {
+        return queryManager;
     }
     
     public void consoleInfo(String text) {
