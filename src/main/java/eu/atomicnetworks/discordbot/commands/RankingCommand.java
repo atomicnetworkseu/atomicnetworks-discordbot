@@ -39,7 +39,7 @@ public class RankingCommand {
         embed.setColor(new Color(149, 79, 180));
         embed.setAuthor("RANKING", null, "https://cdn.atomicnetworks.eu/discord/icon.png");
 
-        this.discord.getUserManager().getTopUser(10, (List<User> t) -> {
+        this.discord.getUserManager().getTopUser((List<User> t) -> {
             List<List<User>> lists = Lists.partition(t, 10);
             embed.setFooter("Page 1/" + lists.size() + " • " + t.size() + " Members");
             String description = "";
@@ -68,7 +68,7 @@ public class RankingCommand {
             MessageEmbed messageEmbed = message.getEmbeds().stream().findFirst().orElse(null);
             int page = Integer.valueOf((messageEmbed.getFooter().getText().split(" ")[1]).split("/")[0]);
 
-            this.discord.getUserManager().getTopUser(10, (List<User> t) -> {
+            this.discord.getUserManager().getTopUser((List<User> t) -> {
                 List<List<User>> lists = Lists.partition(t, 10);
                 if (lists.size() == 1) {
                     return;
@@ -117,7 +117,7 @@ public class RankingCommand {
             MessageEmbed messageEmbed = message.getEmbeds().stream().findFirst().orElse(null);
             int page = Integer.valueOf((messageEmbed.getFooter().getText().split(" ")[1]).split("/")[0]);
 
-            this.discord.getUserManager().getTopUser(10, (List<User> t) -> {
+            this.discord.getUserManager().getTopUser((List<User> t) -> {
                 List<List<User>> lists = Lists.partition(t, 10);
                 if ((page - 1) > lists.size()) {
                     return;

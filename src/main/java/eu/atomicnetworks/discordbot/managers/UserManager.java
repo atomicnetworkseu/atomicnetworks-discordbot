@@ -60,9 +60,9 @@ public class UserManager {
         });
     }
     
-    public void getTopUser(int limit, Consumer<List<User>> consumer) {
+    public void getTopUser(Consumer<List<User>> consumer) {
         List<User> list = new ArrayList<>();
-        discordBot.getMongoManager().getUsers().find().limit(limit).sort(Filters.eq("xp", -1)).forEach(document -> {
+        discordBot.getMongoManager().getUsers().find().sort(Filters.eq("xp", -1)).forEach(document -> {
             User user = discordBot.getGson().fromJson(document.toJson(), User.class);
             list.add(user);
         }, (Void t, Throwable thrwbl) -> {
