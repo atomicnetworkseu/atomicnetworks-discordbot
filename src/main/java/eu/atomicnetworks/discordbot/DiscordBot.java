@@ -258,9 +258,9 @@ public class DiscordBot {
                      }
                 }
                 if(event.getChannel().getId().equals(commandChannelId)) {
-                    if(event.getReactionEmote().getId().equals(":rightarrow:802089372076867594")) {
+                    if(event.getReactionEmote().getId().equals("802089372076867594")) {
                         rankingCommand.switchPageForward(event.getChannel(), event.getMessageIdLong());
-                    } else if(event.getReactionEmote().getId().equals(":leftarrow:802089371964407838")) {
+                    } else if(event.getReactionEmote().getId().equals("802089371964407838")) {
                         rankingCommand.switchPageBack(event.getChannel(), event.getMessageIdLong());
                     }
                 }
