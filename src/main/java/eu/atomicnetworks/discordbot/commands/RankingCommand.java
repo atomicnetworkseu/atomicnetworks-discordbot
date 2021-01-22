@@ -37,7 +37,7 @@ public class RankingCommand {
 
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
-        embed.setAuthor("RANKING", null, "https://cdn.atomicnetworks.eu/discord/icon.png");
+        embed.setAuthor("Ranking", null, "https://cdn.atomicnetworks.eu/discord/icon.png");
 
         this.discord.getUserManager().getTopUser((List<User> t) -> {
             List<List<User>> lists = Lists.partition(t, 10);
