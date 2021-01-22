@@ -14,9 +14,8 @@ import eu.atomicnetworks.discordbot.commands.VoteCommand;
 import eu.atomicnetworks.discordbot.commands.WarnCommand;
 import eu.atomicnetworks.discordbot.commands.WhoisCommand;
 import eu.atomicnetworks.discordbot.enums.TicketType;
-import eu.atomicnetworks.discordbot.listeners.DBLListener;
-import eu.atomicnetworks.discordbot.listeners.TopGGListener;
 import eu.atomicnetworks.discordbot.managers.BackendManager;
+import eu.atomicnetworks.discordbot.managers.HookManager;
 import eu.atomicnetworks.discordbot.managers.LoggerManager;
 import eu.atomicnetworks.discordbot.managers.MongoManager;
 import eu.atomicnetworks.discordbot.managers.TicketManager;
@@ -66,9 +65,7 @@ public class DiscordBot {
     private UserManager userManager;
     private TicketManager ticketManager;
     private BackendManager backendManager;
-    
-    private TopGGListener topGGListener;
-    private DBLListener dblListener;
+    private HookManager hookManager;
     
     private HelpCommand helpCommand;
     private InfoCommand infoCommand;
@@ -106,9 +103,7 @@ public class DiscordBot {
         this.userManager = new UserManager(this);
         this.ticketManager = new TicketManager(this);
         this.backendManager = new BackendManager(this);
-        
-        this.topGGListener = new TopGGListener(this);
-        this.dblListener = new DBLListener(this);
+        this.hookManager = new HookManager(this);
         
         this.helpCommand = new HelpCommand(this);
         this.infoCommand = new InfoCommand(this);
