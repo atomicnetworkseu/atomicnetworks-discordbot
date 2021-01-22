@@ -122,12 +122,12 @@ public class DiscordBot {
         this.roleChannelId = "734477712139223133";
         this.achievementChannelId = "734477712844128373";
         this.welcomeChannelId = "734477712139223132";
-        this.commandChannelId = "734477712844128374";
+        this.commandChannelId = "727573664928891041";
         this.teamlogChannelId = "734477713028415566";
         this.ticketChannelId = "734477712592338981";
         this.ticketLogChannelId = "734477713028415565";
         
-        JDABuilder builder = JDABuilder.createDefault("Nzk2ODQ5MDE5MzA4NDc0NDE5.X_d5eg.jf4MILv8PkXTZUYOxrfRMJ2Pb4E");
+        JDABuilder builder = JDABuilder.createDefault("Nzc3OTU0NTg0MDEzOTYzMjY1.X7K8qg.f7kbG0-yhaYy6WBfJiPrEf1DaO4");
         builder.enableIntents(GatewayIntent.GUILD_MEMBERS);
         builder.setActivity(Activity.watching("atnw.eu/discord"));
         builder.addEventListeners(new ListenerAdapter() {
@@ -245,6 +245,13 @@ public class DiscordBot {
                          event.getChannel().delete().queue();
                          ticketManager.sendTicketInfoEmbed(backendManager.getTicket(event.getChannel().getName()));
                      }
+                }
+                if(event.getChannel().getId().equals(commandChannelId)) {
+                    if(event.getReactionEmote().getId().equals(":rightarrow:802089372076867594")) {
+                        rankingCommand.switchPageForward(event.getChannel(), event.getMessageIdLong());
+                    } else if(event.getReactionEmote().getId().equals(":leftarrow:802089371964407838")) {
+                        rankingCommand.switchPageBack(event.getChannel(), event.getMessageIdLong());
+                    }
                 }
             }
             

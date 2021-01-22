@@ -25,6 +25,7 @@ public class MongoManager {
     private MongoDatabase database;
     private MongoCollection<Document> users;
     private MongoCollection<Document> tickets;
+    private MongoCollection<Document> verifys;
 
     public MongoManager(DiscordBot discordBot) {
         this.discordBot = discordBot;
@@ -35,6 +36,7 @@ public class MongoManager {
             this.database = client.getDatabase("discordbot");
             this.users = this.database.getCollection("users");
             this.tickets = this.database.getCollection("tickets");
+            this.verifys = this.database.getCollection("verifys");
             this.discordBot.consoleInfo("The connection to the MongoDB database has been established.");
         } catch(MongoException ex) {
             discordBot.consoleError("The connection to the MongoDB database could not be established.");
@@ -61,6 +63,10 @@ public class MongoManager {
 
     public MongoCollection<Document> getTickets() {
         return tickets;
+    }
+
+    public MongoCollection<Document> getVerifys() {
+        return verifys;
     }
     
 }
