@@ -313,6 +313,10 @@ public class DiscordBot {
                         if(System.currentTimeMillis() >= user.getWarn().getActiveWarnEnd()) {
                             this.backendManager.setMuted(user.getId(), false);
                             Role role = this.jda.getGuildById(this.guildId).getRoleById("769862174024925204");
+                            Member member = this.jda.getGuildById(this.guildId).getMemberById(user.getId());
+                            if(member == null) {
+                                return;
+                            }
                             this.jda.getGuildById(this.getGuildId()).removeRoleFromMember(user.getId(), role).queue();
                         }
                     });
@@ -326,6 +330,10 @@ public class DiscordBot {
                             user.getVoting().setVoted_end(0);
                             this.userManager.saveUser(user);
                             Role role = this.jda.getGuildById(this.getGuildId()).getRolesByName("😵 Voted", true).stream().findFirst().orElse(null);
+                            Member member = this.jda.getGuildById(this.guildId).getMemberById(user.getId());
+                            if(member == null) {
+                                return;
+                            }
                             this.jda.getGuildById(this.getGuildId()).removeRoleFromMember(user.getId(), role).queue();
                         }
                     });

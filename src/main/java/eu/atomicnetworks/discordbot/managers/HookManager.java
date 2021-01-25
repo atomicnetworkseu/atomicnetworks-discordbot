@@ -15,8 +15,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.exceptions.ContextException;
 import org.json.JSONObject;
 
 /**
@@ -108,7 +111,6 @@ public class HookManager {
     }
     
     private void executeVote(Voting voting) {
-        System.out.println(voting.getVotingProvider().toString() + " | " + voting.getUserId());
         User user = this.discordBot.getBackendManager().getUser(voting.getUserId());
 
         if (user == null) {
@@ -146,7 +148,11 @@ public class HookManager {
         user.getVoting().setVoteCount(user.getVoting().getVoteCount() + 1);
         user.getVoting().setVoted_end(System.currentTimeMillis() + 86400000);
         this.discordBot.getUserManager().saveUser(user);
-
+        
+        Member member = this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).getMemberById(voting.getUserId());
+        if(member == null) {
+            return;
+        }
         this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).addRoleToMember(voting.getUserId(), role).queue();
     }
     
