@@ -81,7 +81,7 @@ public class RankingCommand {
 
                 EmbedBuilder embed = new EmbedBuilder();
                 embed.setColor(new Color(149, 79, 180));
-                embed.setAuthor("RANKING", null, "https://cdn.atomicnetworks.eu/discord/icon.png");
+                embed.setAuthor("Ranking", null, "https://cdn.atomicnetworks.eu/discord/icon.png");
                 embed.setFooter("Page " + (page + 1) + "/" + lists.size() + " • " + t.size() + " Members");
 
                 Iterator<User> iterator = lists.get((page - 1) + 1).iterator();
@@ -130,7 +130,7 @@ public class RankingCommand {
 
                 EmbedBuilder embed = new EmbedBuilder();
                 embed.setColor(new Color(149, 79, 180));
-                embed.setAuthor("RANKING", null, "https://cdn.atomicnetworks.eu/discord/icon.png");
+                embed.setAuthor("Ranking", null, "https://cdn.atomicnetworks.eu/discord/icon.png");
                 embed.setFooter("Page " + (page - 1) + "/" + lists.size() + " • " + t.size() + " Members");
 
                 Iterator<User> iterator = lists.get((page - 1) - 1).iterator();
