@@ -52,7 +52,7 @@ public class CookieCommand {
             return;
         }
         if(target.getId().equals("697517106287345737")) {
-            embed.setDescription("I don't need a cookie, thanks anyway! 🍪");
+            embed.setDescription("We don't need a cookie, thanks anyway! 🍪");
             event.getChannel().sendMessage(embed.build()).queue();
             return;
         }

@@ -30,6 +30,9 @@
 !ranking • A small list of the most active users on our discord server.
 ````
 ```
+!vote • Learn more about voting for our music bot.
+````
+```
 !cookie • Give your friends a little cookie as a thank you!
 ````
 ```
