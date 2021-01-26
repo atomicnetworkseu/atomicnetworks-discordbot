@@ -43,11 +43,14 @@ public class BackendManager {
         this.timer = new Timer(60000, (ActionEvent e) -> {
             VoiceChannel voiceChannel = this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).getVoiceChannelById(this.discordBot.getMusicVoiceChannelId());
             voiceChannel.getMembers().stream().forEach(t -> {
+                if(t.getId().equals("697517106287345737")) {
+                    return;
+                }
                 User user = this.getUser(t.getId());
                 if(user == null) {
                     return;
                 }
-                if(user.getId().equals("697517106287345737")) {
+                if(t.getVoiceState().isDeafened()) {
                     return;
                 }
                 user.setStreamTime(user.getStreamTimeMin()+1);
