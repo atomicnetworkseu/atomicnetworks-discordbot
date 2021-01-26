@@ -133,6 +133,9 @@ public class RankingCommand {
                 embed.setAuthor("Ranking", null, "https://cdn.atomicnetworks.eu/discord/icon.png");
                 embed.setFooter("Page " + (page - 1) + "/" + lists.size() + " • " + t.size() + " Members");
 
+                if(((page - 1) - 1) == -1) {
+                    return;
+                }
                 Iterator<User> iterator = lists.get((page - 1) - 1).iterator();
                 while (iterator.hasNext()) {
                     User user = iterator.next();
