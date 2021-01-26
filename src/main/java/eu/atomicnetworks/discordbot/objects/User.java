@@ -16,6 +16,7 @@ public class User {
     private String username;
     private int level;
     private int xp;
+    private int streamTime;
     private Warn warn;
     private boolean muted;
     private int cookies;
@@ -215,6 +216,14 @@ public class User {
 
     public void setVoting(Voting voting) {
         this.voting = voting;
+    }
+
+    public void setStreamTime(int streamTime) {
+        this.streamTime = streamTime;
+    }
+
+    public int getStreamTimeMin() {
+        return streamTime;
     }
     
 }

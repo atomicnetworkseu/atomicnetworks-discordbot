@@ -51,6 +51,11 @@ public class CookieCommand {
             event.getChannel().sendMessage(embed.build()).queue();
             return;
         }
+        if(target.getId().equals("697517106287345737")) {
+            embed.setDescription("I don't need a cookie, thanks anyway! 🍪");
+            event.getChannel().sendMessage(embed.build()).queue();
+            return;
+        }
         List<String> gifUrls = Arrays.asList(
                 "https://cdn.atomicnetworks.eu/discord/cookies/one.gif",
                 "https://cdn.atomicnetworks.eu/discord/cookies/two.gif",

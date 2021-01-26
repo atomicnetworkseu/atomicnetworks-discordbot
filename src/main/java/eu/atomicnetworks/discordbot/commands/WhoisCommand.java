@@ -43,6 +43,13 @@ public class WhoisCommand {
             userId = (message.getMentionedMembers().stream().findFirst().orElse(null)).getId();
         }
         User user = this.discord.getBackendManager().getUser(userId);
+        
+        if(user.getId().equals(this.discord.getJda().getSelfUser().getId())) {
+            return;
+        }
+        if(user.getId().equals("697517106287345737")) {
+            return;
+        }
 
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));

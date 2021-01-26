@@ -7,13 +7,20 @@ import eu.atomicnetworks.discordbot.DiscordBot;
 import eu.atomicnetworks.discordbot.objects.Ticket;
 import eu.atomicnetworks.discordbot.objects.User;
 import eu.atomicnetworks.discordbot.objects.Verify;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import javax.swing.Timer;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 
 /**
  *
@@ -25,6 +32,7 @@ import net.dv8tion.jda.api.entities.Role;
 public class BackendManager {
     
     private DiscordBot discordBot;
+    private Timer timer;
     private LoadingCache<String, User> userCache;
     private LoadingCache<String, Ticket> ticketCache;
     private LoadingCache<String, Verify> verifyCache;
@@ -32,6 +40,32 @@ public class BackendManager {
     public BackendManager(DiscordBot discordBot) {
         this.discordBot = discordBot;
         initCache();
+        this.timer = new Timer(60000, (ActionEvent e) -> {
+            VoiceChannel voiceChannel = this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).getVoiceChannelById(this.discordBot.getMusicVoiceChannelId());
+            voiceChannel.getMembers().stream().forEach(t -> {
+                User user = this.getUser(t.getId());
+                if(user == null) {
+                    return;
+                }
+                if(user.getId().equals("697517106287345737")) {
+                    return;
+                }
+                user.setStreamTime(user.getStreamTimeMin()+1);
+                this.addXp(t.getId(), 5);
+                if(this.getRemainingXp(user.getId()) <= 5) {
+                    this.addLevel(user.getId(), 1);
+                    EmbedBuilder embed = new EmbedBuilder();
+                    embed.setColor(new Color(149, 79, 180));
+                    embed.setAuthor(t.getUser().getName(), null, t.getUser().getAvatarUrl());
+                    embed.setDescription("**Congratulations**, you have now reached level **" + this.getLevel(user.getId()) + "**! <a:blobgifrolling:771743022282440815>");
+                    TextChannel textChannel = (TextChannel) this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).getChannels().stream().filter(t1 -> t1.getId().equals(this.discordBot.getAchievementChannelId())).findFirst().orElse(null);
+                    textChannel.sendMessage(embed.build()).queue();
+                }
+            });
+        });
+        this.timer.setRepeats(true);
+        this.timer.setInitialDelay(5000);
+        this.timer.start();
     }
     
     private void initCache() {

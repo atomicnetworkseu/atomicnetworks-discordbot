@@ -28,6 +28,7 @@ import eu.atomicnetworks.discordbot.objects.User;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import javax.swing.Timer;
@@ -45,6 +46,7 @@ import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
+import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -94,6 +96,8 @@ public class DiscordBot {
     private String teamlogChannelId;
     private String ticketChannelId;
     private String ticketLogChannelId;
+    
+    private String musicVoiceChannelId;
    
     public static void main(String[] args) {
         new DiscordBot().loadBanner();
@@ -135,6 +139,8 @@ public class DiscordBot {
         this.teamlogChannelId = "734477713028415566";
         this.ticketChannelId = "734477712592338981";
         this.ticketLogChannelId = "734477713028415565";
+        
+        this.musicVoiceChannelId = "734477712844128367";
         
         JDABuilder builder = JDABuilder.createDefault("Nzk2ODQ5MDE5MzA4NDc0NDE5.X_d5eg.jf4MILv8PkXTZUYOxrfRMJ2Pb4E");
         builder.enableIntents(GatewayIntent.GUILD_MEMBERS);
@@ -338,6 +344,17 @@ public class DiscordBot {
                         }
                     });
                 });
+                this.userManager.getAllUsers((t -> {
+                    Iterator<User> users = t.iterator();
+                    while(users.hasNext()) {
+                        User user = users.next();
+                        if(user.getUsername().equals("???")) {
+                            Member member = this.jda.getGuildById(guildId).retrieveMemberById(user.getId()).complete();
+                            System.out.println(member.getId());
+                            this.backendManager.setUsername(user.getId(), member.getUser().getName());
+                        }
+                    }
+                }));
             });
             warnEndTimer.setInitialDelay(10000);
             warnEndTimer.setRepeats(true);
@@ -428,6 +445,10 @@ public class DiscordBot {
 
     public String getAchievementChannelId() {
         return achievementChannelId;
+    }
+
+    public String getMusicVoiceChannelId() {
+        return musicVoiceChannelId;
     }
     
 }
