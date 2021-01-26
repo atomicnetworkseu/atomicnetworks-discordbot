@@ -350,7 +350,9 @@ public class DiscordBot {
                         User user = users.next();
                         if(user.getUsername().equals("???")) {
                             Member member = this.jda.getGuildById(guildId).retrieveMemberById(user.getId()).complete();
-                            System.out.println(member.getId());
+                            if(member == null) {
+                                return;
+                            }
                             this.backendManager.setUsername(user.getId(), member.getUser().getName());
                         }
                     }
