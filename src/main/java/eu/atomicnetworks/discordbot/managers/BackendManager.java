@@ -54,8 +54,8 @@ public class BackendManager {
                     return;
                 }
                 user.setStreamTime(user.getStreamTimeMin()+1);
-                this.addXp(t.getId(), 2);
-                if(this.getRemainingXp(user.getId()) <= 2) {
+                this.addXp(t.getId(), 1);
+                if(this.getRemainingXp(user.getId()) <= 1) {
                     this.addLevel(user.getId(), 1);
                     EmbedBuilder embed = new EmbedBuilder();
                     embed.setColor(new Color(149, 79, 180));
