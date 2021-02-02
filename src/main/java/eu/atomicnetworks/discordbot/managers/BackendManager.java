@@ -10,6 +10,7 @@ import eu.atomicnetworks.discordbot.objects.Verify;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -36,7 +37,8 @@ public class BackendManager {
     private LoadingCache<String, User> userCache;
     private LoadingCache<String, Ticket> ticketCache;
     private LoadingCache<String, Verify> verifyCache;
-
+    private HashMap<String, Long> levelTimeout;
+    
     public BackendManager(DiscordBot discordBot) {
         this.discordBot = discordBot;
         initCache();
@@ -51,6 +53,12 @@ public class BackendManager {
                     return;
                 }
                 if(t.getVoiceState().isDeafened()) {
+                    return;
+                }
+                if(levelTimeout.containsKey(t.getId())) {
+                    if(System.currentTimeMillis() >= levelTimeout.get(t.getId())) {
+                        levelTimeout.remove(t.getId());
+                    }
                     return;
                 }
                 user.setStreamTime(user.getStreamTimeMin()+1);
@@ -69,6 +77,7 @@ public class BackendManager {
         this.timer.setRepeats(true);
         this.timer.setInitialDelay(5000);
         this.timer.start();
+        this.levelTimeout = new HashMap<>();
     }
     
     private void initCache() {
@@ -251,6 +260,10 @@ public class BackendManager {
     
     public boolean hasPermissionPower1(Member member) {
         return hasRole(member, "Manager") || hasRole(member, "Administrator") || hasRole(member, "Developer");
+    }
+
+    public HashMap<String, Long> getLevelTimeout() {
+        return levelTimeout;
     }
     
 }

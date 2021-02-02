@@ -6,6 +6,7 @@ import eu.atomicnetworks.discordbot.commands.CookieCommand;
 import eu.atomicnetworks.discordbot.commands.HelpCommand;
 import eu.atomicnetworks.discordbot.commands.InfoCommand;
 import eu.atomicnetworks.discordbot.commands.LevelCommand;
+import eu.atomicnetworks.discordbot.commands.LevelWarnCommand;
 import eu.atomicnetworks.discordbot.commands.MagicMusselCommand;
 import eu.atomicnetworks.discordbot.commands.NewsCommand;
 import eu.atomicnetworks.discordbot.commands.RankingCommand;
@@ -87,6 +88,7 @@ public class DiscordBot {
     private WarnCommand warnCommand;
     private VoteCommand voteCommand;
     private VerifyCommand verifyCommand;
+    private LevelWarnCommand levelWarnCommand;
     
     private String guildId;
     private String achievementChannelId;
@@ -130,6 +132,7 @@ public class DiscordBot {
         this.warnCommand = new WarnCommand(this);
         this.voteCommand = new VoteCommand(this);
         this.verifyCommand = new VerifyCommand(this);
+        this.levelWarnCommand = new LevelWarnCommand(this);
         
         this.guildId = "734477710319026217";
         this.roleChannelId = "734477712139223133";
@@ -233,6 +236,8 @@ public class DiscordBot {
                     voteCommand.execute(event);
                 } else if (message.getContentRaw().toLowerCase().startsWith("!teamspeak")) {
                     verifyCommand.execute(event);
+                } else if (message.getContentRaw().toLowerCase().startsWith("!levelwarn")) {
+                    levelWarnCommand.execute(event);
                 }
             }
 

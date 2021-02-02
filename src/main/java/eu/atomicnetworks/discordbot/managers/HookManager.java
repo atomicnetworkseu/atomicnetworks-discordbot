@@ -116,7 +116,7 @@ public class HookManager {
         if (user == null) {
             return;
         }
-        Role role = this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).getRolesByName("😵 Voted", true).stream().findFirst().orElse(null);
+        Role role = this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).getRoleById("780093467639414804");
         TextChannel textChannel = (TextChannel) this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).getChannels().stream().filter(t -> t.getId().equals(this.discordBot.getAchievementChannelId())).findFirst().orElse(null);
         
         if (user.getVoting().getVoted_end() > System.currentTimeMillis()) {
@@ -131,7 +131,18 @@ public class HookManager {
             textChannel.sendMessage(embed.build()).queue();
             user.getVoting().setVoteCount(user.getVoting().getVoteCount() + 1);
             user.getVoting().setVoted_end(System.currentTimeMillis() + 86400000);
+            user.setXp(user.getXp()+10);
             this.discordBot.getUserManager().saveUser(user);
+            
+            this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).retrieveMemberById(voting.getUserId()).queue((t1) -> {
+                if(t1 == null) {
+                    System.out.println("MEMBER IS NULL. (VOTED ROLLE WAS NOT ADDED)");
+                    return;
+                }
+                if(t1.getRoles().stream().filter((t2) -> t2.getId().equals(role.getId())).findFirst().orElse(null) == null) {
+                    this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).addRoleToMember(t1.getIdLong(), role).queue();
+                } 
+            });
             return;
         }
 
@@ -147,13 +158,16 @@ public class HookManager {
 
         user.getVoting().setVoteCount(user.getVoting().getVoteCount() + 1);
         user.getVoting().setVoted_end(System.currentTimeMillis() + 86400000);
+        user.setXp(user.getXp()+10);
         this.discordBot.getUserManager().saveUser(user);
         
-        Member member = this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).getMemberById(voting.getUserId());
-        if(member == null) {
-            return;
-        }
-        this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).addRoleToMember(voting.getUserId(), role).queue();
+        this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).retrieveMemberById(voting.getUserId()).queue((t1) -> {
+            if(t1 == null) {
+                System.out.println("MEMBER IS NULL. (VOTED ROLLE WAS NOT ADDED)");
+                return;
+            }
+            this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).addRoleToMember(t1.getIdLong(), role).queue();
+        });
     }
     
     public boolean isAuthorized(HttpExchange httpExchange) {

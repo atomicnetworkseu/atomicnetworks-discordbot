@@ -50,37 +50,38 @@ public class WhoisCommand {
         if(user.getId().equals("697517106287345737")) {
             return;
         }
-
+        
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
-        embed.setAuthor("Warnsystem", null, "https://cdn.atomicnetworks.eu/discord/icon.png");
-        embed.addField(new MessageEmbed.Field("User", "<@" + user.getId() + ">", true));
-        embed.addField(new MessageEmbed.Field("Level", MessageFormat.format("{0}", user.getLevel()), true));
-        embed.addField(new MessageEmbed.Field("Votes", String.valueOf(user.getVoting().getVoteCount()), true));
-        embed.addField(new MessageEmbed.Field("Cookies", String.valueOf(user.getCookies()), true));
-        embed.addField(new MessageEmbed.Field("Warnpoints", String.valueOf(user.getWarn().getWarnPoints()), true));
-        embed.addBlankField(true);
+        this.discord.getJda().retrieveUserById(user.getId()).queue((t1) -> {
+            embed.setAuthor(t1.getName(), null, t1.getAvatarUrl());
+        });
+        embed.setDescription(MessageFormat.format("The user {0} is currently **level {1}** and has **{2} warning points**.\n", "<@" + user.getId() + ">", user.getLevel(), String.valueOf(user.getWarn().getWarnPoints())) +
+                MessageFormat.format("He has already listened **{0} minutes** to music and has a total of **{1} votes**.", String.valueOf(user.getStreamTimeMin()), String.valueOf(user.getVoting().getVoteCount())));
         String warnlog = "";
         List<User.Warn.WarnLog> logs = user.getWarn().getWarnLog();
-        Collections.reverse(logs);
-        for(User.Warn.WarnLog log : logs) {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.YYYY HH:mm");
-            if(null != log.getWarnType()) switch (log.getWarnType()) {
-                case WARN:
-                    warnlog += MessageFormat.format("**{0}** • {1} » Warn\n", simpleDateFormat.format(new Date(log.getStart_at())), "<@" + log.getCreator() + ">");
-                    break;
-                case MUTE:
-                    warnlog += MessageFormat.format("**{0}** • {1} » Mute\n", simpleDateFormat.format(new Date(log.getStart_at())), "<@" + log.getCreator() + ">");
-                    break;
-                case BAN:
-                    warnlog += MessageFormat.format("**{0}** • {1} » Ban\n", simpleDateFormat.format(new Date(log.getStart_at())), "<@" + log.getCreator() + ">");
-                    break;
-                default:
-                    warnlog += MessageFormat.format("**{0}** • {1} » ???\n", simpleDateFormat.format(new Date(log.getStart_at())), "<@" + log.getCreator() + ">");
-                    break;
+        if(!logs.isEmpty()) {
+            Collections.reverse(logs);
+            for(User.Warn.WarnLog log : logs) {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.YYYY HH:mm");
+                if(null != log.getWarnType()) switch (log.getWarnType()) {
+                    case WARN:
+                        warnlog += MessageFormat.format("{0} I {1} » has issued a **warn**.\n", simpleDateFormat.format(new Date(log.getStart_at())), "<@" + log.getCreator() + ">");
+                        break;
+                    case MUTE:
+                        warnlog += MessageFormat.format("{0} I {1} » has issued a **mute**.\n", simpleDateFormat.format(new Date(log.getStart_at())), "<@" + log.getCreator() + ">");
+                        break;
+                    case BAN:
+                        warnlog += MessageFormat.format("{0} I {1} » has issued a **ban**.\n", simpleDateFormat.format(new Date(log.getStart_at())), "<@" + log.getCreator() + ">");
+                        break;
+                    default:
+                        warnlog += MessageFormat.format("{0} I {1} » has issued a **???**.\n", simpleDateFormat.format(new Date(log.getStart_at())), "<@" + log.getCreator() + ">");
+                        break;
+                }
             }
+            embed.addBlankField(true);
+            embed.addField(new MessageEmbed.Field("**Warnlog:**", warnlog, false));
         }
-        embed.addField(new MessageEmbed.Field("Warnlog", warnlog, false));
 
         event.getMember().getUser().openPrivateChannel().queue((channel) -> {
             channel.sendMessage(embed.build()).queue();
