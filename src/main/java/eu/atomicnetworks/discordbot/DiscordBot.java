@@ -341,7 +341,7 @@ public class DiscordBot {
                             user.getVoting().setVoted_end(0);
                             this.userManager.saveUser(user);
                             Role role = this.jda.getGuildById(this.getGuildId()).getRolesByName("😵 Voted", true).stream().findFirst().orElse(null);
-                            Member member = this.jda.getGuildById(this.guildId).getMemberById(user.getId());
+                            Member member = this.jda.getGuildById(this.guildId).retrieveMemberById(user.getId()).complete();
                             if(member == null) {
                                 return;
                             }

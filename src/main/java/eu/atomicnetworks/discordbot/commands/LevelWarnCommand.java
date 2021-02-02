@@ -30,13 +30,13 @@ public class LevelWarnCommand {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
         
-        if(args.length == 1 || message.getMentionedMembers().isEmpty()) {
+        if(message.getMentionedMembers().isEmpty()) {
             return;
         }
         
         Member target = message.getMentionedMembers().stream().findFirst().orElse(null);
-        embed.setDescription("**Successful**, the user " + target.getUser().getName() + " was excluded from the music ranking for 24 hours!");
-        this.discord.getBackendManager().getLevelTimeout().put(target.getId(), System.currentTimeMillis()+(86400000));
+        embed.setDescription("**Successful**, the user <@" + target.getId() + "> was excluded from the music ranking for 24 hours!");
+        this.discord.getBackendManager().getLevelTimeout().put(target.getId(), System.currentTimeMillis()+86400000);
         event.getChannel().sendMessage(embed.build()).queue();
     }
     
