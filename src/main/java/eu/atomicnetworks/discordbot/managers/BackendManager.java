@@ -246,7 +246,7 @@ public class BackendManager {
     }
     
     public boolean hasPermissionPower2(Member member) {
-        return hasRole(member, "Manager") || hasRole(member, "Administrator") || hasRole(member, "Developer") || hasRole(member, "» Competence I Teamleading");
+        return hasRole(member, "Manager") || hasRole(member, "Administrator") || hasRole(member, "Developer") || hasRole(member, "» Teamleading");
     }
     
     public boolean hasPermissionPower1(Member member) {
