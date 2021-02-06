@@ -9,6 +9,6 @@ package eu.atomicnetworks.discordbot.enums;
  */
 public enum VotingProvider {
     
-    TOPGG,DBL,UNDEFINED;
+    TOPGG,DBL,BOATS,UNDEFINED;
     
 }

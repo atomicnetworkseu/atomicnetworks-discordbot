@@ -15,18 +15,15 @@ import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.exceptions.ContextException;
 import org.json.JSONObject;
 
 /**
  *
  * @author Kacper Mura
- * 2021 Copyright (c) by atomicnetworks.eu to present.
- * All rights reserved. https://github.com/VocalZero
+ * Copyright (c) 2021 atomicnetworks ✨
+ * This code is available under the MIT License.
  *
  */
 public class HookManager {
@@ -100,6 +97,30 @@ public class HookManager {
             he.sendResponseHeaders(201, -1);
             this.executeVote(voting);
         });
+        this.httpServer.createContext("/webhook/boats", (HttpExchange he) -> {
+            if(he.getRequestMethod().equals("OPTIONS")) {
+                he.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+                he.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type,Authorization");
+                he.getResponseHeaders().add("Access-Control-Allow-Methods", "POST,OPTIONS");
+                he.sendResponseHeaders(204, -1);
+                return;
+            }
+            if(!he.getRequestMethod().equals("POST")) {
+                he.getResponseBody().close();
+                return;
+            }
+            if(!this.isAuthorized(he)) {
+                return;
+            }
+            JSONObject body = this.getRequestBody(he);
+            
+            Voting voting = new Voting();
+            voting.setVotingProvider(VotingProvider.BOATS);
+            String voter = body.getJSONObject("user").getString("id");
+            voting.setUserId(voter);
+            he.sendResponseHeaders(201, -1);
+            this.executeVote(voting);
+        });
     }
 
     public HttpServer getHttpServer() {
@@ -126,6 +147,8 @@ public class HookManager {
                 embed.setAuthor("Voting", null, "https://cdn.atomicnetworks.eu/discord/voting/topgg.png");
             } else if(voting.getVotingProvider() == VotingProvider.DBL) {
                 embed.setAuthor("Voting", null, "https://cdn.atomicnetworks.eu/discord/voting/dbl.png");
+            } else if(voting.getVotingProvider() == VotingProvider.BOATS) {
+                embed.setAuthor("Voting", null, "https://cdn.atomicnetworks.eu/discord/voting/discordboats.png");
             }
             embed.setDescription("Thank you very much for your vote, <@" + user.getId() + ">!\nAs a gift, you get the `😵 Voted` rank for another 24 hours.");
             textChannel.sendMessage(embed.build()).queue();
@@ -152,6 +175,8 @@ public class HookManager {
             embed.setAuthor("Voting", null, "https://cdn.atomicnetworks.eu/discord/voting/topgg.png");
         } else if(voting.getVotingProvider() == VotingProvider.DBL) {
             embed.setAuthor("Voting", null, "https://cdn.atomicnetworks.eu/discord/voting/dbl.png");
+        } else if(voting.getVotingProvider() == VotingProvider.BOATS) {
+            embed.setAuthor("Voting", null, "https://cdn.atomicnetworks.eu/discord/voting/discordboats.png");
         }
         embed.setDescription("Thank you very much for your vote, <@" + user.getId() + ">!\nAs a gift, you get the `😵 Voted` rank for 24 hours.");
         textChannel.sendMessage(embed.build()).queue();
