@@ -47,7 +47,6 @@ import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
-import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -56,8 +55,8 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 /**
  *
  * @author Kacper Mura
- * 2021 Copyright (c) by atomicnetworks.eu to present.
- * All rights reserved. https://github.com/VocalZero
+ * Copyright (c) 2021 atomicnetworks ✨
+ * This code is available under the MIT License.
  *
  */
 public class DiscordBot {

@@ -9,7 +9,10 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 /**
  *
- * @author kacpe
+ * @author Kacper Mura
+ * Copyright (c) 2021 atomicnetworks ✨
+ * This code is available under the MIT License.
+ *
  */
 public class LevelWarnCommand {
     

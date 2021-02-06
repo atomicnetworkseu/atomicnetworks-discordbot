@@ -15,8 +15,9 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 /**
  *
- * @author Kacper Mura 2021 Copyright (c) by atomicnetworks.eu to present. All
- * rights reserved. https://github.com/VocalZero
+ * @author Kacper Mura
+ * Copyright (c) 2021 atomicnetworks ✨
+ * This code is available under the MIT License.
  *
  */
 public class WhoisCommand {
