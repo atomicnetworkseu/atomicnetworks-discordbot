@@ -159,6 +159,8 @@ public class EventHandler extends ListenerAdapter {
             whoisCommand.execute(event);
         } else if (message.getContentRaw().toLowerCase().startsWith("!ticket")) {
             ticketCommand.execute(event);
+        } else if (message.getContentRaw().toLowerCase().startsWith("!warnreset")) {
+            warnResetCommand.execute(event);
         } else if (message.getContentRaw().toLowerCase().startsWith("!warn")) {
             event.getMessage().delete().queue();
             warnCommand.execute(event);
@@ -168,8 +170,6 @@ public class EventHandler extends ListenerAdapter {
             verifyCommand.execute(event);
         } else if (message.getContentRaw().toLowerCase().startsWith("!levelwarn")) {
             levelWarnCommand.execute(event);
-        } else if (message.getContentRaw().toLowerCase().startsWith("!warnreset")) {
-            warnResetCommand.execute(event);
         }
     }
 
