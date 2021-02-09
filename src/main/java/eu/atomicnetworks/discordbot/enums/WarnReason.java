@@ -22,7 +22,8 @@ public enum WarnReason {
     PUBLISHING_PRIVATE_DATA_OF_OTHERS(11, "Publishing private data of others", 168, WarnTypes.MUTE),
     RACISM(12, "Racism", -1, WarnTypes.BAN),
     IMPERSONATING_A_TEAM_MEMBER(13, "Impersonating a team member", 48, WarnTypes.MUTE),
-    REPEATED_MISCONDUCT(1010, "repeated misconduct", 24, WarnTypes.MUTE);
+    REPEATED_MISCONDUCT(1010, "repeated misconduct", 24, WarnTypes.MUTE),
+    WARN_RESET(0101, "warn reset", -1, WarnTypes.WARN);
     
     private int id;
     private String reason;
@@ -69,7 +70,7 @@ public enum WarnReason {
     }
     
     public static enum WarnTypes {
-        WARN,MUTE,BAN;
+        WARN,MUTE,BAN,RESET;
     }
     
 }
