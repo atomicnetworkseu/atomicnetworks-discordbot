@@ -62,6 +62,11 @@ public class WarnCommand {
         }
         
         Member target = message.getMentionedMembers().stream().findFirst().orElse(null);
+        if(this.discord.getBackendManager().isTeamMember(target)) {
+            embed.setDescription("I'm sorry, you can't warn your colleagues.");
+            event.getChannel().sendMessage(embed.build()).queue();
+            return;
+        }
         int warnId = Integer.valueOf(args[2]);
         
         switch(warnId) {

@@ -261,6 +261,10 @@ public class BackendManager {
     public boolean hasPermissionPower1(Member member) {
         return hasRole(member, "Manager") || hasRole(member, "Administrator") || hasRole(member, "Developer");
     }
+    
+    public boolean isTeamMember(Member member) {
+        return hasRole(member, "✨ Team");
+    }
 
     public HashMap<String, Long> getLevelTimeout() {
         return levelTimeout;
