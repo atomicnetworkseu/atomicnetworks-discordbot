@@ -14,6 +14,7 @@ import eu.atomicnetworks.discordbot.commands.TicketCommand;
 import eu.atomicnetworks.discordbot.commands.VerifyCommand;
 import eu.atomicnetworks.discordbot.commands.VoteCommand;
 import eu.atomicnetworks.discordbot.commands.WarnCommand;
+import eu.atomicnetworks.discordbot.commands.WarnResetCommand;
 import eu.atomicnetworks.discordbot.commands.WhoisCommand;
 import eu.atomicnetworks.discordbot.enums.TicketType;
 import eu.atomicnetworks.discordbot.objects.Ticket;
@@ -55,6 +56,7 @@ public class EventHandler extends ListenerAdapter {
     private final VoteCommand voteCommand;
     private final VerifyCommand verifyCommand;
     private final LevelWarnCommand levelWarnCommand;
+    private final WarnResetCommand warnResetCommand;
     private final Random random;
 
     public EventHandler(DiscordBot discordBot) {
@@ -73,6 +75,7 @@ public class EventHandler extends ListenerAdapter {
         this.voteCommand = new VoteCommand(this.discordBot);
         this.verifyCommand = new VerifyCommand(this.discordBot);
         this.levelWarnCommand = new LevelWarnCommand(this.discordBot);
+        this.warnResetCommand = new WarnResetCommand(this.discordBot);
         this.random = new Random();
     }
 
@@ -165,6 +168,8 @@ public class EventHandler extends ListenerAdapter {
             verifyCommand.execute(event);
         } else if (message.getContentRaw().toLowerCase().startsWith("!levelwarn")) {
             levelWarnCommand.execute(event);
+        } else if (message.getContentRaw().toLowerCase().startsWith("!warnreset")) {
+            warnResetCommand.execute(event);
         }
     }
 
