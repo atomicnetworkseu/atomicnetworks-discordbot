@@ -1,21 +1,7 @@
 package eu.atomicnetworks.discordbot;
 
 import com.google.gson.Gson;
-import eu.atomicnetworks.discordbot.commands.ClearCommand;
-import eu.atomicnetworks.discordbot.commands.CookieCommand;
-import eu.atomicnetworks.discordbot.commands.HelpCommand;
-import eu.atomicnetworks.discordbot.commands.InfoCommand;
-import eu.atomicnetworks.discordbot.commands.LevelCommand;
-import eu.atomicnetworks.discordbot.commands.LevelWarnCommand;
-import eu.atomicnetworks.discordbot.commands.MagicMusselCommand;
-import eu.atomicnetworks.discordbot.commands.NewsCommand;
-import eu.atomicnetworks.discordbot.commands.RankingCommand;
-import eu.atomicnetworks.discordbot.commands.TicketCommand;
-import eu.atomicnetworks.discordbot.commands.VerifyCommand;
-import eu.atomicnetworks.discordbot.commands.VoteCommand;
-import eu.atomicnetworks.discordbot.commands.WarnCommand;
-import eu.atomicnetworks.discordbot.commands.WhoisCommand;
-import eu.atomicnetworks.discordbot.enums.TicketType;
+import eu.atomicnetworks.discordbot.handlers.EventHandler;
 import eu.atomicnetworks.discordbot.managers.BackendManager;
 import eu.atomicnetworks.discordbot.managers.HookManager;
 import eu.atomicnetworks.discordbot.managers.LoggerManager;
@@ -24,14 +10,11 @@ import eu.atomicnetworks.discordbot.managers.QueryManager;
 import eu.atomicnetworks.discordbot.managers.TicketManager;
 import eu.atomicnetworks.discordbot.managers.UserManager;
 import eu.atomicnetworks.discordbot.managers.VerifyManager;
-import eu.atomicnetworks.discordbot.objects.Ticket;
 import eu.atomicnetworks.discordbot.objects.User;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 import javax.swing.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,15 +24,9 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
-import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
 /**
@@ -63,7 +40,6 @@ public class DiscordBot {
     
     private JDA jda;
     private Gson gson;
-    private Random random;
     
     private LoggerManager loggerManager;
     private MongoManager mongoManager;
@@ -73,21 +49,6 @@ public class DiscordBot {
     private BackendManager backendManager;
     private HookManager hookManager;
     private QueryManager queryManager;
-    
-    private HelpCommand helpCommand;
-    private InfoCommand infoCommand;
-    private LevelCommand levelCommand;
-    private MagicMusselCommand magicMusselCommand;
-    private NewsCommand newsCommand;
-    private RankingCommand rankingCommand;
-    private CookieCommand cookieCommand;
-    private ClearCommand clearCommand;
-    private WhoisCommand whoisCommand;
-    private TicketCommand ticketCommand;
-    private WarnCommand warnCommand;
-    private VoteCommand voteCommand;
-    private VerifyCommand verifyCommand;
-    private LevelWarnCommand levelWarnCommand;
     
     private String guildId;
     private String achievementChannelId;
@@ -107,7 +68,6 @@ public class DiscordBot {
     
     private void init() {
         this.gson = new Gson();
-        this.random = new Random();
         
         this.loggerManager = new LoggerManager();
         this.mongoManager = new MongoManager(this);
@@ -117,21 +77,6 @@ public class DiscordBot {
         this.backendManager = new BackendManager(this);
         this.hookManager = new HookManager(this);
         this.queryManager = new QueryManager(this);
-        
-        this.helpCommand = new HelpCommand(this);
-        this.infoCommand = new InfoCommand(this);
-        this.levelCommand = new LevelCommand(this);
-        this.magicMusselCommand = new MagicMusselCommand(this);
-        this.newsCommand = new NewsCommand(this);
-        this.rankingCommand = new RankingCommand(this);
-        this.cookieCommand = new CookieCommand(this);
-        this.clearCommand = new ClearCommand(this);
-        this.whoisCommand = new WhoisCommand(this);
-        this.ticketCommand = new TicketCommand(this);
-        this.warnCommand = new WarnCommand(this);
-        this.voteCommand = new VoteCommand(this);
-        this.verifyCommand = new VerifyCommand(this);
-        this.levelWarnCommand = new LevelWarnCommand(this);
         
         this.guildId = "734477710319026217";
         this.roleChannelId = "734477712139223133";
@@ -147,136 +92,7 @@ public class DiscordBot {
         JDABuilder builder = JDABuilder.createDefault("Nzk2ODQ5MDE5MzA4NDc0NDE5.X_d5eg.jf4MILv8PkXTZUYOxrfRMJ2Pb4E");
         builder.enableIntents(GatewayIntent.GUILD_MEMBERS);
         builder.setActivity(Activity.watching("atnw.eu/discord"));
-        builder.addEventListeners(new ListenerAdapter() {
-
-            @Override
-            public void onGuildMemberJoin(GuildMemberJoinEvent event) {
-                Role role = event.getGuild().getRolesByName("🪐 Community", true).stream().findFirst().orElse(null);
-                event.getGuild().addRoleToMember(event.getMember(), role).queue();
-                User user = backendManager.getUser(event.getMember().getId());
-                backendManager.setUsername(user.getId(), event.getMember().getUser().getName());
-                TextChannel welcomeChannel = (TextChannel) jda.getGuildById(guildId).getChannels().stream().filter(t -> t.getId().equals(welcomeChannelId)).findFirst().orElse(null);
-                EmbedBuilder embed = new EmbedBuilder();
-                embed.setColor(new Color(149, 79, 180));
-                embed.setDescription("Welcome " + event.getMember().getAsMention() + ", we are happy to welcome you on our server and wish you a lot of fun with our community! 💝");
-                welcomeChannel.sendMessage(embed.build()).queue();
-            }
-
-            @Override
-            public void onGuildReady(GuildReadyEvent event) {
-                
-            }
-
-            @Override
-            public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-                if(event.getMember() == null) {
-                    return;
-                }
-                if(event.getMember().getUser().getId().equals(jda.getSelfUser().getId())) {
-                    return;
-                }
-                if(event.getMember().getUser().getId().equals("697517106287345737")) {
-                    return;
-                }
-                Message message = event.getMessage();
-                
-                User user = backendManager.getUser(String.valueOf(event.getMember().getIdLong()));
-                int randomXp = random.nextInt((5-1)+1) + 1;
-                backendManager.addXp(user.getId(), randomXp);
-                backendManager.setUsername(user.getId(), event.getMember().getUser().getName());
-                if(backendManager.getRemainingXp(user.getId()) <= randomXp) {
-                    backendManager.addLevel(user.getId(), 1);
-                    EmbedBuilder embed = new EmbedBuilder();
-                    embed.setColor(new Color(149, 79, 180));
-                    embed.setAuthor(event.getMember().getUser().getName(), null, event.getMember().getUser().getAvatarUrl());
-                    embed.setDescription("**Congratulations**, you have now reached level **" + backendManager.getLevel(user.getId()) + "**! <a:blobgifrolling:771743022282440815>");
-                    TextChannel textChannel = (TextChannel) jda.getGuildById(guildId).getChannels().stream().filter(t -> t.getId().equals(achievementChannelId)).findFirst().orElse(null);
-                    textChannel.sendMessage(embed.build()).queue();
-                }
-                
-                if(event.getChannel().getName().startsWith("ticket-")) {
-                    Ticket ticket = backendManager.getTicket(event.getChannel().getName());
-                    backendManager.addTicketMessage(ticket.getId(), message);
-                }
-                
-                if (!message.getContentRaw().toLowerCase().startsWith("!")) {
-                    return;
-                }
-                consoleInfo(MessageFormat.format("{0} ({1}) ran command {2} in {3} (#{4})", event.getAuthor().getName(), event.getAuthor().getId(), message.getContentRaw().toLowerCase().split(" ")[0], event.getGuild().getName(), event.getChannel().getName()));
-
-                if (message.getContentRaw().toLowerCase().startsWith("!help")) {
-                    helpCommand.execute(event);
-                } else if (message.getContentRaw().toLowerCase().startsWith("!info")) {
-                    infoCommand.execute(event);
-                } else if (message.getContentRaw().toLowerCase().startsWith("!invite")) {
-                    infoCommand.execute(event);
-                } else if (message.getContentRaw().toLowerCase().startsWith("!level")) {
-                    levelCommand.execute(event);
-                } else if (message.getContentRaw().toLowerCase().startsWith("!magicmussel")) {
-                    magicMusselCommand.execute(event);
-                } else if (message.getContentRaw().toLowerCase().startsWith("!ms")) {
-                    magicMusselCommand.execute(event);
-                } else if (message.getContentRaw().toLowerCase().startsWith("!news")) {
-                    newsCommand.execute(event);
-                } else if (message.getContentRaw().toLowerCase().startsWith("!ranking")) {
-                    rankingCommand.execute(event);
-                } else if (message.getContentRaw().toLowerCase().startsWith("!cookie")) {
-                    cookieCommand.execute(event);
-                } else if (message.getContentRaw().toLowerCase().startsWith("!clear")) {
-                    clearCommand.execute(event);
-                } else if (message.getContentRaw().toLowerCase().startsWith("!whois")) {
-                    whoisCommand.execute(event);
-                } else if (message.getContentRaw().toLowerCase().startsWith("!ticket")) {
-                    ticketCommand.execute(event);
-                } else if (message.getContentRaw().toLowerCase().startsWith("!warn")) {
-                    event.getMessage().delete().queue();
-                    warnCommand.execute(event);
-                } else if (message.getContentRaw().toLowerCase().startsWith("!vote")) {
-                    voteCommand.execute(event);
-                } else if (message.getContentRaw().toLowerCase().startsWith("!teamspeak")) {
-                    verifyCommand.execute(event);
-                } else if (message.getContentRaw().toLowerCase().startsWith("!levelwarn")) {
-                    levelWarnCommand.execute(event);
-                }
-            }
-
-            @Override
-            public void onGuildMessageReactionAdd(GuildMessageReactionAddEvent event) {
-                if(event.getMember().getUser().getId().equals(jda.getSelfUser().getId())) {
-                    return;
-                }
-                if(event.getChannel().getId().equals(roleChannelId)) {
-                    if(event.getReactionEmote().getId().equals("734613241581404271")) { // ATOMICRADIO ROLE
-                        Role role = event.getGuild().getRolesByName("#radio", true).stream().findFirst().orElse(null);
-                        event.getGuild().addRoleToMember(event.getMember(), role).queue();
-                    } else if(event.getReactionEmote().getId().equals("734611793187700736")) { // ATOMICGAMING ROLE
-                        Role role = event.getGuild().getRolesByName("#gaming", true).stream().findFirst().orElse(null);
-                        event.getGuild().addRoleToMember(event.getMember(), role).queue();
-                    }
-                } else if(event.getChannel().getId().equals(ticketChannelId)) {
-                    if(event.getReactionEmote().getId().equals("734611793187700736")) { // GAMING TICKET
-                        ticketManager.createChannel(event, TicketType.GAMING);
-                    } else if(event.getReactionEmote().getId().equals("734613241581404271")) { // RADIO TICKET
-                        ticketManager.createChannel(event, TicketType.RADIO);
-                    } else if(event.getReactionEmote().getId().equals("736627104992591883")) { // GENERAL TICKET
-                        ticketManager.createChannel(event, TicketType.GENERAL);
-                    }
-                } else if(event.getChannel().getName().startsWith("ticket-")) {
-                     if(event.getReactionEmote().getEmoji().equals("📪")) {
-                         event.getChannel().delete().queue();
-                         ticketManager.sendTicketInfoEmbed(backendManager.getTicket(event.getChannel().getName()));
-                     }
-                }
-                if(event.getChannel().getId().equals(commandChannelId)) {
-                    if(event.getReactionEmote().getId().equals("802089372076867594")) {
-                        rankingCommand.switchPageForward(event.getChannel(), event.getMessageIdLong());
-                    } else if(event.getReactionEmote().getId().equals("802089371964407838")) {
-                        rankingCommand.switchPageBack(event.getChannel(), event.getMessageIdLong());
-                    }
-                }
-            }
-            
-        });
+        builder.addEventListeners(new EventHandler(this));
         
         try {
             this.jda = builder.build();
@@ -455,6 +271,18 @@ public class DiscordBot {
 
     public String getMusicVoiceChannelId() {
         return musicVoiceChannelId;
+    }
+
+    public String getWelcomeChannelId() {
+        return welcomeChannelId;
+    }
+
+    public String getTicketChannelId() {
+        return ticketChannelId;
+    }
+
+    public String getRoleChannelId() {
+        return roleChannelId;
     }
     
 }
