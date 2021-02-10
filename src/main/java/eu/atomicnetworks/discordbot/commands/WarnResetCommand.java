@@ -56,6 +56,7 @@ public class WarnResetCommand {
         warnLog.setEnd_at(System.currentTimeMillis());
         warnLog.setCreator(event.getAuthor().getId());
         warnLog.setWarnType(WarnReason.WarnTypes.RESET);
+        userTarget.getWarn().setWarnPoints(0);
         userTarget.getWarn().getWarnLog().clear();
         userTarget.getWarn().getWarnLog().add(warnLog);
         this.discord.getUserManager().saveUser(userTarget);
