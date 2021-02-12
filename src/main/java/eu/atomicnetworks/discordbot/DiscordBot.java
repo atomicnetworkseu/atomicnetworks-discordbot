@@ -139,11 +139,15 @@ public class DiscordBot {
                         if(System.currentTimeMillis() >= user.getWarn().getActiveWarnEnd()) {
                             this.backendManager.setMuted(user.getId(), false);
                             Role role = this.jda.getGuildById(this.guildId).getRoleById("769862174024925204");
-                            Member member = this.jda.getGuildById(this.guildId).getMemberById(user.getId());
-                            if(member == null) {
-                                return;
-                            }
-                            this.jda.getGuildById(this.getGuildId()).removeRoleFromMember(user.getId(), role).queue();
+                            this.jda.getGuildById(this.guildId).retrieveMemberById(user.getId()).queue((t1) -> {
+                                if(t1 == null) {
+                                    System.out.println("MEMBER IS NULL. (MUTED ROLLE WAS NOT REMOVED)");
+                                    return;
+                                }
+                                if(t1.getRoles().stream().filter((t2) -> t2.getId().equals(role.getId())).findFirst().orElse(null) != null) {
+                                    this.getJda().getGuildById(this.getGuildId()).removeRoleFromMember(t1, role).queue();
+                                }
+                            });
                         }
                     });
                 });
@@ -155,12 +159,16 @@ public class DiscordBot {
                         if(System.currentTimeMillis() >= user.getVoting().getVoted_end()) {
                             user.getVoting().setVoted_end(0);
                             this.userManager.saveUser(user);
-                            Role role = this.jda.getGuildById(this.getGuildId()).getRolesByName("😵 Voted", true).stream().findFirst().orElse(null);
-                            Member member = this.jda.getGuildById(this.guildId).retrieveMemberById(user.getId()).complete();
-                            if(member == null) {
-                                return;
-                            }
-                            this.jda.getGuildById(this.getGuildId()).removeRoleFromMember(user.getId(), role).queue();
+                            Role role = this.getJda().getGuildById(this.getGuildId()).getRoleById("780093467639414804");
+                            this.getJda().getGuildById(this.getGuildId()).retrieveMemberById(user.getId()).queue((t1) -> {
+                                if(t1 == null) {
+                                    System.out.println("MEMBER IS NULL. (VOTED ROLLE WAS NOT REMOVED)");
+                                    return;
+                                }
+                                if(t1.getRoles().stream().filter((t2) -> t2.getId().equals(role.getId())).findFirst().orElse(null) != null) {
+                                    this.getJda().getGuildById(this.getGuildId()).removeRoleFromMember(t1, role).queue();
+                                }
+                            });
                         }
                     });
                 });
