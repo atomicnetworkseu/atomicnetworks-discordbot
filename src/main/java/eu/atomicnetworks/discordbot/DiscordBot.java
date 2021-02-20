@@ -172,19 +172,6 @@ public class DiscordBot {
                         }
                     });
                 });
-                this.userManager.getAllUsers((t -> {
-                    Iterator<User> users = t.iterator();
-                    while(users.hasNext()) {
-                        User user = users.next();
-                        if(user.getUsername().equals("???")) {
-                            Member member = this.jda.getGuildById(guildId).retrieveMemberById(user.getId()).complete();
-                            if(member == null) {
-                                return;
-                            }
-                            this.backendManager.setUsername(user.getId(), member.getUser().getName());
-                        }
-                    }
-                }));
             });
             warnEndTimer.setInitialDelay(10000);
             warnEndTimer.setRepeats(true);
