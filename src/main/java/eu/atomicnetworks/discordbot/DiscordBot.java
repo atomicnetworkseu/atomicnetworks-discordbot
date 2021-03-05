@@ -131,7 +131,7 @@ public class DiscordBot {
             });
             sendTimer.setInitialDelay(10000);
             sendTimer.setRepeats(false);
-            sendTimer.start();
+            //sendTimer.start();
             
             Timer warnEndTimer = new Timer(10000, (ActionEvent e) -> {
                 this.userManager.getActiveMutedUsers((List<User> t) -> {
