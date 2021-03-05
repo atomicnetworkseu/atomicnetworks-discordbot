@@ -20,6 +20,8 @@ import eu.atomicnetworks.discordbot.objects.Ticket;
 import eu.atomicnetworks.discordbot.objects.User;
 import java.awt.Color;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -55,8 +57,10 @@ public class EventHandler extends ListenerAdapter {
     private final VoteCommand voteCommand;
     private final LevelWarnCommand levelWarnCommand;
     private final WarnResetCommand warnResetCommand;
+    
     private final Random random;
-
+    private ArrayList<String> welcomeMessage;
+    
     public EventHandler(DiscordBot discordBot) {
         this.discordBot = discordBot;
         this.helpCommand = new HelpCommand(this.discordBot);
@@ -73,7 +77,13 @@ public class EventHandler extends ListenerAdapter {
         this.voteCommand = new VoteCommand(this.discordBot);
         this.levelWarnCommand = new LevelWarnCommand(this.discordBot);
         this.warnResetCommand = new WarnResetCommand(this.discordBot);
+        
         this.random = new Random();
+        this.welcomeMessage = new ArrayList<>();
+        this.welcomeMessage.add("Welcome {0}, we are happy to welcome you on our server and wish you a lot of fun with our community! 💝");
+        this.welcomeMessage.add("Welcome {0}, we have already been waiting for you and are looking forward to getting to know you better! ✨");
+        this.welcomeMessage.add("Finally {0} made it to our server, we were already waiting for you and hope you will have a nice time with us! 🎩");
+        this.welcomeMessage.add("We hope you are ready to go {0}, feel free to introduce yourself in the <#734477712139223137> and start a nice conversation with our community! 🚀");
     }
 
     @Override
@@ -85,7 +95,9 @@ public class EventHandler extends ListenerAdapter {
         TextChannel welcomeChannel = (TextChannel) this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).getChannels().stream().filter(t -> t.getId().equals(this.discordBot.getWelcomeChannelId())).findFirst().orElse(null);
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
-        embed.setDescription("Welcome " + event.getMember().getAsMention() + ", we are happy to welcome you on our server and wish you a lot of fun with our community! 💝");
+        
+        int rnd = this.random.nextInt(welcomeMessage.size());
+        embed.setDescription(MessageFormat.format(this.welcomeMessage.get(rnd), event.getMember().getAsMention()));
         welcomeChannel.sendMessage(embed.build()).queue();
     }
 
