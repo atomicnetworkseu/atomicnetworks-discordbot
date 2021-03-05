@@ -6,7 +6,6 @@ import com.google.common.cache.LoadingCache;
 import eu.atomicnetworks.discordbot.DiscordBot;
 import eu.atomicnetworks.discordbot.objects.Ticket;
 import eu.atomicnetworks.discordbot.objects.User;
-import eu.atomicnetworks.discordbot.objects.Verify;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,7 +35,6 @@ public class BackendManager {
     private Timer timer;
     private LoadingCache<String, User> userCache;
     private LoadingCache<String, Ticket> ticketCache;
-    private LoadingCache<String, Verify> verifyCache;
     private HashMap<String, Long> levelTimeout;
     
     public BackendManager(DiscordBot discordBot) {
@@ -86,16 +84,6 @@ public class BackendManager {
             public User load(String id) throws Exception {
                 CompletableFuture<User> completableFuture = new CompletableFuture<>();
                 discordBot.getUserManager().getUser(id, result -> {
-                    completableFuture.complete(result);
-                });
-                return completableFuture.get();
-            }
-        });
-        this.verifyCache = CacheBuilder.newBuilder().maximumSize(100L).expireAfterWrite(10L, TimeUnit.MINUTES).build((CacheLoader) new CacheLoader<String, Verify>() {
-            @Override
-            public Verify load(String id) throws Exception {
-                CompletableFuture<Verify> completableFuture = new CompletableFuture<>();
-                discordBot.getVerifyManager().getVerify(id, result -> {
                     completableFuture.complete(result);
                 });
                 return completableFuture.get();
@@ -227,18 +215,6 @@ public class BackendManager {
         ticketMessage.setMessage(message.getContentRaw());
         this.getTicket(id).getMessages().add(ticketMessage);
         this.discordBot.getTicketManager().saveTicket(this.getTicket(id));
-    }
-
-    public LoadingCache<String, Verify> getVerifyCache() {
-        return verifyCache;
-    }
-    
-    public Verify getVerify(String id) {
-        try {
-            return this.verifyCache.get(id);
-        } catch (ExecutionException ex) {
-            return null;
-        }
     }
     
     public boolean hasRole(Member member, String name) {

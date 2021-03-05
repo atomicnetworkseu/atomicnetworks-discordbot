@@ -11,7 +11,6 @@ import eu.atomicnetworks.discordbot.commands.MagicMusselCommand;
 import eu.atomicnetworks.discordbot.commands.NewsCommand;
 import eu.atomicnetworks.discordbot.commands.RankingCommand;
 import eu.atomicnetworks.discordbot.commands.TicketCommand;
-import eu.atomicnetworks.discordbot.commands.VerifyCommand;
 import eu.atomicnetworks.discordbot.commands.VoteCommand;
 import eu.atomicnetworks.discordbot.commands.WarnCommand;
 import eu.atomicnetworks.discordbot.commands.WarnResetCommand;
@@ -54,7 +53,6 @@ public class EventHandler extends ListenerAdapter {
     private final TicketCommand ticketCommand;
     private final WarnCommand warnCommand;
     private final VoteCommand voteCommand;
-    private final VerifyCommand verifyCommand;
     private final LevelWarnCommand levelWarnCommand;
     private final WarnResetCommand warnResetCommand;
     private final Random random;
@@ -73,7 +71,6 @@ public class EventHandler extends ListenerAdapter {
         this.ticketCommand = new TicketCommand(this.discordBot);
         this.warnCommand = new WarnCommand(this.discordBot);
         this.voteCommand = new VoteCommand(this.discordBot);
-        this.verifyCommand = new VerifyCommand(this.discordBot);
         this.levelWarnCommand = new LevelWarnCommand(this.discordBot);
         this.warnResetCommand = new WarnResetCommand(this.discordBot);
         this.random = new Random();
@@ -166,8 +163,6 @@ public class EventHandler extends ListenerAdapter {
             warnCommand.execute(event);
         } else if (message.getContentRaw().toLowerCase().startsWith("!vote")) {
             voteCommand.execute(event);
-        } else if (message.getContentRaw().toLowerCase().startsWith("!teamspeak")) {
-            verifyCommand.execute(event);
         } else if (message.getContentRaw().toLowerCase().startsWith("!levelwarn")) {
             levelWarnCommand.execute(event);
         }

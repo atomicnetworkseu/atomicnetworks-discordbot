@@ -6,14 +6,11 @@ import eu.atomicnetworks.discordbot.managers.BackendManager;
 import eu.atomicnetworks.discordbot.managers.HookManager;
 import eu.atomicnetworks.discordbot.managers.LoggerManager;
 import eu.atomicnetworks.discordbot.managers.MongoManager;
-import eu.atomicnetworks.discordbot.managers.QueryManager;
 import eu.atomicnetworks.discordbot.managers.TicketManager;
 import eu.atomicnetworks.discordbot.managers.UserManager;
-import eu.atomicnetworks.discordbot.managers.VerifyManager;
 import eu.atomicnetworks.discordbot.objects.User;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.util.Iterator;
 import java.util.List;
 import javax.swing.Timer;
 import java.util.logging.Level;
@@ -23,7 +20,6 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -44,11 +40,9 @@ public class DiscordBot {
     private LoggerManager loggerManager;
     private MongoManager mongoManager;
     private UserManager userManager;
-    private VerifyManager verifyManager;
     private TicketManager ticketManager;
     private BackendManager backendManager;
     private HookManager hookManager;
-    private QueryManager queryManager;
     
     private String guildId;
     private String achievementChannelId;
@@ -72,11 +66,9 @@ public class DiscordBot {
         this.loggerManager = new LoggerManager();
         this.mongoManager = new MongoManager(this);
         this.userManager = new UserManager(this);
-        this.verifyManager = new VerifyManager(this);
         this.ticketManager = new TicketManager(this);
         this.backendManager = new BackendManager(this);
         this.hookManager = new HookManager(this);
-        this.queryManager = new QueryManager(this);
         
         this.guildId = "734477710319026217";
         this.roleChannelId = "734477712139223133";
@@ -211,10 +203,6 @@ public class DiscordBot {
     public UserManager getUserManager() {
         return userManager;
     }
-
-    public VerifyManager getVerifyManager() {
-        return verifyManager;
-    }
     
     public TicketManager getTicketManager() {
         return ticketManager;
@@ -222,10 +210,6 @@ public class DiscordBot {
 
     public BackendManager getBackendManager() {
         return backendManager;
-    }
-
-    public QueryManager getQueryManager() {
-        return queryManager;
     }
     
     public void consoleInfo(String text) {
