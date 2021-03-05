@@ -186,6 +186,9 @@ public class EventHandler extends ListenerAdapter {
                 Role role = event.getGuild().getRolesByName("#gaming", true).stream().findFirst().orElse(null);
                 event.getGuild().addRoleToMember(event.getMember(), role).queue();
             }
+            event.getChannel().retrieveMessageById(event.getMessageId()).queue(message -> {
+                message.removeReaction(event.getReactionEmote().getEmote(), event.getMember().getUser()).queue();
+            });
         } else if (event.getChannel().getId().equals(this.discordBot.getTicketChannelId())) {
             if (event.getReactionEmote().getId().equals("734611793187700736")) { // GAMING TICKET
                 this.discordBot.getTicketManager().createChannel(event, TicketType.GAMING);
@@ -194,6 +197,9 @@ public class EventHandler extends ListenerAdapter {
             } else if (event.getReactionEmote().getId().equals("736627104992591883")) { // GENERAL TICKET
                 this.discordBot.getTicketManager().createChannel(event, TicketType.GENERAL);
             }
+            event.getChannel().retrieveMessageById(event.getMessageId()).queue(message -> {
+                message.removeReaction(event.getReactionEmote().getEmote(), event.getMember().getUser()).queue();
+            });
         } else if (event.getChannel().getName().startsWith("ticket-")) {
             if (event.getReactionEmote().getEmoji().equals("📪")) {
                 event.getChannel().delete().queue();
