@@ -188,10 +188,19 @@ public class EventHandler extends ListenerAdapter {
         if (event.getChannel().getId().equals(this.discordBot.getRoleChannelId())) {
             if (event.getReactionEmote().getId().equals("734613241581404271")) { // ATOMICRADIO ROLE
                 Role role = event.getGuild().getRolesByName("#radio", true).stream().findFirst().orElse(null);
-                event.getGuild().addRoleToMember(event.getMember(), role).queue();
+                
+                if(event.getMember().getRoles().stream().filter(t -> t.getId().equals(role.getId())).findFirst().orElse(null) != null) {
+                    event.getGuild().removeRoleFromMember(event.getMember(), role).queue();
+                } else {
+                    event.getGuild().addRoleToMember(event.getMember(), role).queue();
+                }
             } else if (event.getReactionEmote().getId().equals("734611793187700736")) { // ATOMICGAMING ROLE
                 Role role = event.getGuild().getRolesByName("#gaming", true).stream().findFirst().orElse(null);
-                event.getGuild().addRoleToMember(event.getMember(), role).queue();
+                if(event.getMember().getRoles().stream().filter(t -> t.getId().equals(role.getId())).findFirst().orElse(null) != null) {
+                    event.getGuild().removeRoleFromMember(event.getMember(), role).queue();
+                } else {
+                    event.getGuild().addRoleToMember(event.getMember(), role).queue();
+                }
             }
             event.getChannel().retrieveMessageById(event.getMessageId()).queue(message -> {
                 message.removeReaction(event.getReactionEmote().getEmote(), event.getMember().getUser()).queue();
