@@ -231,7 +231,7 @@ public class BackendManager {
     }
     
     public boolean hasPermissionPower2(Member member) {
-        return hasRole(member, "Manager") || hasRole(member, "Administrator") || hasRole(member, "Developer") || hasRole(member, "» Teamleading");
+        return hasRole(member, "Manager") || hasRole(member, "Administrator") || hasRole(member, "Developer") || hasRole(member, "Teamleading");
     }
     
     public boolean hasPermissionPower1(Member member) {
@@ -239,7 +239,7 @@ public class BackendManager {
     }
     
     public boolean isTeamMember(Member member) {
-        return hasRole(member, "✨ Team");
+        return hasRole(member, "Manager") || hasRole(member, "Administrator") || hasRole(member, "Teamleading") || hasRole(member, "Developer") || hasRole(member, "Technician") || hasRole(member, "Moderator") || hasRole(member, "Supporter") || hasRole(member, "Streamer") || hasRole(member, "Content") || hasRole(member, "Designer") || hasRole(member, "Builder");
     }
 
     public HashMap<String, Long> getLevelTimeout() {
