@@ -42,7 +42,7 @@ public class WarnCommand {
         embed.setColor(new Color(149, 79, 180));
         embed.setAuthor("Warnsystem", null, "https://cdn.atomicnetworks.eu/discord/icon.png");
         
-        if(args.length == 1 || message.getMentionedMembers().isEmpty()) {
+        if(args.length == 1) {
             embed.setDescription("Hey 👋, you need to enter one of the following numbers so that your warning can be processed.\n" +
                 "1. **Provocation**\n" +
                 "2. **Single advertisement**\n" +
@@ -62,6 +62,9 @@ public class WarnCommand {
         }
         
         Member target = message.getMentionedMembers().stream().findFirst().orElse(null);
+        if(target == null) {
+            target = this.discord.getJda().getGuildById(this.discord.getGuildId()).retrieveMemberById(args[1]).complete();
+        }
         if(this.discord.getBackendManager().isTeamMember(target)) {
             embed.setDescription("I'm sorry, you can't warn your colleagues.");
             event.getChannel().sendMessage(embed.build()).queue();
