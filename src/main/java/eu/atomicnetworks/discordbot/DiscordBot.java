@@ -110,7 +110,7 @@ public class DiscordBot {
                 EmbedBuilder embed = new EmbedBuilder();
                 embed.setColor(new Color(149, 79, 180));
                 embed.setAuthor("Supportsystem", null, "https://cdn.atomicnetworks.eu/discord/icon.png");
-                embed.setDescription("Respond to one of the emojis listed below and create a support ticket with team members from that department.\n\n"
+                embed.setDescription("You have a problem, want to send us feedback or something else to our support? By clicking on the emoji below, you can open a ticket where our team will be happy to help you.\n\n"
                         + "<:atomic:736627104992591883> atomicnetworks.eu\n"
                         + "<:playatomic:734613241581404271> atomicradio.eu\n"
                         + "<:gamingatomic:734611793187700736> atomicgaming.eu");
