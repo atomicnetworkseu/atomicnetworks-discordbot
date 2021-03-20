@@ -83,7 +83,7 @@ public class TicketManager {
         });
         this.countTickets((Integer t) -> {
             Ticket ticket = new Ticket();
-            ticket.setId("ticket-" + (t + 1));
+            ticket.setId("ticket-0" + (t + 1));
             
             Ticket.TicketUser ticketUser = new Ticket.TicketUser();
             ticketUser.setId(event.getMember().getUser().getId());
