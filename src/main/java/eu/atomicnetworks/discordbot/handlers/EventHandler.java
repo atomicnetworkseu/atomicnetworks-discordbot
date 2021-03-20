@@ -206,7 +206,7 @@ public class EventHandler extends ListenerAdapter {
         } else if (event.getChannel().getId().equals(this.discordBot.getTicketChannelId())) {
             this.discordBot.getTicketManager().createChannel(event);
             event.getChannel().retrieveMessageById(event.getMessageId()).queue(message -> {
-                message.removeReaction(event.getReactionEmote().getEmote(), event.getMember().getUser()).queue();
+                message.removeReaction("📬", event.getMember().getUser()).queue();
             });
         } else if (event.getChannel().getName().startsWith("ticket-")) {
             if (event.getReactionEmote().getEmoji().equals("📪")) {
