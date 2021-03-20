@@ -15,13 +15,11 @@ import eu.atomicnetworks.discordbot.commands.VoteCommand;
 import eu.atomicnetworks.discordbot.commands.WarnCommand;
 import eu.atomicnetworks.discordbot.commands.WarnResetCommand;
 import eu.atomicnetworks.discordbot.commands.WhoisCommand;
-import eu.atomicnetworks.discordbot.enums.TicketType;
 import eu.atomicnetworks.discordbot.objects.Ticket;
 import eu.atomicnetworks.discordbot.objects.User;
 import java.awt.Color;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -206,13 +204,7 @@ public class EventHandler extends ListenerAdapter {
                 message.removeReaction(event.getReactionEmote().getEmote(), event.getMember().getUser()).queue();
             });
         } else if (event.getChannel().getId().equals(this.discordBot.getTicketChannelId())) {
-            if (event.getReactionEmote().getId().equals("734611793187700736")) { // GAMING TICKET
-                this.discordBot.getTicketManager().createChannel(event, TicketType.GAMING);
-            } else if (event.getReactionEmote().getId().equals("734613241581404271")) { // RADIO TICKET
-                this.discordBot.getTicketManager().createChannel(event, TicketType.RADIO);
-            } else if (event.getReactionEmote().getId().equals("736627104992591883")) { // GENERAL TICKET
-                this.discordBot.getTicketManager().createChannel(event, TicketType.GENERAL);
-            }
+            this.discordBot.getTicketManager().createChannel(event);
             event.getChannel().retrieveMessageById(event.getMessageId()).queue(message -> {
                 message.removeReaction(event.getReactionEmote().getEmote(), event.getMember().getUser()).queue();
             });

@@ -1,7 +1,6 @@
 package eu.atomicnetworks.discordbot.objects;
 
 import eu.atomicnetworks.discordbot.enums.TicketStatus;
-import eu.atomicnetworks.discordbot.enums.TicketType;
 import java.util.List;
 
 /**
@@ -16,7 +15,6 @@ public class Ticket {
     private String id;
     private TicketUser createdBy;
     private String channelId;
-    private TicketType ticketType;
     private TicketStatus ticketStatus;
     private List<TicketMessage> messages;
     
@@ -106,14 +104,6 @@ public class Ticket {
 
     public void setChannelId(String channelId) {
         this.channelId = channelId;
-    }
-
-    public TicketType getTicketType() {
-        return ticketType;
-    }
-
-    public void setTicketType(TicketType ticketType) {
-        this.ticketType = ticketType;
     }
 
     public TicketStatus getTicketStatus() {

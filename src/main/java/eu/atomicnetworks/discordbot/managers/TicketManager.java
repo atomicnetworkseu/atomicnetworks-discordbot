@@ -2,7 +2,6 @@ package eu.atomicnetworks.discordbot.managers;
 
 import com.mongodb.client.model.Filters;
 import eu.atomicnetworks.discordbot.DiscordBot;
-import eu.atomicnetworks.discordbot.enums.TicketType;
 import eu.atomicnetworks.discordbot.objects.Ticket;
 import java.awt.Color;
 import java.io.File;
@@ -73,7 +72,7 @@ public class TicketManager {
         });
     }
 
-    public void createChannel(GuildMessageReactionAddEvent event, TicketType ticketType) {
+    public void createChannel(GuildMessageReactionAddEvent event) {
         Role everyoneRole = this.discord.getJda().getRolesByName("🪐 Community", true).stream().findFirst().orElse(null);
         Role supportRole = this.discord.getJda().getRolesByName("Supporter", true).stream().findFirst().orElse(null);
         Role moderatorRole = this.discord.getJda().getRolesByName("Moderator", true).stream().findFirst().orElse(null);
@@ -91,7 +90,6 @@ public class TicketManager {
             ticketUser.setUsername(event.getMember().getUser().getName());
             ticket.setCreatedBy(ticketUser);
             
-            ticket.setTicketType(ticketType);
             ticket.setMessages(new ArrayList<>());
             event.getGuild().createTextChannel(ticket.getId(), event.getChannel().getParent()).queue((channel) -> {
                 channel.createPermissionOverride(everyoneRole).setDeny(Permission.VIEW_CHANNEL).queue();

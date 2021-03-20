@@ -114,6 +114,10 @@ public class DiscordBot {
                         + "<:atomic:736627104992591883> atomicnetworks.eu\n"
                         + "<:playatomic:734613241581404271> atomicradio.eu\n"
                         + "<:gamingatomic:734611793187700736> atomicgaming.eu");
+                supportChannel.sendMessage(embed.build()).queue((message) -> {
+                    long messageId = message.getIdLong();
+                    supportChannel.addReactionById(messageId, "📬").queue();
+                });
             });
             sendTimer.setInitialDelay(10000);
             sendTimer.setRepeats(false);
