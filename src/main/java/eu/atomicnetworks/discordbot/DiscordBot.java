@@ -110,10 +110,7 @@ public class DiscordBot {
                 EmbedBuilder embed = new EmbedBuilder();
                 embed.setColor(new Color(149, 79, 180));
                 embed.setAuthor("Supportsystem", null, "https://cdn.atomicnetworks.eu/discord/icon.png");
-                embed.setDescription("You have a problem, want to send us feedback or something else to our support?\nBy clicking on the emoji below, you can open a ticket where our team will be happy to help you. 🏝️\n\n"
-                        + "<:atomic:736627104992591883> atomicnetworks.eu\n"
-                        + "<:playatomic:734613241581404271> atomicradio.eu\n"
-                        + "<:gamingatomic:734611793187700736> atomicgaming.eu");
+                embed.setDescription("You have a problem, want to send us feedback or something else to our support?\nBy clicking on the emoji below, you can open a ticket where our team will be happy to help you. 🪄);
                 supportChannel.sendMessage(embed.build()).queue((message) -> {
                     long messageId = message.getIdLong();
                     supportChannel.addReactionById(messageId, "📬").queue();
@@ -121,7 +118,7 @@ public class DiscordBot {
             });
             sendTimer.setInitialDelay(10000);
             sendTimer.setRepeats(false);
-            //sendTimer.start();
+            sendTimer.start();
             
             Timer warnEndTimer = new Timer(10000, (ActionEvent e) -> {
                 this.userManager.getActiveMutedUsers((List<User> t) -> {
