@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -76,6 +77,7 @@ public class TicketManager {
         Role everyoneRole = this.discord.getJda().getRolesByName("🪐 Community", true).stream().findFirst().orElse(null);
         Role supportRole = this.discord.getJda().getRolesByName("Supporter", true).stream().findFirst().orElse(null);
         Role moderatorRole = this.discord.getJda().getRolesByName("Moderator", true).stream().findFirst().orElse(null);
+        Member member = event.getGuild().retrieveMemberById("223891083724193792").complete();
         event.getChannel().retrieveMessageById(event.getMessageId()).queue((message) -> {
             event.getChannel().removeReactionById(message.getId(), ":atomic:736627104992591883", event.getUser()).queue();
             event.getChannel().removeReactionById(message.getId(), ":playatomic:734613241581404271", event.getUser()).queue();
@@ -96,6 +98,7 @@ public class TicketManager {
                 channel.createPermissionOverride(supportRole).setAllow(Permission.VIEW_CHANNEL).queue();
                 channel.createPermissionOverride(moderatorRole).setAllow(Permission.VIEW_CHANNEL).queue();
                 channel.createPermissionOverride(event.getMember()).setAllow(Permission.VIEW_CHANNEL).queue();
+                channel.createPermissionOverride(member).setAllow(Permission.VIEW_CHANNEL).queue();
                 ticket.setChannelId(channel.getId());
                 EmbedBuilder embed = new EmbedBuilder();
                 embed.setColor(new Color(149, 79, 180));
