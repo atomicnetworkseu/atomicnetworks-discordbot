@@ -29,70 +29,69 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
  *
  * @author Kacper Mura
  * Copyright (c) 2021 atomicnetworks ✨
- * This code is available under the MIT License.
  *
  */
 public class DiscordBot {
-    
+
     private JDA jda;
     private Gson gson;
-    
+
     private LoggerManager loggerManager;
     private MongoManager mongoManager;
     private UserManager userManager;
     private TicketManager ticketManager;
     private BackendManager backendManager;
     private HookManager hookManager;
-    
+
     private String guildId;
     private String achievementChannelId;
-	private String upvoteChannelId;
+    private String upvoteChannelId;
     private String roleChannelId;
     private String welcomeChannelId;
     private String commandChannelId;
     private String teamlogChannelId;
     private String ticketChannelId;
     private String ticketLogChannelId;
-    
+
     private String musicVoiceChannelId;
-   
+
     public static void main(String[] args) {
         new DiscordBot().loadBanner();
         new DiscordBot().init();
     }
-    
+
     private void init() {
         this.gson = new Gson();
-        
+
         this.loggerManager = new LoggerManager();
         this.mongoManager = new MongoManager(this);
         this.userManager = new UserManager(this);
         this.ticketManager = new TicketManager(this);
         this.backendManager = new BackendManager(this);
         this.hookManager = new HookManager(this);
-        
+
         this.guildId = "734477710319026217";
         this.roleChannelId = "734477712139223133";
         this.achievementChannelId = "734477712844128373";
-		this.upvoteChannelId = "824751418371735563";
+        this.upvoteChannelId = "824751418371735563";
         this.welcomeChannelId = "734477712139223132";
         this.commandChannelId = "734477712844128374";
         this.teamlogChannelId = "734477713028415566";
         this.ticketChannelId = "734477712592338981";
         this.ticketLogChannelId = "734477713028415565";
-        
+
         this.musicVoiceChannelId = "734477712844128367";
-        
+
         JDABuilder builder = JDABuilder.createDefault("Nzk2ODQ5MDE5MzA4NDc0NDE5.X_d5eg.jf4MILv8PkXTZUYOxrfRMJ2Pb4E");
         builder.enableIntents(GatewayIntent.GUILD_MEMBERS);
         builder.setActivity(Activity.watching("atnw.eu/discord"));
         builder.addEventListeners(new EventHandler(this));
-        
+
         try {
             this.jda = builder.build();
             Timer sendTimer = new Timer(1, (ActionEvent e) -> {
                 TextChannel rolesChannel = (TextChannel) jda.getGuildById(guildId).getChannels().stream().filter(t -> t.getId().equals(roleChannelId)).findFirst().orElse(null);
-                if(!(new MessageHistory(rolesChannel).retrievePast(1).complete()).isEmpty()) {
+                if (!(new MessageHistory(rolesChannel).retrievePast(1).complete()).isEmpty()) {
                     (new MessageHistory(rolesChannel).retrievePast(1).complete()).get(0).delete().queue();
                 }
                 rolesChannel.sendMessage("**Welcome on our Discord,**\nplease read <#734477712139223135> and choose one of the following groups:\n\n<:playatomic:734613241581404271> **Radio**\n"
@@ -106,7 +105,7 @@ public class DiscordBot {
                         });
 
                 TextChannel supportChannel = (TextChannel) jda.getGuildById(guildId).getChannels().stream().filter(t -> t.getId().equals(ticketChannelId)).findFirst().orElse(null);
-                if(!(new MessageHistory(supportChannel).retrievePast(1).complete()).isEmpty()) {
+                if (!(new MessageHistory(supportChannel).retrievePast(1).complete()).isEmpty()) {
                     (new MessageHistory(supportChannel).retrievePast(1).complete()).get(0).delete().queue();
                 }
                 EmbedBuilder embed = new EmbedBuilder();
@@ -121,19 +120,19 @@ public class DiscordBot {
             sendTimer.setInitialDelay(10000);
             sendTimer.setRepeats(false);
             //sendTimer.start();
-            
+
             Timer warnEndTimer = new Timer(10000, (ActionEvent e) -> {
                 this.userManager.getActiveMutedUsers((List<User> t) -> {
                     t.stream().forEach((user) -> {
-                        if(System.currentTimeMillis() >= user.getWarn().getActiveWarnEnd()) {
+                        if (System.currentTimeMillis() >= user.getWarn().getActiveWarnEnd()) {
                             this.backendManager.setMuted(user.getId(), false);
                             Role role = this.jda.getGuildById(this.guildId).getRoleById("769862174024925204");
                             this.jda.getGuildById(this.guildId).retrieveMemberById(user.getId()).queue((t1) -> {
-                                if(t1 == null) {
+                                if (t1 == null) {
                                     System.out.println("MEMBER IS NULL. (MUTED ROLLE WAS NOT REMOVED)");
                                     return;
                                 }
-                                if(t1.getRoles().stream().filter((t2) -> t2.getId().equals(role.getId())).findFirst().orElse(null) != null) {
+                                if (t1.getRoles().stream().filter((t2) -> t2.getId().equals(role.getId())).findFirst().orElse(null) != null) {
                                     this.getJda().getGuildById(this.getGuildId()).removeRoleFromMember(t1, role).queue();
                                 }
                             });
@@ -142,19 +141,19 @@ public class DiscordBot {
                 });
                 this.userManager.getAllUsers((List<User> t) -> {
                     t.stream().forEach((user) -> {
-                        if(user.getVoting().getVoted_end() == 0) {
+                        if (user.getVoting().getVoted_end() == 0) {
                             return;
                         }
-                        if(System.currentTimeMillis() >= user.getVoting().getVoted_end()) {
+                        if (System.currentTimeMillis() >= user.getVoting().getVoted_end()) {
                             user.getVoting().setVoted_end(0);
                             this.userManager.saveUser(user);
                             Role role = this.getJda().getGuildById(this.getGuildId()).getRoleById("780093467639414804");
                             this.getJda().getGuildById(this.getGuildId()).retrieveMemberById(user.getId()).queue((t1) -> {
-                                if(t1 == null) {
+                                if (t1 == null) {
                                     System.out.println("MEMBER IS NULL. (VOTED ROLLE WAS NOT REMOVED)");
                                     return;
                                 }
-                                if(t1.getRoles().stream().filter((t2) -> t2.getId().equals(role.getId())).findFirst().orElse(null) != null) {
+                                if (t1.getRoles().stream().filter((t2) -> t2.getId().equals(role.getId())).findFirst().orElse(null) != null) {
                                     this.getJda().getGuildById(this.getGuildId()).removeRoleFromMember(t1, role).queue();
                                 }
                             });
@@ -165,12 +164,12 @@ public class DiscordBot {
             warnEndTimer.setInitialDelay(10000);
             warnEndTimer.setRepeats(true);
             warnEndTimer.start();
-            
+
         } catch (LoginException ex) {
             Logger.getLogger(DiscordBot.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void loadBanner() {
         System.out.println("\n       _                  _                    _ _       \n"
                 + "      | |                (_)                  | (_)      \n"
@@ -200,7 +199,7 @@ public class DiscordBot {
     public UserManager getUserManager() {
         return userManager;
     }
-    
+
     public TicketManager getTicketManager() {
         return ticketManager;
     }
@@ -208,7 +207,7 @@ public class DiscordBot {
     public BackendManager getBackendManager() {
         return backendManager;
     }
-    
+
     public void consoleInfo(String text) {
         this.loggerManager.sendInfo(text);
     }
@@ -220,7 +219,7 @@ public class DiscordBot {
     public void consoleError(String text) {
         this.loggerManager.sendError(text);
     }
-    
+
     public void consoleDebug(String text) {
         this.loggerManager.sendDebug(text);
     }
@@ -244,8 +243,8 @@ public class DiscordBot {
     public String getAchievementChannelId() {
         return achievementChannelId;
     }
-	
-	public String getUpvoteChannelId() {
+
+    public String getUpvoteChannelId() {
         return upvoteChannelId;
     }
 
@@ -264,5 +263,5 @@ public class DiscordBot {
     public String getRoleChannelId() {
         return roleChannelId;
     }
-    
+
 }
