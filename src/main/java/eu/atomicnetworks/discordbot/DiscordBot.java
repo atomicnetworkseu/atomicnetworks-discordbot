@@ -73,6 +73,7 @@ public class DiscordBot {
         this.guildId = "734477710319026217";
         this.roleChannelId = "734477712139223133";
         this.achievementChannelId = "734477712844128373";
+		this.upvoteChannelId = "824751418371735563";
         this.welcomeChannelId = "734477712139223132";
         this.commandChannelId = "734477712844128374";
         this.teamlogChannelId = "734477713028415566";
