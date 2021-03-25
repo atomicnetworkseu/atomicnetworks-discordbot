@@ -46,6 +46,7 @@ public class DiscordBot {
     
     private String guildId;
     private String achievementChannelId;
+	private String upvoteChannelId;
     private String roleChannelId;
     private String welcomeChannelId;
     private String commandChannelId;
@@ -242,6 +243,10 @@ public class DiscordBot {
 
     public String getAchievementChannelId() {
         return achievementChannelId;
+    }
+	
+	public String getUpvoteChannelId() {
+        return upvoteChannelId;
     }
 
     public String getMusicVoiceChannelId() {
