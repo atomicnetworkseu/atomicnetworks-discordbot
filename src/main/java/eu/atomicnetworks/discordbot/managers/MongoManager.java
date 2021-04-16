@@ -32,8 +32,8 @@ public class MongoManager {
         Logger mongoLogger = Logger.getLogger( "org.mongodb.driver" );
         mongoLogger.setLevel(Level.SEVERE); 
         try {
-            this.client = MongoClients.create(new ConnectionString("mongodb://127.0.0.1"));
-            this.database = client.getDatabase("discordbot");
+            this.client = MongoClients.create(new ConnectionString("mongodb://10.10.10.108"));
+            this.database = client.getDatabase("atomicnetworks-discordbot");
             this.users = this.database.getCollection("users");
             this.tickets = this.database.getCollection("tickets");
             this.verifys = this.database.getCollection("verifys");
