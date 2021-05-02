@@ -119,7 +119,7 @@ public class EventHandler extends ListenerAdapter {
 
         User user = this.discordBot.getBackendManager().getUser(String.valueOf(event.getMember().getIdLong()));
         int randomXp = this.random.nextInt((5 - 1) + 1) + 1;
-        this.discordBot.getBackendManager().addXp(user.getId(), randomXp);
+        this.discordBot.getBackendManager().addXp(user.getId(), (randomXp*this.discordBot.getBackendManager().getXPBoost(event.getMember())));
         this.discordBot.getBackendManager().setUsername(user.getId(), event.getMember().getUser().getName());
         if (this.discordBot.getBackendManager().getRemainingXp(user.getId()) <= randomXp) {
             this.discordBot.getBackendManager().addLevel(user.getId(), 1);

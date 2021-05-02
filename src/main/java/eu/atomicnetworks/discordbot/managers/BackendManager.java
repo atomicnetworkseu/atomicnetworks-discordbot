@@ -60,7 +60,7 @@ public class BackendManager {
                     return;
                 }
                 user.setStreamTime(user.getStreamTimeMin()+1);
-                this.addXp(t.getId(), 1);
+                this.addXp(t.getId(), 1*this.getXPBoost(t));
                 if(this.getRemainingXp(user.getId()) <= 1) {
                     this.addLevel(user.getId(), 1);
                     EmbedBuilder embed = new EmbedBuilder();
@@ -220,10 +220,23 @@ public class BackendManager {
     public boolean hasRole(Member member, String name) {
         List<Role> roles = member.getRoles();
         Role targetRole = roles.stream().filter(role -> role.getName().equals(name)).findFirst().orElse(null);
-        if(targetRole == null) {
-            return false;
+        return targetRole != null;
+    }
+    
+    public boolean hasRoleById(Member member, String id) {
+        List<Role> roles = member.getRoles();
+        Role targetRole = roles.stream().filter(role -> role.getId().equals(id)).findFirst().orElse(null);
+        return targetRole != null;
+    }
+    
+    public int getXPBoost(Member member) {
+        if(hasRoleById(member, "780093467639414804") || isTeamMember(member)) {
+            return 3;
+        } else if(hasRoleById(member, "740318497883553986") || hasRoleById(member, "734477710319026224")) {
+            return 2;
+        } else {
+            return 1;
         }
-        return true;
     }
     
     public boolean hasPermissionPower3(Member member) {
