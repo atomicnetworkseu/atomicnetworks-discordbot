@@ -80,7 +80,7 @@ public class DiscordBot {
         this.ticketChannelId = "734477712592338981";
         this.ticketLogChannelId = "734477713028415565";
 
-        this.musicVoiceChannelId = "734477712844128367";
+        this.musicVoiceChannelId = "836332151728766986";
 
         JDABuilder builder = JDABuilder.createDefault("Nzk2ODQ5MDE5MzA4NDc0NDE5.X_d5eg.jf4MILv8PkXTZUYOxrfRMJ2Pb4E");
         builder.enableIntents(GatewayIntent.GUILD_MEMBERS);

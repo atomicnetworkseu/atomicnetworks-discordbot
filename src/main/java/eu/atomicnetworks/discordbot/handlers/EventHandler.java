@@ -27,6 +27,7 @@ import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -102,6 +103,18 @@ public class EventHandler extends ListenerAdapter {
     @Override
     public void onGuildReady(GuildReadyEvent event) {
 
+    }
+
+    @Override
+    public void onGuildMessageDelete(GuildMessageDeleteEvent event) {
+        EmbedBuilder embed = new EmbedBuilder();
+        embed.setColor(new Color(149, 79, 180));
+        embed.setAuthor("Message deleted");
+        TextChannel targetChannel = event.getChannel();
+        Message message = targetChannel.retrieveMessageById(event.getMessageId()).complete();
+        embed.setDescription(message.getContentRaw());
+        TextChannel textChannel = (TextChannel) this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).getChannels().stream().filter(t -> t.getId().equals(this.discordBot.getTeamlogChannelId())).findFirst().orElse(null);
+        textChannel.sendMessage(embed.build()).queue();
     }
 
     @Override
