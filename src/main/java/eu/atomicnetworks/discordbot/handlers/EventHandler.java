@@ -96,7 +96,7 @@ public class EventHandler extends ListenerAdapter {
         embed.setColor(new Color(149, 79, 180));
         
         int rnd = this.random.nextInt(welcomeMessage.size());
-        embed.setDescription(MessageFormat.format(this.welcomeMessage.get(rnd), event.getMember().getAsMention()));
+        embed.setDescription(MessageFormat.format(this.welcomeMessage.get(rnd), "**" + event.getMember().getUser().getName() + "**#" + event.getMember().getUser().getDiscriminator()));
         welcomeChannel.sendMessage(embed.build()).queue();
     }
 
@@ -129,7 +129,7 @@ public class EventHandler extends ListenerAdapter {
             return;
         }
         Message message = event.getMessage();
-
+        
         User user = this.discordBot.getBackendManager().getUser(String.valueOf(event.getMember().getIdLong()));
         int randomXp = this.random.nextInt((5 - 1) + 1) + 1;
         this.discordBot.getBackendManager().addXp(user.getId(), (randomXp*this.discordBot.getBackendManager().getXPBoost(event.getMember())));

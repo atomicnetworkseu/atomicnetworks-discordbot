@@ -150,8 +150,6 @@ public class HookManager {
             } else if(voting.getVotingProvider() == VotingProvider.BOATS) {
                 embed.setAuthor("discord.boats", null, "https://cdn.atomicnetworks.eu/discord/voting/discordboats.png");
             }
-            embed.setDescription("Thank you very much for your vote, <@" + user.getId() + ">!\nAs a gift, you get the `😵 Voted` rank for another 24 hours.");
-            textChannel.sendMessage(embed.build()).queue();
             user.getVoting().setVoteCount(user.getVoting().getVoteCount() + 1);
             user.getVoting().setVoted_end(System.currentTimeMillis() + 86400000);
             user.setXp(user.getXp()+10);
@@ -164,6 +162,8 @@ public class HookManager {
                 }
                 if(t1.getRoles().stream().filter((t2) -> t2.getId().equals(role.getId())).findFirst().orElse(null) == null) {
                     this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).addRoleToMember(t1.getIdLong(), role).queue();
+                    embed.setDescription("Thank you very much for your vote, **" + t1.getUser().getName() + "**#" + t1.getUser().getDiscriminator() + "!\nAs a gift, you get the `😵 Voted` rank for another 24 hours.");
+                    textChannel.sendMessage(embed.build()).queue();
                 } 
             });
             return;
@@ -178,8 +178,6 @@ public class HookManager {
         } else if(voting.getVotingProvider() == VotingProvider.BOATS) {
             embed.setAuthor("discord.boats", null, "https://cdn.atomicnetworks.eu/discord/voting/discordboats.png");
         }
-        embed.setDescription("Thank you very much for your vote, <@" + user.getId() + ">!\nAs a gift, you get the `😵 Voted` rank for 24 hours.");
-        textChannel.sendMessage(embed.build()).queue();
 
         user.getVoting().setVoteCount(user.getVoting().getVoteCount() + 1);
         user.getVoting().setVoted_end(System.currentTimeMillis() + 86400000);
@@ -192,6 +190,8 @@ public class HookManager {
                 return;
             }
             this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).addRoleToMember(t1.getIdLong(), role).queue();
+            embed.setDescription("Thank you very much for your vote, **" + t1.getUser().getName() + "**#" + t1.getUser().getDiscriminator() + "!\nAs a gift, you get the `😵 Voted` rank for 24 hours.");
+            textChannel.sendMessage(embed.build()).queue();
         });
     }
     
