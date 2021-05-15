@@ -160,10 +160,10 @@ public class HookManager {
                     System.out.println("MEMBER IS NULL. (VOTED ROLLE WAS NOT ADDED)");
                     return;
                 }
+                embed.setDescription("Thank you very much for your vote, **" + t1.getUser().getName() + "**#" + t1.getUser().getDiscriminator() + "!\nAs a gift, you get the `😵 Voted` rank for another 24 hours.");
+                textChannel.sendMessage(embed.build()).queue();
                 if(t1.getRoles().stream().filter((t2) -> t2.getId().equals(role.getId())).findFirst().orElse(null) == null) {
                     this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).addRoleToMember(t1.getIdLong(), role).queue();
-                    embed.setDescription("Thank you very much for your vote, **" + t1.getUser().getName() + "**#" + t1.getUser().getDiscriminator() + "!\nAs a gift, you get the `😵 Voted` rank for another 24 hours.");
-                    textChannel.sendMessage(embed.build()).queue();
                 } 
             });
             return;
@@ -189,9 +189,9 @@ public class HookManager {
                 System.out.println("MEMBER IS NULL. (VOTED ROLLE WAS NOT ADDED)");
                 return;
             }
-            this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).addRoleToMember(t1.getIdLong(), role).queue();
             embed.setDescription("Thank you very much for your vote, **" + t1.getUser().getName() + "**#" + t1.getUser().getDiscriminator() + "!\nAs a gift, you get the `😵 Voted` rank for 24 hours.");
             textChannel.sendMessage(embed.build()).queue();
+            this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).addRoleToMember(t1.getIdLong(), role).queue();
         });
     }
     
