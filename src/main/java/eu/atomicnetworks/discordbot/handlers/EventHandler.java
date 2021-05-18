@@ -9,6 +9,7 @@ import eu.atomicnetworks.discordbot.commands.LevelCommand;
 import eu.atomicnetworks.discordbot.commands.LevelWarnCommand;
 import eu.atomicnetworks.discordbot.commands.MagicMusselCommand;
 import eu.atomicnetworks.discordbot.commands.NewsCommand;
+import eu.atomicnetworks.discordbot.commands.PingCommand;
 import eu.atomicnetworks.discordbot.commands.RankingCommand;
 import eu.atomicnetworks.discordbot.commands.TicketCommand;
 import eu.atomicnetworks.discordbot.commands.VoteCommand;
@@ -56,6 +57,7 @@ public class EventHandler extends ListenerAdapter {
     private final VoteCommand voteCommand;
     private final LevelWarnCommand levelWarnCommand;
     private final WarnResetCommand warnResetCommand;
+    private final PingCommand pingCommand;
     
     private final Random random;
     private ArrayList<String> welcomeMessage;
@@ -76,6 +78,7 @@ public class EventHandler extends ListenerAdapter {
         this.voteCommand = new VoteCommand(this.discordBot);
         this.levelWarnCommand = new LevelWarnCommand(this.discordBot);
         this.warnResetCommand = new WarnResetCommand(this.discordBot);
+        this.pingCommand = new PingCommand(this.discordBot);
         
         this.random = new Random();
         this.welcomeMessage = new ArrayList<>();
@@ -197,6 +200,8 @@ public class EventHandler extends ListenerAdapter {
             voteCommand.execute(event);
         } else if (message.getContentRaw().toLowerCase().startsWith("!levelwarn")) {
             levelWarnCommand.execute(event);
+        } else if (message.getContentRaw().toLowerCase().startsWith("!ping")) {
+            pingCommand.execute(event);
         }
     }
 
