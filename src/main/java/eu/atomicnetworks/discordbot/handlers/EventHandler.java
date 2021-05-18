@@ -148,6 +148,15 @@ public class EventHandler extends ListenerAdapter {
             Ticket ticket = this.discordBot.getBackendManager().getTicket(event.getChannel().getName());
             this.discordBot.getBackendManager().addTicketMessage(ticket.getId(), message);
         }
+        
+        if(event.getChannel().getName().contains("announcements")) {
+            EmbedBuilder embed = new EmbedBuilder();
+            embed.setColor(new Color(149, 79, 180));
+            embed.setTitle("**" + event.getAuthor().getName() + "**#" + event.getAuthor().getDiscriminator(), event.getAuthor().getAvatarUrl());
+            embed.setDescription(message.getContentRaw());
+            event.getChannel().sendMessage(embed.build()).queue();
+            return;
+        }
 
         if (!message.getContentRaw().toLowerCase().startsWith("!")) {
             return;
