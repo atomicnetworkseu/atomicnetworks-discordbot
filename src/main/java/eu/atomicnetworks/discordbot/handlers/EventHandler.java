@@ -109,18 +109,6 @@ public class EventHandler extends ListenerAdapter {
     }
 
     @Override
-    public void onGuildMessageDelete(GuildMessageDeleteEvent event) {
-        EmbedBuilder embed = new EmbedBuilder();
-        embed.setColor(new Color(149, 79, 180));
-        embed.setAuthor("Message deleted");
-        TextChannel targetChannel = event.getChannel();
-        Message message = targetChannel.retrieveMessageById(event.getMessageId()).complete();
-        embed.setDescription(message.getContentRaw());
-        TextChannel textChannel = (TextChannel) this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).getChannels().stream().filter(t -> t.getId().equals(this.discordBot.getTeamlogChannelId())).findFirst().orElse(null);
-        textChannel.sendMessage(embed.build()).queue();
-    }
-
-    @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         if (event.getMember() == null) {
             return;
@@ -151,18 +139,17 @@ public class EventHandler extends ListenerAdapter {
             Ticket ticket = this.discordBot.getBackendManager().getTicket(event.getChannel().getName());
             this.discordBot.getBackendManager().addTicketMessage(ticket.getId(), message);
         }
-        
-        if(event.getChannel().getName().contains("announcements")) {
-            EmbedBuilder embed = new EmbedBuilder();
-            embed.setColor(new Color(149, 79, 180));
-            embed.setAuthor(event.getAuthor().getName(), event.getAuthor().getAvatarUrl());
-            embed.setDescription(message.getContentRaw());
-            message.delete().queue();
-            event.getChannel().sendMessage(embed.build()).queue();
-            return;
-        }
 
         if (!message.getContentRaw().toLowerCase().startsWith("!")) {
+            if(event.getChannel().getName().contains("announcements")) {
+                EmbedBuilder embed = new EmbedBuilder();
+                embed.setColor(new Color(149, 79, 180));
+                embed.setAuthor(event.getAuthor().getName(), null, event.getAuthor().getAvatarUrl());
+                embed.setDescription(message.getContentRaw());
+                message.delete().queue();
+                event.getChannel().sendMessage(embed.build()).queue();
+                return;
+            }
             return;
         }
         this.discordBot.consoleInfo(MessageFormat.format("{0} ({1}) ran command {2} in {3} (#{4})", event.getAuthor().getName(), event.getAuthor().getId(), message.getContentRaw().toLowerCase().split(" ")[0], event.getGuild().getName(), event.getChannel().getName()));
