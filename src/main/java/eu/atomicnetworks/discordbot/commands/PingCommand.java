@@ -1,6 +1,9 @@
 package eu.atomicnetworks.discordbot.commands;
 
 import eu.atomicnetworks.discordbot.DiscordBot;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
@@ -34,13 +37,13 @@ public class PingCommand {
         message.delete().queue();
         switch(args[1].toLowerCase()) {
             case "everyone":
-                event.getChannel().sendMessage("@everyone").queue((x) -> x.delete().queue());
+                event.getChannel().sendMessage("@everyone").queue((x) -> x.delete().queueAfter(5, TimeUnit.SECONDS));
                 break;
             case "here":
-                event.getChannel().sendMessage("@here").queue((x) -> x.delete().queue());
+                event.getChannel().sendMessage("@here").queue((x) -> x.delete().queueAfter(5, TimeUnit.SECONDS));
                 break;
             default:
-                event.getChannel().sendMessage("@everyone").queue((x) -> x.delete().queue());
+                event.getChannel().sendMessage("@everyone").queue((x) -> x.delete().queueAfter(5, TimeUnit.SECONDS));
                 break;
         } 
         

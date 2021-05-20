@@ -155,8 +155,9 @@ public class EventHandler extends ListenerAdapter {
         if(event.getChannel().getName().contains("announcements")) {
             EmbedBuilder embed = new EmbedBuilder();
             embed.setColor(new Color(149, 79, 180));
-            embed.setTitle("**" + event.getAuthor().getName() + "**#" + event.getAuthor().getDiscriminator(), event.getAuthor().getAvatarUrl());
+            embed.setAuthor(event.getAuthor().getName(), event.getAuthor().getAvatarUrl());
             embed.setDescription(message.getContentRaw());
+            message.delete().queue();
             event.getChannel().sendMessage(embed.build()).queue();
             return;
         }
