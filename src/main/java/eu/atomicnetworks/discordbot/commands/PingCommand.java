@@ -35,6 +35,12 @@ public class PingCommand {
         }
         
         message.delete().queue();
+        
+        if(args.length == 1) {
+            event.getChannel().sendMessage("@everyone").queue((x) -> x.delete().queueAfter(5, TimeUnit.SECONDS));
+            return;
+        }
+        
         switch(args[1].toLowerCase()) {
             case "everyone":
                 event.getChannel().sendMessage("@everyone").queue((x) -> x.delete().queueAfter(5, TimeUnit.SECONDS));
