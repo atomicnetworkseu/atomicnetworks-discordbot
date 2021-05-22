@@ -8,7 +8,6 @@ import eu.atomicnetworks.discordbot.commands.InfoCommand;
 import eu.atomicnetworks.discordbot.commands.LevelCommand;
 import eu.atomicnetworks.discordbot.commands.LevelWarnCommand;
 import eu.atomicnetworks.discordbot.commands.MagicMusselCommand;
-import eu.atomicnetworks.discordbot.commands.NewsCommand;
 import eu.atomicnetworks.discordbot.commands.PingCommand;
 import eu.atomicnetworks.discordbot.commands.RankingCommand;
 import eu.atomicnetworks.discordbot.commands.TicketCommand;
@@ -47,7 +46,6 @@ public class EventHandler extends ListenerAdapter {
     private final InfoCommand infoCommand;
     private final LevelCommand levelCommand;
     private final MagicMusselCommand magicMusselCommand;
-    private final NewsCommand newsCommand;
     private final RankingCommand rankingCommand;
     private final CookieCommand cookieCommand;
     private final ClearCommand clearCommand;
@@ -68,7 +66,6 @@ public class EventHandler extends ListenerAdapter {
         this.infoCommand = new InfoCommand(this.discordBot);
         this.levelCommand = new LevelCommand(this.discordBot);
         this.magicMusselCommand = new MagicMusselCommand(this.discordBot);
-        this.newsCommand = new NewsCommand(this.discordBot);
         this.rankingCommand = new RankingCommand(this.discordBot);
         this.cookieCommand = new CookieCommand(this.discordBot);
         this.clearCommand = new ClearCommand(this.discordBot);
@@ -166,8 +163,6 @@ public class EventHandler extends ListenerAdapter {
             magicMusselCommand.execute(event);
         } else if (message.getContentRaw().toLowerCase().startsWith("!ms")) {
             magicMusselCommand.execute(event);
-        } else if (message.getContentRaw().toLowerCase().startsWith("!news")) {
-            newsCommand.execute(event);
         } else if (message.getContentRaw().toLowerCase().startsWith("!ranking")) {
             rankingCommand.execute(event);
         } else if (message.getContentRaw().toLowerCase().startsWith("!cookie")) {
