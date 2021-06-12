@@ -95,7 +95,6 @@ public class TicketManager {
             event.getGuild().createTextChannel(ticket.getId(), event.getChannel().getParent()).queue((channel) -> {
                 channel.createPermissionOverride(everyoneRole).setDeny(Permission.VIEW_CHANNEL).queue();
                 channel.createPermissionOverride(supportRole).setAllow(Permission.VIEW_CHANNEL).queue();
-                channel.createPermissionOverride(moderatorRole).setAllow(Permission.VIEW_CHANNEL).queue();
                 channel.createPermissionOverride(event.getMember()).setAllow(Permission.VIEW_CHANNEL).queue();
                 channel.createPermissionOverride(member).setAllow(Permission.VIEW_CHANNEL).queue();
                 ticket.setChannelId(channel.getId());
