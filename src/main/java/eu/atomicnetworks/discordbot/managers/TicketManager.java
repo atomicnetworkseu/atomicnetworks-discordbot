@@ -76,7 +76,6 @@ public class TicketManager {
     public void createChannel(GuildMessageReactionAddEvent event) {
         Role everyoneRole = this.discord.getJda().getRolesByName("🪐 Community", true).stream().findFirst().orElse(null);
         Role supportRole = this.discord.getJda().getRolesByName("Supporter", true).stream().findFirst().orElse(null);
-        Role moderatorRole = this.discord.getJda().getRolesByName("Moderator", true).stream().findFirst().orElse(null);
         Member member = event.getGuild().retrieveMemberById("223891083724193792").complete();
         event.getChannel().retrieveMessageById(event.getMessageId()).queue((message) -> {
             event.getChannel().removeReactionById(message.getId(), ":atomic:736627104992591883", event.getUser()).queue();
