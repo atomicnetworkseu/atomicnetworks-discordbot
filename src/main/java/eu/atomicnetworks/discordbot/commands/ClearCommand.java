@@ -1,14 +1,12 @@
 package eu.atomicnetworks.discordbot.commands;
 
-import club.minnced.discord.webhook.WebhookClient;
-import club.minnced.discord.webhook.send.WebhookEmbed;
-import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
 import eu.atomicnetworks.discordbot.DiscordBot;
 import java.awt.Color;
 import java.util.List;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageHistory;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 /**
@@ -21,11 +19,9 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 public class ClearCommand {
 
     private final DiscordBot discord;
-    private final WebhookClient webhookClient;
 
     public ClearCommand(DiscordBot discord) {
         this.discord = discord;
-        this.webhookClient = WebhookClient.withUrl("https://discord.com/api/webhooks/796848169920888852/kQpYbCZOiMedIZqFqDcHxzwBxOYbxxYqOFa000OP7U0nNKHQuDWOs9Zz3bmedzBHksWE");
     }
 
     public void execute(GuildMessageReceivedEvent event) {
@@ -52,11 +48,14 @@ public class ClearCommand {
         try {
             embed.setDescription("**Successful**, you have deleted a total of **" + Integer.valueOf(args[1]) + "** messages in " + event.getChannel().getAsMention() + ".");
 
-            WebhookEmbedBuilder webhookEmbedBuilder = new WebhookEmbedBuilder();
-            webhookEmbedBuilder.setColor(9785268);
-            webhookEmbedBuilder.addField(new WebhookEmbed.EmbedField(true, "Action", "Clear"));
-            webhookEmbedBuilder.addField(new WebhookEmbed.EmbedField(true, "Team member", event.getMember().getUser().getAsMention()));
-            this.webhookClient.send(webhookEmbedBuilder.build());
+            EmbedBuilder logEmbed = new EmbedBuilder();
+            embed.setColor(9785268);
+            embed.addField("Action", "Clear", true);
+            embed.addField("Team member", event.getMember().getUser().getAsMention(), true);
+            TextChannel teamlog = this.discord.getJda().getGuildById(this.discord.getGuildId()).getTextChannelById(this.discord.getTeamlogChannelId());
+            if(teamlog != null) {
+                teamlog.sendMessage(logEmbed.toString()).queue();
+            }
 
             event.getMember().getUser().openPrivateChannel().queue((channel) -> {
                 channel.sendMessage(embed.build()).queue();

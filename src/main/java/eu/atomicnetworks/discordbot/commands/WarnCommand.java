@@ -1,8 +1,5 @@
 package eu.atomicnetworks.discordbot.commands;
 
-import club.minnced.discord.webhook.WebhookClient;
-import club.minnced.discord.webhook.send.WebhookEmbed;
-import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
 import eu.atomicnetworks.discordbot.DiscordBot;
 import eu.atomicnetworks.discordbot.enums.WarnReason;
 import eu.atomicnetworks.discordbot.objects.User;
@@ -11,6 +8,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 /**
@@ -23,11 +21,9 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 public class WarnCommand {
     
     private final DiscordBot discord;
-    private final WebhookClient webhookClient;
 
     public WarnCommand(DiscordBot discord) {
         this.discord = discord;
-        this.webhookClient = WebhookClient.withUrl("https://discord.com/api/webhooks/796848169920888852/kQpYbCZOiMedIZqFqDcHxzwBxOYbxxYqOFa000OP7U0nNKHQuDWOs9Zz3bmedzBHksWE");
     }
 
     public void execute(GuildMessageReceivedEvent event) {
@@ -151,12 +147,14 @@ public class WarnCommand {
             channel.sendMessage(userEmbed.build()).queue();
         });
         
-        WebhookEmbedBuilder webhookEmbedBuilder = new WebhookEmbedBuilder();
-        webhookEmbedBuilder.setColor(9785268);
-        webhookEmbedBuilder.addField(new WebhookEmbed.EmbedField(true, "Action", "Warn " + target.getAsMention() + " because of " + warnReason.getReason() + "."));
-        webhookEmbedBuilder.addField(new WebhookEmbed.EmbedField(true, "Punishment", "Warn"));
-        webhookEmbedBuilder.addField(new WebhookEmbed.EmbedField(true, "Teammember", member.getAsMention()));
-        this.webhookClient.send(webhookEmbedBuilder.build());
+        EmbedBuilder embed = new EmbedBuilder();
+        embed.setColor(9785268);
+        embed.addField("Action", "Warn " + target.getAsMention() + " because of " + warnReason.getReason() + ".", true);
+        embed.addField("Punishment", "Warn", true);
+        embed.addField("Teammember", member.getAsMention(), true);
+        TextChannel teamlog = this.discord.getJda().getGuildById(this.discord.getGuildId()).getTextChannelById(this.discord.getTeamlogChannelId());
+        if(teamlog == null) return;
+        teamlog.sendMessage(embed.toString()).queue();
     }
     
     public void muteUser(Member member, Member target, WarnReason warnReason, boolean warnPointMute) {
@@ -201,12 +199,14 @@ public class WarnCommand {
         Role role = this.discord.getJda().getGuildById(this.discord.getGuildId()).getRoleById("769862174024925204");
         this.discord.getJda().getGuildById(this.discord.getGuildId()).addRoleToMember(target, role).queue();
         
-        WebhookEmbedBuilder webhookEmbedBuilder = new WebhookEmbedBuilder();
-        webhookEmbedBuilder.setColor(9785268);
-        webhookEmbedBuilder.addField(new WebhookEmbed.EmbedField(true, "Action", "Warn " + target.getAsMention() + " because of " + warnReason.getReason() + "."));
-        webhookEmbedBuilder.addField(new WebhookEmbed.EmbedField(true, "Punishment", "Mute"));
-        webhookEmbedBuilder.addField(new WebhookEmbed.EmbedField(true, "Teammember", member.getAsMention()));
-        this.webhookClient.send(webhookEmbedBuilder.build());
+        EmbedBuilder embed = new EmbedBuilder();
+        embed.setColor(9785268);
+        embed.addField("Action", "Warn " + target.getAsMention() + " because of " + warnReason.getReason() + ".", true);
+        embed.addField("Punishment", "Mute", true);
+        embed.addField("Teammember", member.getAsMention(), true);
+        TextChannel teamlog = this.discord.getJda().getGuildById(this.discord.getGuildId()).getTextChannelById(this.discord.getTeamlogChannelId());
+        if(teamlog == null) return;
+        teamlog.sendMessage(embed.toString()).queue();
     }
     
     public void banUser(Member member, Member target, WarnReason warnReason) {
@@ -246,12 +246,14 @@ public class WarnCommand {
         
         this.discord.getJda().getGuildById(this.discord.getGuildId()).ban(target, 0, warnReason.getReason()).queue();
         
-        WebhookEmbedBuilder webhookEmbedBuilder = new WebhookEmbedBuilder();
-        webhookEmbedBuilder.setColor(9785268);
-        webhookEmbedBuilder.addField(new WebhookEmbed.EmbedField(true, "Action", "Warn " + target.getAsMention() + " because of " + warnReason.getReason() + "."));
-        webhookEmbedBuilder.addField(new WebhookEmbed.EmbedField(true, "Punishment", "Ban"));
-        webhookEmbedBuilder.addField(new WebhookEmbed.EmbedField(true, "Teammember", member.getAsMention()));
-        this.webhookClient.send(webhookEmbedBuilder.build());
+        EmbedBuilder embed = new EmbedBuilder();
+        embed.setColor(9785268);
+        embed.addField("Action", "Warn " + target.getAsMention() + " because of " + warnReason.getReason() + ".", true);
+        embed.addField("Punishment", "Ban", true);
+        embed.addField("Teammember", member.getAsMention(), true);
+        TextChannel teamlog = this.discord.getJda().getGuildById(this.discord.getGuildId()).getTextChannelById(this.discord.getTeamlogChannelId());
+        if(teamlog == null) return;
+        teamlog.sendMessage(embed.toString()).queue();
     }
     
 }
