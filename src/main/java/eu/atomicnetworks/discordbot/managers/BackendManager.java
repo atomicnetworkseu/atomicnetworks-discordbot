@@ -40,7 +40,9 @@ public class BackendManager {
         this.discordBot = discordBot;
         initCache();
         this.timer = new Timer(60000, (ActionEvent e) -> {
+            if(this.discordBot.getGuild() == null) return;
             VoiceChannel voiceChannel = this.discordBot.getGuild().getVoiceChannelById(this.discordBot.getMusicVoiceChannelId());
+            if(voiceChannel == null) return;
             voiceChannel.getMembers().stream().forEach(t -> {
                 if(t.getId().equals("697517106287345737")) return;
                 User user = this.getUser(t.getId());

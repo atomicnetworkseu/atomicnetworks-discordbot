@@ -73,7 +73,6 @@ public class DiscordBot {
         this.backendManager = new BackendManager(this);
         this.hookManager = new HookManager(this);
 
-        this.guild = this.jda.getGuildById("734477710319026217");
         this.roleChannelId = "734477712139223133";
         this.achievementChannelId = "734477712844128373";
         this.upvoteChannelId = "824751418371735563";
@@ -93,6 +92,14 @@ public class DiscordBot {
 
         try {
             this.jda = builder.build();
+            
+            Timer updateGuild = new Timer(60000, ((e) -> {
+                this.guild = this.jda.getGuildById("734477710319026217");
+            }));
+            updateGuild.setRepeats(true);
+            updateGuild.setInitialDelay(5000);
+            updateGuild.start();
+            
             Timer sendTimer = new Timer(1, (ActionEvent e) -> {
                 TextChannel rolesChannel = (TextChannel) guild.getChannels().stream().filter(t -> t.getId().equals(roleChannelId)).findFirst().orElse(null);
                 if (!(new MessageHistory(rolesChannel).retrievePast(1).complete()).isEmpty()) {
