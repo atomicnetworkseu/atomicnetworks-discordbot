@@ -135,9 +135,6 @@ public class HookManager {
                 he.getResponseBody().close();
                 return;
             }
-            if(!this.isAuthorized(he)) {
-                return;
-            }
             JSONObject body = this.getRequestBody(he);
             
             if(!body.getString("type").equals("changed")) {
