@@ -167,14 +167,12 @@ public class EventHandler extends ListenerAdapter {
         } else if (message.getContentRaw().toLowerCase().startsWith("!clear")) {
             clearCommand.execute(event);
         } else if (message.getContentRaw().toLowerCase().startsWith("!whois")) {
-            event.getMessage().delete().queue();
             whoisCommand.execute(event);
         } else if (message.getContentRaw().toLowerCase().startsWith("!ticket")) {
             ticketCommand.execute(event);
         } else if (message.getContentRaw().toLowerCase().startsWith("!warnreset")) {
             warnResetCommand.execute(event);
         } else if (message.getContentRaw().toLowerCase().startsWith("!warn")) {
-            event.getMessage().delete().queue();
             warnCommand.execute(event);
         } else if (message.getContentRaw().toLowerCase().startsWith("!vote")) {
             voteCommand.execute(event);

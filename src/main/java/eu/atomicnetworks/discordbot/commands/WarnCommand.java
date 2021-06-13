@@ -31,6 +31,7 @@ public class WarnCommand {
         String[] args = message.getContentRaw().split(" ");
         
         if(!this.discord.getBackendManager().hasPermissionPower3(event.getMember())) return;
+        event.getMessage().delete().queue();
         
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));

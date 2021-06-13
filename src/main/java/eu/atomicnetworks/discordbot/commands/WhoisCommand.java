@@ -33,9 +33,8 @@ public class WhoisCommand {
         Message message = event.getMessage();
         String[] args = message.getContentRaw().split(" ");
 
-        if (!this.discord.getBackendManager().hasPermissionPower2(event.getMember())) {
-            return;
-        }
+        if (!this.discord.getBackendManager().hasPermissionPower2(event.getMember())) return;
+        event.getMessage().delete().queue();
 
         String userId;
         if (message.getMentionedUsers().isEmpty()) {
@@ -45,12 +44,8 @@ public class WhoisCommand {
         }
         User user = this.discord.getBackendManager().getUser(userId);
 
-        if (user.getId().equals(this.discord.getJda().getSelfUser().getId())) {
-            return;
-        }
-        if (user.getId().equals("697517106287345737")) {
-            return;
-        }
+        if (user.getId().equals(this.discord.getJda().getSelfUser().getId())) return;
+        if (user.getId().equals("697517106287345737")) return;
 
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
