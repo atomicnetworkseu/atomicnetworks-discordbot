@@ -22,12 +22,12 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Random;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -35,8 +35,8 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 /**
  *
  * @author Kacper Mura
- * Copyright (c) 2021 atomicnetworks ✨
- * This code is available under the MIT License.
+ * 2021 Copyright (c) by atomicradio.eu to present.
+ * All rights reserved. https://github.com/VocalZero
  *
  */
 public class EventHandler extends ListenerAdapter {
@@ -58,7 +58,7 @@ public class EventHandler extends ListenerAdapter {
     private final PingCommand pingCommand;
     
     private final Random random;
-    private ArrayList<String> welcomeMessage;
+    private final ArrayList<String> welcomeMessage;
     
     public EventHandler(DiscordBot discordBot) {
         this.discordBot = discordBot;
@@ -88,15 +88,17 @@ public class EventHandler extends ListenerAdapter {
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
         Role role = event.getGuild().getRoleById("734477710319026220");
+        if(role == null) return;
         event.getGuild().addRoleToMember(event.getMember(), role).queue();
         User user = this.discordBot.getBackendManager().getUser(event.getMember().getId());
         this.discordBot.getBackendManager().setUsername(user.getId(), event.getMember().getUser().getName());
-        TextChannel welcomeChannel = (TextChannel) this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).getChannels().stream().filter(t -> t.getId().equals(this.discordBot.getWelcomeChannelId())).findFirst().orElse(null);
+        TextChannel welcomeChannel = (TextChannel) this.discordBot.getGuild().getTextChannelById(this.discordBot.getWelcomeChannelId());
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
         
         int rnd = this.random.nextInt(welcomeMessage.size());
         embed.setDescription(MessageFormat.format(this.welcomeMessage.get(rnd), "**" + event.getMember().getUser().getName() + "**#" + event.getMember().getUser().getDiscriminator()));
+        if(welcomeChannel == null) return;
         welcomeChannel.sendMessage(embed.build()).queue();
     }
 
@@ -107,28 +109,23 @@ public class EventHandler extends ListenerAdapter {
 
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        if (event.getMember() == null) {
-            return;
-        }
-        if (event.getMember().getUser().getId().equals(this.discordBot.getJda().getSelfUser().getId())) {
-            return;
-        }
-        if (event.getMember().getUser().getId().equals("697517106287345737")) {
-            return;
-        }
+        Member member = event.getMember();
+        if (member == null) return;
+        if (member.getUser().getId().equals(this.discordBot.getJda().getSelfUser().getId())) return;
+        if (member.getUser().getId().equals("697517106287345737")) return;
         Message message = event.getMessage();
         
-        User user = this.discordBot.getBackendManager().getUser(String.valueOf(event.getMember().getIdLong()));
+        User user = this.discordBot.getBackendManager().getUser(member.getId());
         int randomXp = this.random.nextInt((5 - 1) + 1) + 1;
         this.discordBot.getBackendManager().addXp(user.getId(), (randomXp*this.discordBot.getBackendManager().getXPBoost(event.getMember())));
-        this.discordBot.getBackendManager().setUsername(user.getId(), event.getMember().getUser().getName());
+        this.discordBot.getBackendManager().setUsername(user.getId(), member.getUser().getName());
         if (this.discordBot.getBackendManager().getRemainingXp(user.getId()) <= randomXp) {
             this.discordBot.getBackendManager().addLevel(user.getId(), 1);
             EmbedBuilder embed = new EmbedBuilder();
             embed.setColor(new Color(149, 79, 180));
-            embed.setAuthor(event.getMember().getUser().getName(), null, event.getMember().getUser().getAvatarUrl());
+            embed.setAuthor(member.getUser().getName(), null, member.getUser().getAvatarUrl());
             embed.setDescription("**Congratulations**, you have now reached level **" + this.discordBot.getBackendManager().getLevel(user.getId()) + "**! <a:blobgifrolling:771743022282440815>");
-            TextChannel textChannel = (TextChannel) this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).getChannels().stream().filter(t -> t.getId().equals(this.discordBot.getAchievementChannelId())).findFirst().orElse(null);
+            TextChannel textChannel = (TextChannel) this.discordBot.getGuild().getChannels().stream().filter(t -> t.getId().equals(this.discordBot.getAchievementChannelId())).findFirst().orElse(null);
             textChannel.sendMessage(embed.build()).queue();
         }
 

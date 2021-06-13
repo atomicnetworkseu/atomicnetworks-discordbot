@@ -14,8 +14,8 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 /**
  *
  * @author Kacper Mura
- * Copyright (c) 2021 atomicnetworks ✨
- * This code is available under the MIT License.
+ * 2021 Copyright (c) by atomicradio.eu to present.
+ * All rights reserved. https://github.com/VocalZero
  *
  */
 public class WarnCommand {
@@ -30,9 +30,7 @@ public class WarnCommand {
         Message message = event.getMessage();
         String[] args = message.getContentRaw().split(" ");
         
-        if(!this.discord.getBackendManager().hasPermissionPower3(event.getMember())) {
-            return;
-        }
+        if(!this.discord.getBackendManager().hasPermissionPower3(event.getMember())) return;
         
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
@@ -59,7 +57,7 @@ public class WarnCommand {
         
         Member target = message.getMentionedMembers().stream().findFirst().orElse(null);
         if(target == null) {
-            target = this.discord.getJda().getGuildById(this.discord.getGuildId()).retrieveMemberById(args[1]).complete();
+            target = this.discord.getGuild().retrieveMemberById(args[1]).complete();
         }
         if(this.discord.getBackendManager().isTeamMember(target)) {
             embed.setDescription("I'm sorry, you can't warn your colleagues.");
@@ -152,7 +150,7 @@ public class WarnCommand {
         embed.addField("Action", "Warn " + target.getAsMention() + " because of " + warnReason.getReason() + ".", true);
         embed.addField("Punishment", "Warn", true);
         embed.addField("Teammember", member.getAsMention(), true);
-        TextChannel teamlog = this.discord.getJda().getGuildById(this.discord.getGuildId()).getTextChannelById(this.discord.getTeamlogChannelId());
+        TextChannel teamlog = this.discord.getGuild().getTextChannelById(this.discord.getTeamlogChannelId());
         if(teamlog == null) return;
         teamlog.sendMessage(embed.toString()).queue();
     }
@@ -196,15 +194,16 @@ public class WarnCommand {
             channel.sendMessage(userEmbed.build()).queue();
         });
         
-        Role role = this.discord.getJda().getGuildById(this.discord.getGuildId()).getRoleById("769862174024925204");
-        this.discord.getJda().getGuildById(this.discord.getGuildId()).addRoleToMember(target, role).queue();
+        Role role = this.discord.getGuild().getRoleById("769862174024925204");
+        if(role == null) return;
+        this.discord.getGuild().addRoleToMember(target, role).queue();
         
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(9785268);
         embed.addField("Action", "Warn " + target.getAsMention() + " because of " + warnReason.getReason() + ".", true);
         embed.addField("Punishment", "Mute", true);
         embed.addField("Teammember", member.getAsMention(), true);
-        TextChannel teamlog = this.discord.getJda().getGuildById(this.discord.getGuildId()).getTextChannelById(this.discord.getTeamlogChannelId());
+        TextChannel teamlog = this.discord.getGuild().getTextChannelById(this.discord.getTeamlogChannelId());
         if(teamlog == null) return;
         teamlog.sendMessage(embed.toString()).queue();
     }
@@ -244,14 +243,14 @@ public class WarnCommand {
             channel.sendMessage(userEmbed.build()).queue();
         });
         
-        this.discord.getJda().getGuildById(this.discord.getGuildId()).ban(target, 0, warnReason.getReason()).queue();
+        this.discord.getGuild().ban(target, 0, warnReason.getReason()).queue();
         
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(9785268);
         embed.addField("Action", "Warn " + target.getAsMention() + " because of " + warnReason.getReason() + ".", true);
         embed.addField("Punishment", "Ban", true);
         embed.addField("Teammember", member.getAsMention(), true);
-        TextChannel teamlog = this.discord.getJda().getGuildById(this.discord.getGuildId()).getTextChannelById(this.discord.getTeamlogChannelId());
+        TextChannel teamlog = this.discord.getGuild().getTextChannelById(this.discord.getTeamlogChannelId());
         if(teamlog == null) return;
         teamlog.sendMessage(embed.toString()).queue();
     }

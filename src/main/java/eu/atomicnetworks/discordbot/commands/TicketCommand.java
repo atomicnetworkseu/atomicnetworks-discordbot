@@ -12,8 +12,8 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 /**
  *
  * @author Kacper Mura
- * Copyright (c) 2021 atomicnetworks ✨
- * This code is available under the MIT License.
+ * 2021 Copyright (c) by atomicradio.eu to present.
+ * All rights reserved. https://github.com/VocalZero
  *
  */
 public class TicketCommand {
@@ -27,16 +27,12 @@ public class TicketCommand {
     public void execute(GuildMessageReceivedEvent event) {
         Message message = event.getMessage();
         String[] args = message.getContentRaw().split(" ");
+        
+        if(!this.discord.getBackendManager().hasPermissionPower3(event.getMember())) return;
+        if(!event.getChannel().getName().startsWith("ticket-")) return;
+        
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
-        
-        if(!this.discord.getBackendManager().hasPermissionPower3(event.getMember())) {
-            return;
-        }
-        
-        if(!event.getChannel().getName().startsWith("ticket-")) {
-            return;
-        }
         
         switch(args[1]) {
             case "add":

@@ -24,8 +24,8 @@ import org.json.JSONObject;
 /**
  *
  * @author Kacper Mura
- * Copyright (c) 2021 atomicnetworks ✨
- * This code is available under the MIT License.
+ * 2021 Copyright (c) by atomicradio.eu to present.
+ * All rights reserved. https://github.com/VocalZero
  *
  */
 public class HookManager {
@@ -145,7 +145,8 @@ public class HookManager {
                 return;
             }
             if(body.getString("status").equals("dead")) {
-                TextChannel textChannel = (TextChannel) this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).getChannels().stream().filter(t -> t.getId().equals(this.discordBot.getTeamchatChannelId())).findFirst().orElse(null);
+                TextChannel textChannel = (TextChannel) this.discordBot.getGuild().getTextChannelById(this.discordBot.getTeamchatChannelId());
+                if(textChannel == null) return;
                 
                 EmbedBuilder embed = new EmbedBuilder();
                 embed.setColor(new Color(234, 44, 82));
@@ -165,7 +166,8 @@ public class HookManager {
                 });
                 he.sendResponseHeaders(201, -1);
             } else if(body.getString("status").equals("sick")) {
-                TextChannel textChannel = (TextChannel) this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).getChannels().stream().filter(t -> t.getId().equals(this.discordBot.getTeamchatChannelId())).findFirst().orElse(null);
+                TextChannel textChannel = (TextChannel) this.discordBot.getGuild().getTextChannelById(this.discordBot.getTeamchatChannelId());
+                if(textChannel == null) return;
                 
                 EmbedBuilder embed = new EmbedBuilder();
                 embed.setColor(new Color(249, 164, 18));
@@ -202,32 +204,40 @@ public class HookManager {
         if (user == null) {
             return;
         }
-        Role role = this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).getRoleById("780093467639414804");
-        TextChannel textChannel = (TextChannel) this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).getChannels().stream().filter(t -> t.getId().equals(this.discordBot.getUpvoteChannelId())).findFirst().orElse(null);
+        Role role = this.discordBot.getGuild().getRoleById("780093467639414804");
+        if(role == null) return;
+        TextChannel textChannel = (TextChannel) this.discordBot.getGuild().getTextChannelById(this.discordBot.getUpvoteChannelId());
+        if(textChannel == null) return;
         
         if (user.getVoting().getVoted_end() > System.currentTimeMillis()) {
             EmbedBuilder embed = new EmbedBuilder();
             embed.setColor(new Color(149, 79, 180));
-            if(voting.getVotingProvider() == VotingProvider.TOPGG) {
-                embed.setAuthor("top.gg", null, "https://cdn.atomicnetworks.eu/discord/voting/topgg.png");
-            } else if(voting.getVotingProvider() == VotingProvider.DBL) {
-                embed.setAuthor("discordbotlist.com", null, "https://cdn.atomicnetworks.eu/discord/voting/dbl.png");
-            } else if(voting.getVotingProvider() == VotingProvider.BOATS) {
-                embed.setAuthor("discord.boats", null, "https://cdn.atomicnetworks.eu/discord/voting/discordboats.png");
+            if(null != voting.getVotingProvider()) switch (voting.getVotingProvider()) {
+                case TOPGG:
+                    embed.setAuthor("top.gg", null, "https://cdn.atomicnetworks.eu/discord/voting/topgg.png");
+                    break;
+                case DBL:
+                    embed.setAuthor("discordbotlist.com", null, "https://cdn.atomicnetworks.eu/discord/voting/dbl.png");
+                    break;
+                case BOATS:
+                    embed.setAuthor("discord.boats", null, "https://cdn.atomicnetworks.eu/discord/voting/discordboats.png");
+                    break;
+                default:
+                    break;
             }
             user.getVoting().setVoteCount(user.getVoting().getVoteCount() + 1);
             user.getVoting().setVoted_end(System.currentTimeMillis() + 86400000);
             user.setXp(user.getXp()+10);
             this.discordBot.getUserManager().saveUser(user);
             
-            this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).retrieveMemberById(voting.getUserId()).queue((t1) -> {
+            this.discordBot.getGuild().retrieveMemberById(voting.getUserId()).queue((t1) -> {
                 if(t1 == null) {
                     return;
                 }
                 embed.setDescription("Thank you very much for your vote, **" + t1.getUser().getName() + "**#" + t1.getUser().getDiscriminator() + "!\nAs a gift, you get the `😵 Voted` rank for another 24 hours.");
                 textChannel.sendMessage(embed.build()).queue();
                 if(t1.getRoles().stream().filter((t2) -> t2.getId().equals(role.getId())).findFirst().orElse(null) == null) {
-                    this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).addRoleToMember(t1.getIdLong(), role).queue();
+                    this.discordBot.getGuild().addRoleToMember(t1.getIdLong(), role).queue();
                 } 
             });
             return;
@@ -235,12 +245,18 @@ public class HookManager {
 
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
-        if(voting.getVotingProvider() == VotingProvider.TOPGG) {
-            embed.setAuthor("top.gg", null, "https://cdn.atomicnetworks.eu/discord/voting/topgg.png");
-        } else if(voting.getVotingProvider() == VotingProvider.DBL) {
-            embed.setAuthor("discordbotlist.com", null, "https://cdn.atomicnetworks.eu/discord/voting/dbl.png");
-        } else if(voting.getVotingProvider() == VotingProvider.BOATS) {
-            embed.setAuthor("discord.boats", null, "https://cdn.atomicnetworks.eu/discord/voting/discordboats.png");
+        if(null != voting.getVotingProvider()) switch (voting.getVotingProvider()) {
+            case TOPGG:
+                embed.setAuthor("top.gg", null, "https://cdn.atomicnetworks.eu/discord/voting/topgg.png");
+                break;
+            case DBL:
+                embed.setAuthor("discordbotlist.com", null, "https://cdn.atomicnetworks.eu/discord/voting/dbl.png");
+                break;
+            case BOATS:
+                embed.setAuthor("discord.boats", null, "https://cdn.atomicnetworks.eu/discord/voting/discordboats.png");
+                break;
+            default:
+                break;
         }
 
         user.getVoting().setVoteCount(user.getVoting().getVoteCount() + 1);
@@ -248,13 +264,13 @@ public class HookManager {
         user.setXp(user.getXp()+10);
         this.discordBot.getUserManager().saveUser(user);
         
-        this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).retrieveMemberById(voting.getUserId()).queue((t1) -> {
+        this.discordBot.getGuild().retrieveMemberById(voting.getUserId()).queue((t1) -> {
             if(t1 == null) {
                 return;
             }
             embed.setDescription("Thank you very much for your vote, **" + t1.getUser().getName() + "**#" + t1.getUser().getDiscriminator() + "!\nAs a gift, you get the `😵 Voted` rank for 24 hours.");
             textChannel.sendMessage(embed.build()).queue();
-            this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).addRoleToMember(t1.getIdLong(), role).queue();
+            this.discordBot.getGuild().addRoleToMember(t1.getIdLong(), role).queue();
         });
     }
     

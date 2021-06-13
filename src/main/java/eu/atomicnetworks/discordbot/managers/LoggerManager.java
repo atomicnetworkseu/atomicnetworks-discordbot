@@ -8,15 +8,11 @@ import java.util.TimeZone;
 /**
  *
  * @author Kacper Mura
- * Copyright (c) 2021 atomicnetworks ✨
- * This code is available under the MIT License.
+ * 2021 Copyright (c) by atomicradio.eu to present.
+ * All rights reserved. https://github.com/VocalZero
  *
  */
 public class LoggerManager {
-
-    public LoggerManager() {
-        
-    }
     
     public void sendInfo(String text) {
         System.out.println("[" + getTimestamp(System.currentTimeMillis()) +" | INFO] " + text);

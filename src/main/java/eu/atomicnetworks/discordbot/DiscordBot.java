@@ -20,6 +20,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -28,7 +29,8 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 /**
  *
  * @author Kacper Mura
- * Copyright (c) 2021 atomicnetworks ✨
+ * 2021 Copyright (c) by atomicradio.eu to present.
+ * All rights reserved. https://github.com/VocalZero
  *
  */
 public class DiscordBot {
@@ -43,7 +45,7 @@ public class DiscordBot {
     private BackendManager backendManager;
     private HookManager hookManager;
 
-    private String guildId;
+    private Guild guild;
     private String achievementChannelId;
     private String upvoteChannelId;
     private String roleChannelId;
@@ -71,7 +73,7 @@ public class DiscordBot {
         this.backendManager = new BackendManager(this);
         this.hookManager = new HookManager(this);
 
-        this.guildId = "734477710319026217";
+        this.guild = this.jda.getGuildById("734477710319026217");
         this.roleChannelId = "734477712139223133";
         this.achievementChannelId = "734477712844128373";
         this.upvoteChannelId = "824751418371735563";
@@ -92,7 +94,7 @@ public class DiscordBot {
         try {
             this.jda = builder.build();
             Timer sendTimer = new Timer(1, (ActionEvent e) -> {
-                TextChannel rolesChannel = (TextChannel) jda.getGuildById(guildId).getChannels().stream().filter(t -> t.getId().equals(roleChannelId)).findFirst().orElse(null);
+                TextChannel rolesChannel = (TextChannel) guild.getChannels().stream().filter(t -> t.getId().equals(roleChannelId)).findFirst().orElse(null);
                 if (!(new MessageHistory(rolesChannel).retrievePast(1).complete()).isEmpty()) {
                     (new MessageHistory(rolesChannel).retrievePast(1).complete()).get(0).delete().queue();
                 }
@@ -106,7 +108,7 @@ public class DiscordBot {
                             rolesChannel.addReactionById(messageId, ":gamingatomic:734611793187700736").queue();
                         });
 
-                TextChannel supportChannel = (TextChannel) jda.getGuildById(guildId).getChannels().stream().filter(t -> t.getId().equals(ticketChannelId)).findFirst().orElse(null);
+                TextChannel supportChannel = (TextChannel) guild.getChannels().stream().filter(t -> t.getId().equals(ticketChannelId)).findFirst().orElse(null);
                 if (!(new MessageHistory(supportChannel).retrievePast(1).complete()).isEmpty()) {
                     (new MessageHistory(supportChannel).retrievePast(1).complete()).get(0).delete().queue();
                 }
@@ -128,14 +130,12 @@ public class DiscordBot {
                     t.stream().forEach((user) -> {
                         if (System.currentTimeMillis() >= user.getWarn().getActiveWarnEnd()) {
                             this.backendManager.setMuted(user.getId(), false);
-                            Role role = this.jda.getGuildById(this.guildId).getRoleById("769862174024925204");
-                            this.jda.getGuildById(this.guildId).retrieveMemberById(user.getId()).queue((t1) -> {
-                                if (t1 == null) {
-                                    System.out.println("MEMBER IS NULL. (MUTED ROLLE WAS NOT REMOVED)");
-                                    return;
-                                }
+                            Role role = guild.getRoleById("769862174024925204");
+                            if(role == null) return;
+                            guild.retrieveMemberById(user.getId()).queue((t1) -> {
+                                if (t1 == null) return;
                                 if (t1.getRoles().stream().filter((t2) -> t2.getId().equals(role.getId())).findFirst().orElse(null) != null) {
-                                    this.getJda().getGuildById(this.getGuildId()).removeRoleFromMember(t1, role).queue();
+                                    guild.removeRoleFromMember(t1, role).queue();
                                 }
                             });
                         }
@@ -149,14 +149,12 @@ public class DiscordBot {
                         if (System.currentTimeMillis() >= user.getVoting().getVoted_end()) {
                             user.getVoting().setVoted_end(0);
                             this.userManager.saveUser(user);
-                            Role role = this.getJda().getGuildById(this.getGuildId()).getRoleById("780093467639414804");
-                            this.getJda().getGuildById(this.getGuildId()).retrieveMemberById(user.getId()).queue((t1) -> {
-                                if (t1 == null) {
-                                    System.out.println("MEMBER IS NULL. (VOTED ROLLE WAS NOT REMOVED)");
-                                    return;
-                                }
+                            Role role = guild.getRoleById("780093467639414804");
+                            if(role == null) return;
+                            guild.retrieveMemberById(user.getId()).queue((t1) -> {
+                                if (t1 == null) return;
                                 if (t1.getRoles().stream().filter((t2) -> t2.getId().equals(role.getId())).findFirst().orElse(null) != null) {
-                                    this.getJda().getGuildById(this.getGuildId()).removeRoleFromMember(t1, role).queue();
+                                    guild.removeRoleFromMember(t1, role).queue();
                                 }
                             });
                         }
@@ -226,8 +224,8 @@ public class DiscordBot {
         this.loggerManager.sendDebug(text);
     }
 
-    public String getGuildId() {
-        return guildId;
+    public Guild getGuild() {
+        return guild;
     }
 
     public String getCommandChannelId() {

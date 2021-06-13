@@ -14,14 +14,14 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 /**
  *
  * @author Kacper Mura
- * Copyright (c) 2021 atomicnetworks ✨
- * This code is available under the MIT License.
+ * 2021 Copyright (c) by atomicradio.eu to present.
+ * All rights reserved. https://github.com/VocalZero
  *
  */
 public class CookieCommand {
     
     private final DiscordBot discord;
-    private Random random;
+    private final Random random;
 
     public CookieCommand(DiscordBot discord) {
         this.discord = discord;
@@ -30,10 +30,11 @@ public class CookieCommand {
 
     public void execute(GuildMessageReceivedEvent event) {
         Message message = event.getMessage();
-        String[] args = message.getContentRaw().split(" ");
+        Member member = event.getMember();
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
 
+        if(member == null) return;
         if(message.getMentionedMembers().isEmpty()) {
             embed.setDescription("You also have to tell me who gets the cookie! 😋");
             event.getChannel().sendMessage(embed.build()).queue();
@@ -41,7 +42,7 @@ public class CookieCommand {
         }
         
         Member target = message.getMentionedMembers().stream().findFirst().orElse(null);
-        if(target.getId().equals(event.getMember().getUser().getId())) {
+        if(target.getId().equals(member.getUser().getId())) {
             embed.setDescription("You can't give yourself a cookie, unfortunately. 🍪");
             event.getChannel().sendMessage(embed.build()).queue();
             return;

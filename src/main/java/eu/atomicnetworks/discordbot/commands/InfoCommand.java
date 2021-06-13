@@ -3,14 +3,13 @@ package eu.atomicnetworks.discordbot.commands;
 import eu.atomicnetworks.discordbot.DiscordBot;
 import java.awt.Color;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 /**
  *
  * @author Kacper Mura
- * Copyright (c) 2021 atomicnetworks ✨
- * This code is available under the MIT License.
+ * 2021 Copyright (c) by atomicradio.eu to present.
+ * All rights reserved. https://github.com/VocalZero
  *
  */
 public class InfoCommand {
@@ -22,13 +21,7 @@ public class InfoCommand {
     }
 
     public void execute(GuildMessageReceivedEvent event) {
-        Message message = event.getMessage();
-        String[] args = message.getContentRaw().split(" ");
-        
-        if(!event.getChannel().getId().equals(this.discord.getCommandChannelId())) {
-            return;
-        }
-        
+        if(!event.getChannel().getId().equals(this.discord.getCommandChannelId())) return;
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
         embed.setAuthor("Helpdesk » Information", null, "https://cdn.atomicnetworks.eu/discord/icon.png");

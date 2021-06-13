@@ -10,8 +10,8 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 /**
  *
  * @author Kacper Mura
- * Copyright (c) 2021 atomicnetworks ✨
- * This code is available under the MIT License.
+ * 2021 Copyright (c) by atomicradio.eu to present.
+ * All rights reserved. https://github.com/VocalZero
  *
  */
 public class LevelWarnCommand {
@@ -24,18 +24,12 @@ public class LevelWarnCommand {
     
     public void execute(GuildMessageReceivedEvent event) {
         Message message = event.getMessage();
-        String[] args = message.getContentRaw().split(" ");
         
-        if(!this.discord.getBackendManager().hasPermissionPower1(event.getMember())) {
-            return;
-        }
+        if(!this.discord.getBackendManager().hasPermissionPower1(event.getMember())) return;
+        if(message.getMentionedMembers().isEmpty()) return;
         
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
-        
-        if(message.getMentionedMembers().isEmpty()) {
-            return;
-        }
         
         Member target = message.getMentionedMembers().stream().findFirst().orElse(null);
         embed.setDescription("**Successful**, the user <@" + target.getId() + "> was excluded from the music ranking for 24 hours!");

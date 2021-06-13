@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -16,8 +17,8 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 /**
  *
  * @author Kacper Mura
- * Copyright (c) 2021 atomicnetworks ✨
- * This code is available under the MIT License.
+ * 2021 Copyright (c) by atomicradio.eu to present.
+ * All rights reserved. https://github.com/VocalZero
  *
  */
 public class WhoisCommand {
@@ -36,7 +37,7 @@ public class WhoisCommand {
             return;
         }
 
-        String userId = "";
+        String userId;
         if (message.getMentionedUsers().isEmpty()) {
             userId = args[1];
         } else {
@@ -54,10 +55,7 @@ public class WhoisCommand {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
         this.discord.getJda().retrieveUserById(user.getId()).queue((t1) -> {
-            if(t1 == null) {
-                System.out.println("USER IS NULL!");
-                return;
-            }
+            if(t1 == null) return;
             embed.setAuthor(t1.getName(), null, t1.getAvatarUrl());
             embed.setDescription(MessageFormat.format("The user {0} is currently **level {1}** and has **{2} warning points**.\n", "<@" + user.getId() + ">", user.getLevel(), String.valueOf(user.getWarn().getWarnPoints()))
                     + MessageFormat.format("He has already listened **{0} minutes** to music and has a total of **{1} votes**.", String.valueOf(user.getStreamTimeMin()), String.valueOf(user.getVoting().getVoteCount())));
@@ -87,7 +85,9 @@ public class WhoisCommand {
                 embed.addField(new MessageEmbed.Field("**Warnlog:**", warnlog, false));
             }
 
-            event.getMember().getUser().openPrivateChannel().queue((channel) -> {
+            Member member = event.getMember();
+            if(member == null) return;
+            member.getUser().openPrivateChannel().queue((channel) -> {
                 channel.sendMessage(embed.build()).queue();
             });
         });

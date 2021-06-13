@@ -7,7 +7,6 @@ import java.awt.Color;
 import java.util.Iterator;
 import java.util.List;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -15,8 +14,8 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 /**
  *
  * @author Kacper Mura
- * Copyright (c) 2021 atomicnetworks ✨
- * This code is available under the MIT License.
+ * 2021 Copyright (c) by atomicradio.eu to present.
+ * All rights reserved. https://github.com/VocalZero
  *
  */
 public class RankingCommand {
@@ -28,12 +27,7 @@ public class RankingCommand {
     }
 
     public void execute(GuildMessageReceivedEvent event) {
-        Message message = event.getMessage();
-        String[] args = message.getContentRaw().split(" ");
-
-        if (!event.getChannel().getId().equals(this.discord.getCommandChannelId())) {
-            return;
-        }
+        if (!event.getChannel().getId().equals(this.discord.getCommandChannelId())) return;
 
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));

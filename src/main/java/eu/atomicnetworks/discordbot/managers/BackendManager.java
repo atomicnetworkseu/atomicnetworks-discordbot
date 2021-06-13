@@ -8,7 +8,6 @@ import eu.atomicnetworks.discordbot.objects.Ticket;
 import eu.atomicnetworks.discordbot.objects.User;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -25,14 +24,14 @@ import net.dv8tion.jda.api.entities.VoiceChannel;
 /**
  *
  * @author Kacper Mura
- * Copyright (c) 2021 atomicnetworks ✨
- * This code is available under the MIT License.
+ * 2021 Copyright (c) by atomicradio.eu to present.
+ * All rights reserved. https://github.com/VocalZero
  *
  */
 public class BackendManager {
     
     private DiscordBot discordBot;
-    private Timer timer;
+    private final Timer timer;
     private LoadingCache<String, User> userCache;
     private LoadingCache<String, Ticket> ticketCache;
     private HashMap<String, Long> levelTimeout;
@@ -41,18 +40,12 @@ public class BackendManager {
         this.discordBot = discordBot;
         initCache();
         this.timer = new Timer(60000, (ActionEvent e) -> {
-            VoiceChannel voiceChannel = this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).getVoiceChannelById(this.discordBot.getMusicVoiceChannelId());
+            VoiceChannel voiceChannel = this.discordBot.getGuild().getVoiceChannelById(this.discordBot.getMusicVoiceChannelId());
             voiceChannel.getMembers().stream().forEach(t -> {
-                if(t.getId().equals("697517106287345737")) {
-                    return;
-                }
+                if(t.getId().equals("697517106287345737")) return;
                 User user = this.getUser(t.getId());
-                if(user == null) {
-                    return;
-                }
-                if(t.getVoiceState().isDeafened()) {
-                    return;
-                }
+                if(user == null) return;
+                if(t.getVoiceState().isDeafened()) return;
                 if(levelTimeout.containsKey(t.getId())) {
                     if(System.currentTimeMillis() >= levelTimeout.get(t.getId())) {
                         levelTimeout.remove(t.getId());
@@ -67,7 +60,7 @@ public class BackendManager {
                     embed.setColor(new Color(149, 79, 180));
                     embed.setAuthor(t.getUser().getName(), null, t.getUser().getAvatarUrl());
                     embed.setDescription("**Congratulations**, you have now reached level **" + this.getLevel(user.getId()) + "**! <a:blobgifrolling:771743022282440815>");
-                    TextChannel textChannel = (TextChannel) this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).getChannels().stream().filter(t1 -> t1.getId().equals(this.discordBot.getAchievementChannelId())).findFirst().orElse(null);
+                    TextChannel textChannel = (TextChannel) this.discordBot.getGuild().getChannels().stream().filter(t1 -> t1.getId().equals(this.discordBot.getAchievementChannelId())).findFirst().orElse(null);
                     textChannel.sendMessage(embed.build()).queue();
                 }
             });
@@ -203,8 +196,7 @@ public class BackendManager {
     }
     
     public void createTicket(Ticket ticket) {
-        this.discordBot.getTicketManager().createTicket(ticket, (Ticket t) -> {
-        });
+        this.discordBot.getTicketManager().createTicket(ticket, (Ticket t) -> {});
     }
     
     public void addTicketMessage(String id, Message message) {

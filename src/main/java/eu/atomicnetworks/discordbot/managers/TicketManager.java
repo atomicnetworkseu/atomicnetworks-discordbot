@@ -25,13 +25,13 @@ import org.bson.Document;
 /**
  *
  * @author Kacper Mura
- * Copyright (c) 2021 atomicnetworks ✨
- * This code is available under the MIT License.
+ * 2021 Copyright (c) by atomicradio.eu to present.
+ * All rights reserved. https://github.com/VocalZero
  *
  */
 public class TicketManager {
 
-    private DiscordBot discord;
+    private final DiscordBot discord;
 
     public TicketManager(DiscordBot discord) {
         this.discord = discord;
@@ -119,22 +119,20 @@ public class TicketManager {
         String contributors = "";
         String messages = "";
         ArrayList<String> contributorIDs = new ArrayList<>();
-        for (Ticket.TicketMessage message : ticket.getMessages()) {
+        messages = ticket.getMessages().stream().map(message -> {
             if(!contributorIDs.contains(message.getUserId())) {
                 contributorIDs.add(message.getUserId());
             }
-            messages += MessageFormat.format("{0} » {2}\n", message.getUserName(), message.getUserId(), message.getMessage());
-        }
-        for(String id : contributorIDs) {
-            contributors += "<@" + id + ">\n";
-        }
+            return message;
+        }).map(message -> MessageFormat.format("{0} » {2}\n", message.getUserName(), message.getUserId(), message.getMessage())).reduce(messages, String::concat);
+        contributors = contributorIDs.stream().map(id -> "<@" + id + ">\n").reduce(contributors, String::concat);
 
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
         embed.addField("Ticketcreator", "<@" + ticket.getCreatedBy().getId() + ">", true);
         embed.addField("Ticket-ID", ticket.getId(), true);
         embed.addField("Contributors", contributors, true);
-        TextChannel ticketLogChannel = (TextChannel) this.discord.getJda().getGuildById(this.discord.getGuildId()).getChannels().stream().filter(t -> t.getId().equals(this.discord.getTicketLogChannelId())).findFirst().orElse(null);
+        TextChannel ticketLogChannel = (TextChannel) this.discord.getGuild().getChannels().stream().filter(t -> t.getId().equals(this.discord.getTicketLogChannelId())).findFirst().orElse(null);
         File file = new File("./tickets/" + ticket.getId() + ".txt");
         try {
             file.createNewFile();

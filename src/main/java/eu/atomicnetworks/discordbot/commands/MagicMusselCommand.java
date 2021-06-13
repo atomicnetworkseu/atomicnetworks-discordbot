@@ -6,20 +6,21 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 /**
  *
  * @author Kacper Mura
- * Copyright (c) 2021 atomicnetworks ✨
- * This code is available under the MIT License.
+ * 2021 Copyright (c) by atomicradio.eu to present.
+ * All rights reserved. https://github.com/VocalZero
  *
  */
 public class MagicMusselCommand {
     
     private final DiscordBot discord;
-    private Random random;
+    private final Random random;
 
     public MagicMusselCommand(DiscordBot discord) {
         this.discord = discord;
@@ -28,10 +29,12 @@ public class MagicMusselCommand {
 
     public void execute(GuildMessageReceivedEvent event) {
         Message message = event.getMessage();
+        Member member = event.getMember();
         String[] args = message.getContentRaw().split(" ");
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(new Color(149, 79, 180));
         
+        if(member == null) return;
         if(args.length == 1) {
             embed.setDescription("I need a question to be able to answer you.");
             event.getChannel().sendMessage(embed.build()).queue();
@@ -44,7 +47,7 @@ public class MagicMusselCommand {
             question += args[i] + " ";
         }
         
-        embed.setAuthor(event.getMember().getUser().getName(), null, event.getMember().getUser().getAvatarUrl());
+        embed.setAuthor(member.getUser().getName(), null, member.getUser().getAvatarUrl());
         embed.setDescription("**Question:** " + question + "\n**Answer:** " + answers.get(this.random.nextInt(3)));
         
         event.getChannel().sendMessage(embed.build()).queue();
