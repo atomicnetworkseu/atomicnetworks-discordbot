@@ -12,11 +12,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -121,6 +123,69 @@ public class HookManager {
             he.sendResponseHeaders(201, -1);
             this.executeVote(voting);
         });
+        this.httpServer.createContext("/webhook/status", (HttpExchange he) -> {
+            if(he.getRequestMethod().equals("OPTIONS")) {
+                he.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+                he.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type,Authorization");
+                he.getResponseHeaders().add("Access-Control-Allow-Methods", "POST,OPTIONS");
+                he.sendResponseHeaders(204, -1);
+                return;
+            }
+            if(!he.getRequestMethod().equals("POST")) {
+                he.getResponseBody().close();
+                return;
+            }
+            if(!this.isAuthorized(he)) {
+                return;
+            }
+            JSONObject body = this.getRequestBody(he);
+            
+            if(!body.getString("type").equals("changed")) {
+                he.getResponseBody().close();
+                return;
+            }
+            if(body.getString("status").equals("dead")) {
+                TextChannel textChannel = (TextChannel) this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).getChannels().stream().filter(t -> t.getId().equals(this.discordBot.getTeamchatChannelId())).findFirst().orElse(null);
+                
+                EmbedBuilder embed = new EmbedBuilder();
+                embed.setColor(new Color(234, 44, 82));
+                String description = "Some services are temporarily unavailable, at [status.atomicnetworks.eu](https://status.atomicnetworks.eu) you will find all further and current information on the current outage.\n"
+                        + "During this period, parts of our infrastructure are not accessible or only accessible to a limited extent.\n\n"
+                        + "**Technical information**:\n";
+                
+                JSONArray array = body.getJSONArray("replicas");
+                description = array.toList().stream().map(x -> x.toString()).map(replica -> "• No answer from **" + replica.split(" ")[1].split(":")[0] + "** at `" + replica.split(" ")[1].split(":")[1] + "://" + replica.split(" ")[1].split("://")[1] + "`.\n").reduce(description, String::concat);
+                embed.setDescription(description);
+                
+                textChannel.sendMessage("<@&789284548159471626>").queue((message) -> {
+                    textChannel.sendMessage(embed.build()).queue((embedMessage) -> {
+                        embedMessage.addReaction("✅").queue();
+                        message.delete().queueAfter(5, TimeUnit.SECONDS);
+                    });
+                });
+                he.sendResponseHeaders(201, -1);
+            } else if(body.getString("status").equals("sick")) {
+                TextChannel textChannel = (TextChannel) this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).getChannels().stream().filter(t -> t.getId().equals(this.discordBot.getTeamchatChannelId())).findFirst().orElse(null);
+                
+                EmbedBuilder embed = new EmbedBuilder();
+                embed.setColor(new Color(249, 164, 18));
+                String description = "Some services may not be able to be accessed because they may be under attack or have to handle a heavy load.\n"
+                        + "At [status.atomicnetworks.eu](https://status.atomicnetworks.eu) you will find all further and current information on the current disruption.\n\n"
+                        + "**Technical information**:\n";
+                
+                JSONArray array = body.getJSONArray("replicas");
+                description = array.toList().stream().map(x -> x.toString()).map(replica -> "• Missing reply from **" + replica.split(" ")[1].split(":")[0] + "**.\n").reduce(description, String::concat);
+                embed.setDescription(description);
+                
+                textChannel.sendMessage("<@&789284548159471626>").queue((message) -> {
+                    textChannel.sendMessage(embed.build()).queue((embedMessage) -> {
+                        embedMessage.addReaction("✅").queue();
+                        message.delete().queueAfter(5, TimeUnit.SECONDS);
+                    });
+                });
+                he.sendResponseHeaders(201, -1);
+            }
+        });
     }
 
     public HttpServer getHttpServer() {
@@ -157,7 +222,6 @@ public class HookManager {
             
             this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).retrieveMemberById(voting.getUserId()).queue((t1) -> {
                 if(t1 == null) {
-                    System.out.println("MEMBER IS NULL. (VOTED ROLLE WAS NOT ADDED)");
                     return;
                 }
                 embed.setDescription("Thank you very much for your vote, **" + t1.getUser().getName() + "**#" + t1.getUser().getDiscriminator() + "!\nAs a gift, you get the `😵 Voted` rank for another 24 hours.");
@@ -186,7 +250,6 @@ public class HookManager {
         
         this.discordBot.getJda().getGuildById(this.discordBot.getGuildId()).retrieveMemberById(voting.getUserId()).queue((t1) -> {
             if(t1 == null) {
-                System.out.println("MEMBER IS NULL. (VOTED ROLLE WAS NOT ADDED)");
                 return;
             }
             embed.setDescription("Thank you very much for your vote, **" + t1.getUser().getName() + "**#" + t1.getUser().getDiscriminator() + "!\nAs a gift, you get the `😵 Voted` rank for 24 hours.");

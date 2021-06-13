@@ -223,8 +223,20 @@ public class EventHandler extends ListenerAdapter {
                 event.getChannel().delete().queue();
                 this.discordBot.getTicketManager().sendTicketInfoEmbed(this.discordBot.getBackendManager().getTicket(event.getChannel().getName()));
             }
-        }
-        if (event.getChannel().getId().equals(this.discordBot.getCommandChannelId())) {
+        } else if (event.getChannel().getId().equals(this.discordBot.getTeamchatChannelId())) {
+            if(event.getReactionEmote().getEmoji().equals("✅")) {
+                event.getChannel().retrieveMessageById(event.getMessageId()).queue(message -> {
+                    if(message.getAuthor().getId().equals(event.getJDA().getSelfUser().getId())) {
+                        message.clearReactions().queue();
+                        
+                        EmbedBuilder embed = new EmbedBuilder();
+                        embed.setColor(new Color(0, 142, 120));
+                        embed.setDescription("*The affected system has been successfully serviced, the associated reason for the fault has been successfully resolved by " + event.getMember().getAsMention() + "*");
+                        message.editMessage(embed.build()).queue();
+                    }
+                });
+            }
+        } else if (event.getChannel().getId().equals(this.discordBot.getCommandChannelId())) {
             if (event.getReactionEmote().getId().equals("802089372076867594")) {
                 rankingCommand.switchPageForward(event.getChannel(), event.getMessageIdLong());
             } else if (event.getReactionEmote().getId().equals("802089371964407838")) {

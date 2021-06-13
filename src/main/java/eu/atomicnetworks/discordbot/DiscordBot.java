@@ -52,6 +52,7 @@ public class DiscordBot {
     private String teamlogChannelId;
     private String ticketChannelId;
     private String ticketLogChannelId;
+    private String teamchatChannelId;
 
     private String musicVoiceChannelId;
 
@@ -79,6 +80,7 @@ public class DiscordBot {
         this.teamlogChannelId = "734477713028415566";
         this.ticketChannelId = "734477712592338981";
         this.ticketLogChannelId = "734477713028415565";
+        this.teamchatChannelId = "734477713028415558";
 
         this.musicVoiceChannelId = "836332151728766986";
 
@@ -262,6 +264,10 @@ public class DiscordBot {
 
     public String getRoleChannelId() {
         return roleChannelId;
+    }
+
+    public String getTeamchatChannelId() {
+        return teamchatChannelId;
     }
 
 }
