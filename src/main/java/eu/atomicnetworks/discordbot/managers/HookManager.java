@@ -147,7 +147,7 @@ public class HookManager {
                 
                 EmbedBuilder embed = new EmbedBuilder();
                 embed.setColor(new Color(234, 44, 82));
-                String description = "Our systems are currently measuring unexpected disruptions in parts of our infrastructure, during this period some of our services will be unavailable, please visit [status.atomicnetworks.eu](https://status.atomicnetworks.eu) for all further and up-to-date information on this issue.\n"
+                String description = "Our systems are currently measuring unexpected disruptions in parts of our infrastructure, during this period some of our services will be unavailable, please visit [status.atomicnetworks.eu](https://status.atomicnetworks.eu) for all further and up-to-date information on this issue.\n\n"
                         + "<:dead:853633170586861599> **Technical information**:\n";
                 
                 JSONArray array = body.getJSONArray("replicas");
@@ -167,7 +167,7 @@ public class HookManager {
                 
                 EmbedBuilder embed = new EmbedBuilder();
                 embed.setColor(new Color(249, 164, 18));
-                String description = "Our systems have not received a response from a service within our infrastructure for several minutes, possibly it has been shut down or is under high load due to an exceptionally high number of requests or an attack, so it could be that this service is not available or has a delayed response time. \n"
+                String description = "Our systems have not received a response from a service within our infrastructure for several minutes, possibly it has been shut down or is under high load due to an exceptionally high number of requests or an attack, so it could be that this service is not available or has a delayed response time.\n"
                         + "Please call [status.atomicnetworks.eu](https://status.atomicnetworks.eu) for more information and to stay up to date.\n\n"
                         + "<:sick:853633171060948992> **Technical information**:\n";
                 
