@@ -147,15 +147,14 @@ public class HookManager {
                 
                 EmbedBuilder embed = new EmbedBuilder();
                 embed.setColor(new Color(234, 44, 82));
-                String description = "Some services are temporarily unavailable, at [status.atomicnetworks.eu](https://status.atomicnetworks.eu) you will find all further and current information on the current outage.\n"
-                        + "During this period, parts of our infrastructure are not accessible or only accessible to a limited extent.\n\n"
-                        + "**Technical information**:\n";
+                String description = "Our systems are currently measuring unexpected disruptions in parts of our infrastructure, during this period some of our services will be unavailable, please visit [status.atomicnetworks.eu](https://status.atomicnetworks.eu) for all further and up-to-date information on this issue.\n"
+                        + "<:dead:853633170586861599> **Technical information**:\n";
                 
                 JSONArray array = body.getJSONArray("replicas");
                 description = array.toList().stream().map(x -> x.toString()).map(replica -> "• No answer from **" + replica.split(" ")[1].split(":")[0] + "** at `" + replica.split(" ")[1].split(":")[1] + "://" + replica.split(" ")[1].split("://")[1] + "`.\n").reduce(description, String::concat);
                 embed.setDescription(description);
                 
-                textChannel.sendMessage("<@&789284548159471626>").queue((message) -> {
+                textChannel.sendMessage("<@&816046321118085150>, <@&734556009644818432> & <@&789284548159471626>").queue((message) -> {
                     textChannel.sendMessage(embed.build()).queue((embedMessage) -> {
                         embedMessage.addReaction("✅").queue();
                         message.delete().queueAfter(5, TimeUnit.SECONDS);
@@ -168,15 +167,15 @@ public class HookManager {
                 
                 EmbedBuilder embed = new EmbedBuilder();
                 embed.setColor(new Color(249, 164, 18));
-                String description = "Some services may not be able to be accessed because they may be under attack or have to handle a heavy load.\n"
-                        + "At [status.atomicnetworks.eu](https://status.atomicnetworks.eu) you will find all further and current information on the current disruption.\n\n"
-                        + "**Technical information**:\n";
+                String description = "Our systems have not received a response from a service within our infrastructure for several minutes, possibly it has been shut down or is under high load due to an exceptionally high number of requests or an attack, so it could be that this service is not available or has a delayed response time. \n"
+                        + "Please call [status.atomicnetworks.eu](https://status.atomicnetworks.eu) for more information and to stay up to date.\n\n"
+                        + "<:sick:853633171060948992> **Technical information**:\n";
                 
                 JSONArray array = body.getJSONArray("replicas");
                 description = array.toList().stream().map(x -> x.toString()).map(replica -> "• Missing reply from **" + replica.split(" ")[1].split(":")[0] + "**.\n").reduce(description, String::concat);
                 embed.setDescription(description);
                 
-                textChannel.sendMessage("<@&789284548159471626>").queue((message) -> {
+                textChannel.sendMessage("<@&816046321118085150>, <@&734556009644818432> & <@&789284548159471626>").queue((message) -> {
                     textChannel.sendMessage(embed.build()).queue((embedMessage) -> {
                         embedMessage.addReaction("✅").queue();
                         message.delete().queueAfter(5, TimeUnit.SECONDS);

@@ -226,7 +226,7 @@ public class EventHandler extends ListenerAdapter {
                         
                         EmbedBuilder embed = new EmbedBuilder();
                         embed.setColor(new Color(0, 142, 120));
-                        embed.setDescription("*The affected system has been successfully serviced, the associated reason for the fault has been successfully resolved by " + event.getMember().getAsMention() + "*");
+                        embed.setDescription("The incident of the affected system was successfully fixed by " + event.getMember().getAsMention() + ", now all services should work as usual again! <:healthy:853633171144835102>");
                         message.editMessage(embed.build()).queue();
                     }
                 });
