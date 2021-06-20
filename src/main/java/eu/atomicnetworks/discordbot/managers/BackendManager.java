@@ -205,7 +205,9 @@ public class BackendManager {
         Ticket.TicketMessage ticketMessage = new Ticket.TicketMessage();
         ticketMessage.setUserId(message.getAuthor().getId());
         ticketMessage.setUserName(message.getAuthor().getName());
+        ticketMessage.setUserDiscriminator(message.getAuthor().getDiscriminator());
         ticketMessage.setUserAvatar(message.getAuthor().getAvatarUrl());
+        ticketMessage.setTimestamp(System.currentTimeMillis());
         ticketMessage.setMessage(message.getContentRaw());
         this.getTicket(id).getMessages().add(ticketMessage);
         this.discordBot.getTicketManager().saveTicket(this.getTicket(id));

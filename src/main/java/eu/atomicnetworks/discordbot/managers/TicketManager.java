@@ -124,7 +124,7 @@ public class TicketManager {
                 contributorIDs.add(message.getUserId());
             }
             return message;
-        }).map(message -> MessageFormat.format("{0} » {2}\n", message.getUserName(), message.getUserId(), message.getMessage())).reduce(messages, String::concat);
+        }).map(message -> MessageFormat.format("[{0}] {1} » {2}\n", this.discord.getLoggerManager().getTimestamp(message.getTimestamp()), message.getUserName() + "#" + message.getUserDiscriminator(), message.getMessage())).reduce(messages, String::concat);
         contributors = contributorIDs.stream().map(id -> "<@" + id + ">\n").reduce(contributors, String::concat);
 
         EmbedBuilder embed = new EmbedBuilder();

@@ -46,6 +46,8 @@ public class Ticket {
         private String userName;
         private String userId;
         private String userAvatar;
+        private String userDiscriminator;
+        private Long timestamp;
         private String message;
 
         public String getUserName() {
@@ -68,8 +70,24 @@ public class Ticket {
             return userAvatar;
         }
 
+        public String getUserDiscriminator() {
+            return userDiscriminator;
+        }
+
+        public void setUserDiscriminator(String userDiscriminator) {
+            this.userDiscriminator = userDiscriminator;
+        }
+
         public void setUserAvatar(String userAvatar) {
             this.userAvatar = userAvatar;
+        }
+
+        public Long getTimestamp() {
+            return timestamp;
+        }
+
+        public void setTimestamp(Long timestamp) {
+            this.timestamp = timestamp;
         }
 
         public String getMessage() {

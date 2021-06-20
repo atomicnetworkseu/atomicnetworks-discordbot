@@ -30,7 +30,7 @@ public class LoggerManager {
         System.out.println("[" + getTimestamp(System.currentTimeMillis()) +" | DEBUG] " + text);
     }
     
-    private String getTimestamp(Long timemillies) {
+    public String getTimestamp(Long timemillies) {
         Date date = new Date(timemillies);
         DateFormat format = new SimpleDateFormat("HH:mm:ss");
         format.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
