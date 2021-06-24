@@ -236,19 +236,21 @@ public class BackendManager {
     }
     
     public boolean hasPermissionPower3(Member member) {
-        return hasRole(member, "Manager") || hasRole(member, "Administrator") || hasRole(member, "Developer") || hasRole(member, "Supporter");
+        return hasRoleById(member, "816046321118085150") || hasRoleById(member, "734556009644818432") || hasRoleById(member, "734556073046048878") || member.getId().equals("223891083724193792");
     }
     
     public boolean hasPermissionPower2(Member member) {
-        return hasRole(member, "Manager") || hasRole(member, "Administrator") || hasRole(member, "Developer") || hasRole(member, "Teamleading");
+        return hasRoleById(member, "816046321118085150") || hasRoleById(member, "734556009644818432") || hasRoleById(member, "816054971089944576") || member.getId().equals("223891083724193792");
     }
     
     public boolean hasPermissionPower1(Member member) {
-        return hasRole(member, "Manager") || hasRole(member, "Administrator") || hasRole(member, "Developer");
+        return hasRoleById(member, "816046321118085150") || hasRoleById(member, "734556009644818432") || hasRoleById(member, "734556044482838629");
     }
     
     public boolean isTeamMember(Member member) {
-        return hasRole(member, "Manager") || hasRole(member, "Administrator") || hasRole(member, "Teamleading") || hasRole(member, "Developer") || hasRole(member, "Technician") || hasRole(member, "Supporter") || hasRole(member, "Streamer") || hasRole(member, "Content") || hasRole(member, "Designer") || hasRole(member, "Builder");
+        return hasRoleById(member, "816046321118085150") || hasRoleById(member, "734556009644818432") || hasRoleById(member, "816054971089944576") || hasRoleById(member, "734556044482838629") ||
+                hasRoleById(member, "789284548159471626") || hasRoleById(member, "734556073046048878") || hasRoleById(member, "734556073486319749") || hasRoleById(member, "742110027250401300") ||
+                hasRoleById(member, "734556070004916255") || hasRoleById(member, "734556069648531547");
     }
 
     public HashMap<String, Long> getLevelTimeout() {
