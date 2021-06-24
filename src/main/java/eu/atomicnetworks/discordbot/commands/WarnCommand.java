@@ -153,7 +153,7 @@ public class WarnCommand {
         embed.addField("Teammember", member.getAsMention(), true);
         TextChannel teamlog = this.discord.getGuild().getTextChannelById(this.discord.getTeamlogChannelId());
         if(teamlog == null) return;
-        teamlog.sendMessage(embed.toString()).queue();
+        teamlog.sendMessage(embed.build()).queue();
     }
     
     public void muteUser(Member member, Member target, WarnReason warnReason, boolean warnPointMute) {
@@ -206,7 +206,7 @@ public class WarnCommand {
         embed.addField("Teammember", member.getAsMention(), true);
         TextChannel teamlog = this.discord.getGuild().getTextChannelById(this.discord.getTeamlogChannelId());
         if(teamlog == null) return;
-        teamlog.sendMessage(embed.toString()).queue();
+        teamlog.sendMessage(embed.build()).queue();
     }
     
     public void banUser(Member member, Member target, WarnReason warnReason) {
@@ -253,7 +253,7 @@ public class WarnCommand {
         embed.addField("Teammember", member.getAsMention(), true);
         TextChannel teamlog = this.discord.getGuild().getTextChannelById(this.discord.getTeamlogChannelId());
         if(teamlog == null) return;
-        teamlog.sendMessage(embed.toString()).queue();
+        teamlog.sendMessage(embed.build()).queue();
     }
     
 }
