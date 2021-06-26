@@ -63,16 +63,16 @@ public class WhoisCommand {
                     if (null != log.getWarnType()) {
                         switch (log.getWarnType()) {
                             case WARN:
-                                warnlog += MessageFormat.format("{0} I {1} » has issued a **warn**.\n", simpleDateFormat.format(new Date(log.getStart_at())), "<@" + log.getCreator() + ">");
+                                warnlog += MessageFormat.format("{0} I {1} » has issued a **warn** because of **{2}**.\n", simpleDateFormat.format(new Date(log.getStart_at())), "<@" + log.getCreator() + ">", log.getReason());
                                 break;
                             case MUTE:
-                                warnlog += MessageFormat.format("{0} I {1} » has issued a **mute**.\n", simpleDateFormat.format(new Date(log.getStart_at())), "<@" + log.getCreator() + ">");
+                                warnlog += MessageFormat.format("{0} I {1} » has issued a **mute** because of **{2}**.\n", simpleDateFormat.format(new Date(log.getStart_at())), "<@" + log.getCreator() + ">", log.getReason());
                                 break;
                             case BAN:
-                                warnlog += MessageFormat.format("{0} I {1} » has issued a **ban**.\n", simpleDateFormat.format(new Date(log.getStart_at())), "<@" + log.getCreator() + ">");
+                                warnlog += MessageFormat.format("{0} I {1} » has issued a **ban** because of **{2}**.\n", simpleDateFormat.format(new Date(log.getStart_at())), "<@" + log.getCreator() + ">", log.getReason());
                                 break;
                             default:
-                                warnlog += MessageFormat.format("{0} I {1} » has issued a **???**.\n", simpleDateFormat.format(new Date(log.getStart_at())), "<@" + log.getCreator() + ">");
+                                warnlog += MessageFormat.format("{0} I {1} » has issued a **???** because of **{2}**.\n", simpleDateFormat.format(new Date(log.getStart_at())), "<@" + log.getCreator() + ">", log.getReason());
                                 break;
                         }
                     }
